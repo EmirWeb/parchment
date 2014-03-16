@@ -1,0 +1,15 @@
+# Platform files
+.DS_Store
+
+# IDE directories
+bin/
+out/
+gen/
+gen-external-apklibs/
+target/
+build/
+classes/
+.idea/
+
+# IDE files
+*.iml

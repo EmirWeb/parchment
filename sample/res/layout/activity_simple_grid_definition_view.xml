@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/merge_control_buttons"/>
+
+    <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background">
+
+        <com.parchment.widget.adapterview.griddefinitionview.GridDefinitionView
+                xmlns:parchment="http://schemas.android.com/apk/res/com.parchment"
+                android:id="@+id/parchment_view"
+                parchment:cellSpacing="20px"
+                parchment:orientation="vertical"
+                parchment:snapPosition="onScreenWithCellSpacing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cacheColorHint="@android:color/transparent"
+                android:listSelector="@android:color/transparent" />
+
+    </FrameLayout>
+
+</LinearLayout>

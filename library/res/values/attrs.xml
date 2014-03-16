@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ListView">
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        <attr name="cellSpacing" format="dimension"/>
+        <attr name="isCircularScroll" format="boolean"/>
+        <attr name="snapToPosition" format="boolean"/>
+        <attr name="selectOnSnap" format="boolean"/>
+        <attr name="isViewPager" format="boolean"/>
+        <attr name="snapPosition" format="enum">
+            <enum name="center" value="0"/>
+            <enum name="floatLeft" value="1"/>
+            <enum name="floatRight" value="2"/>
+            <enum name="floatLeftWithCellSpacing" value="3"/>
+            <enum name="floatRightWithCellSpacing" value="4"/>
+            <enum name="onScreen" value="5"/>
+            <enum name="onScreenWithCellSpacing" value="6"/>
+        </attr>
+        <attr name="selectWhileScrolling" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="GridView">
+        <attr name="numberOfColumns" format="integer"/>
+        <attr name="gravity">
+            <flag name="left" value="0x02"/>
+            <flag name="right" value="0x04"/>
+            <flag name="top" value="0x08"/>
+            <flag name="bottom" value="0x10"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="GridDefinitionView">
+        <attr name="ratio" format="float"/>
+    </declare-styleable>
+
+
+</resources>

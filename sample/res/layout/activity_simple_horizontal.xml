@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/merge_control_buttons"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background" >
+
+        <com.parchment.widget.adapterview.listview.ListView
+                xmlns:parchment="http://schemas.android.com/apk/res/com.parchment"
+                android:id="@+id/parchment_view"
+                parchment:cellSpacing="10dp"
+                parchment:orientation="horizontal"
+                parchment:snapPosition="onScreenWithCellSpacing"
+                parchment:snapToPosition="true"
+                parchment:gravity="top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:listSelector="@android:color/transparent"
+                android:paddingTop="10dp"/>
+
+    </FrameLayout>
+
+</LinearLayout>

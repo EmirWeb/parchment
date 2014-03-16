@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100px"
+    android:layout_height="100px"
+    android:background="@drawable/item_simple_background" >
+
+    <TextView
+        android:id="@+id/item_simple_button"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:background="#00FF00"
+        android:gravity="center"
+        android:textColor="@android:color/white" />
+
+</FrameLayout>
