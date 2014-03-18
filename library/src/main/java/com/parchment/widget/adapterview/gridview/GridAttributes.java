@@ -13,14 +13,14 @@ import com.parchment.widget.adapterview.Attributes;
  */
 public class GridAttributes extends Attributes {
 
-    private final int mNumberOfColumns;
+    private final int mNumberOfViewsPerCell;
     private boolean mIsLeft;
     private boolean mIsRight;
     private boolean mIsTop;
     private boolean mIsBottom;
 
     private static class DefaultValues {
-        private static final int NUMBER_OF_COLUMNS = 1;
+        private static final int NUMBER_OF_VIEWS_PER_CELL = 1;
         private static final int GRAVITY = Gravity.TOP;
     }
 
@@ -30,8 +30,8 @@ public class GridAttributes extends Attributes {
             final TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.GridView, 0, 0);
 
             try {
-                final int numberOfColumns = typedArray.getInteger(R.styleable.GridView_numberOfColumns, DefaultValues.NUMBER_OF_COLUMNS);
-                mNumberOfColumns = Math.max(numberOfColumns, DefaultValues.NUMBER_OF_COLUMNS);
+                final int numberOfColumns = typedArray.getInteger(R.styleable.GridView_numberOfViewsPerCell, DefaultValues.NUMBER_OF_VIEWS_PER_CELL);
+                mNumberOfViewsPerCell = Math.max(numberOfColumns, DefaultValues.NUMBER_OF_VIEWS_PER_CELL);
 
                 final int gravity = typedArray.getInt(R.styleable.GridView_gravity, DefaultValues.GRAVITY);
                 setGravityValues(gravity);
@@ -40,7 +40,7 @@ public class GridAttributes extends Attributes {
             }
         } else {
             setGravityValues(DefaultValues.GRAVITY);
-            mNumberOfColumns = DefaultValues.NUMBER_OF_COLUMNS;
+            mNumberOfViewsPerCell = DefaultValues.NUMBER_OF_VIEWS_PER_CELL;
         }
     }
 
@@ -51,8 +51,8 @@ public class GridAttributes extends Attributes {
         mIsBottom = (gravity & Gravity.BOTTOM) != 0x0 && !mIsTop;
     }
 
-    public int getNumberOfColumns() {
-        return mNumberOfColumns;
+    public int getNumberOfViewsPerCell() {
+        return mNumberOfViewsPerCell;
     }
 
     public boolean isLeft() {

@@ -48,6 +48,11 @@ public class ListLayoutManager extends LayoutManager<View> {
     }
 
     @Override
+    protected int getLastAdapterPositionInCell(final int cellPosition) {
+        return cellPosition;
+    }
+
+    @Override
     protected int getCellCount() {
         final AdapterViewManager adapterViewManager = getAdapterViewManager();
         final int adapterCount = adapterViewManager.getAdapterCount();

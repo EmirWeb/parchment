@@ -24,7 +24,7 @@
     </declare-styleable>
 
     <declare-styleable name="GridView">
-        <attr name="numberOfColumns" format="integer"/>
+        <attr name="numberOfViewsPerCell" format="integer"/>
         <attr name="gravity">
             <flag name="left" value="0x02"/>
             <flag name="right" value="0x04"/>

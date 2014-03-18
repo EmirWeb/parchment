@@ -25,9 +25,17 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getCellDistanceFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell cell, final int cellSpacing) {
+    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
         final int currentCellCenter = layoutManager.getCellCenter(cell);
-        return Math.abs(currentCellCenter - cellSpacing);
+        final int center = size / 2;
+        final int displacement = center - currentCellCenter;
+        return displacement;
+    }
+
+    @Override
+    public int getCellDistanceFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell cell, final int cellSpacing) {
+        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell, cellSpacing);
+        return Math.abs(displacement);
     }
 
     @Override

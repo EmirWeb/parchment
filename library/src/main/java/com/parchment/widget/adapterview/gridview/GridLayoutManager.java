@@ -91,16 +91,23 @@ public class GridLayoutManager extends LayoutManager<Group> {
 
     @Override
     protected int getFirstAdapterPositionInCell(int cellPosition) {
-        final int numberOfItemsPerCell = mGridLayoutManagerAttributes.getNumberOfColumns();
+        final int numberOfItemsPerCell = mGridLayoutManagerAttributes.getNumberOfViewsPerCell();
         final int adapterPosition = numberOfItemsPerCell * cellPosition;
         return adapterPosition;
     }
 
     @Override
     protected int getDrawPosition(List<Group> groups, int drawCellPosition) {
-        final int numberOfItemsPerCell = mGridLayoutManagerAttributes.getNumberOfColumns();
+        final int numberOfItemsPerCell = mGridLayoutManagerAttributes.getNumberOfViewsPerCell();
         final int drawPosition = numberOfItemsPerCell * drawCellPosition;
         return drawPosition;
+    }
+
+    @Override
+    protected int getLastAdapterPositionInCell(final int cellPosition) {
+        final int numberOfItemsPerCell = mGridLayoutManagerAttributes.getNumberOfViewsPerCell();
+        final int adapterPosition = numberOfItemsPerCell * (cellPosition + 1) - 1;
+        return adapterPosition;
     }
 
     @Override
@@ -116,7 +123,7 @@ public class GridLayoutManager extends LayoutManager<Group> {
 
     @Override
     protected int getCellPosition(int adapterPosition) {
-        final int numberOfItemsPerCell = mGridLayoutManagerAttributes.getNumberOfColumns();
+        final int numberOfItemsPerCell = mGridLayoutManagerAttributes.getNumberOfViewsPerCell();
         final int cellPosition = adapterPosition / numberOfItemsPerCell;
         return cellPosition;
     }
@@ -139,7 +146,7 @@ public class GridLayoutManager extends LayoutManager<Group> {
     }
 
     public int getNumberOfViewsPerCell() {
-        return mGridLayoutManagerAttributes.getNumberOfColumns();
+        return mGridLayoutManagerAttributes.getNumberOfViewsPerCell();
     }
 
     @Override

@@ -34,7 +34,7 @@ public class GridView<ADAPTER extends Adapter> extends AdapterView<ADAPTER, Grou
     protected AdapterViewInitializer<Group> getAdapterViewInitializer(Context context, AttributeSet attributeSet) {
         final GridAttributes gridAttributes = new GridAttributes(context, attributeSet);
 
-        final int numberOfColumns = gridAttributes.getNumberOfColumns();
+        final int numberOfViewsPerCell = gridAttributes.getNumberOfViewsPerCell();
         final boolean isViewPager = gridAttributes.isViewPager();
         final boolean isVertical = gridAttributes.isVertical();
         final int cellSpacing = (int) gridAttributes.getCellSpacing();
@@ -48,7 +48,7 @@ public class GridView<ADAPTER extends Adapter> extends AdapterView<ADAPTER, Grou
         final boolean isBottom = gridAttributes.isBottom();
         final boolean isLeft = gridAttributes.isLeft();
         final boolean isRight = gridAttributes.isRight();
-        final GridLayoutManagerAttributes gridLayoutManagerAttributes = new GridLayoutManagerAttributes(numberOfColumns, isCircularScroll, snapToPosition, isViewPager, viewPagerInterval, snapPosition, cellSpacing, selectOnSnap, selectWhileScrolling, isVertical, isTop, isBottom, isLeft, isRight);
+        final GridLayoutManagerAttributes gridLayoutManagerAttributes = new GridLayoutManagerAttributes(numberOfViewsPerCell, isCircularScroll, snapToPosition, isViewPager, viewPagerInterval, snapPosition, cellSpacing, selectOnSnap, selectWhileScrolling, isVertical, isTop, isBottom, isLeft, isRight);
 
         final AdapterViewManager adapterViewManager = new AdapterViewManager();
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(this, this, adapterViewManager, gridLayoutManagerAttributes);

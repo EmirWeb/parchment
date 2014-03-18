@@ -343,8 +343,33 @@ public class GridDefinitionLayoutManager extends LayoutManager<DefinitionGroup> 
     }
 
     @Override
+    protected int getLastAdapterPositionInCell(final int cellPosition) {
+        final int gridGroupDefinitionSize = mGridGroupDefinitions.size();
+        final int gridGroupDefinitionsRepeated = cellPosition / gridGroupDefinitionSize;
+        final int gridGroupDefinitionPosition = cellPosition % gridGroupDefinitionSize;
+
+        int adapterPositionOffset = 0;
+        for (int index = 0; index <= gridGroupDefinitionPosition; index++) {
+            final GridGroupDefinition gridGroupDefinition = mGridGroupDefinitions.get(index);
+            final int numberOfItems = gridGroupDefinition.getNumberOfItems();
+            adapterPositionOffset += numberOfItems;
+        }
+
+        final int adapterPosition = gridGroupDefinitionsRepeated * mNumberOfGridItemsPerRepetition + adapterPositionOffset - 1;
+
+        return adapterPosition;
+    }
+
+    @Override
     protected int getCellCount() {
-        return mGridGroupDefinitions.size();
+        final AdapterViewManager adapterViewManager = getAdapterViewManager();
+        final int adapterCount = adapterViewManager.getAdapterCount();
+        if (adapterCount <= 0){
+            return -1;
+        }
+
+        final int endPosition = Math.max(0, adapterCount - 1);
+        return getCellPosition(endPosition) + 1;
     }
 
     @Override

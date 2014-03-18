@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Emir Hasanbegovic on 2014-03-11.
  */
-public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell>{
+public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell> {
 
     @Override
     public int getDrawLimitMoveForwardOverDrawAdjust(final LayoutManager<Cell> layoutManager, final List<Cell> cells, final int size, final Cell cell, final int cellSpacing) {
@@ -24,9 +24,16 @@ public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell>{
     }
 
     @Override
+    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
+        final int currentCellStart = layoutManager.getCellStart(cell);
+        final int displacement = -currentCellStart;
+        return displacement;
+    }
+
+    @Override
     public int getCellDistanceFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
-        final int currentCellCenter = layoutManager.getCellCenter(cell);
-        return Math.abs(currentCellCenter - cellSpacing);
+        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell, cellSpacing);
+        return Math.abs(displacement);
     }
 
     @Override

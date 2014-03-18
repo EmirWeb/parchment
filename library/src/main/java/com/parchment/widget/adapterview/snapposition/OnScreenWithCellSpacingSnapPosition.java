@@ -48,9 +48,25 @@ public class OnScreenWithCellSpacingSnapPosition<Cell> implements SnapPositionIn
         return drawLimit;
     }
 
+
+    @Override
+    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
+        final int currentCellStart = layoutManager.getCellStart(cell);
+        final int currentCellEnd = layoutManager.getCellEnd(cell);
+        if (currentCellStart - cellSpacing < 0) {
+            final int displacement =  - currentCellStart + cellSpacing;
+            return displacement;
+        } else if (currentCellEnd + cellSpacing> size) {
+            final int displacement = size - currentCellEnd - cellSpacing;
+            return displacement;
+        }
+        return 0;
+    }
+
     @Override
     public int getCellDistanceFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
-        return 0;
+        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell, cellSpacing);
+        return Math.abs(displacement);
     }
 
     @Override

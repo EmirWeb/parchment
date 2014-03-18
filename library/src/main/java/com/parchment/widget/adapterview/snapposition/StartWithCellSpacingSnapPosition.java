@@ -24,9 +24,16 @@ public class StartWithCellSpacingSnapPosition<Cell> implements SnapPositionInter
     }
 
     @Override
+    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
+        final int currentCellStart = layoutManager.getCellStart(cell);
+        final int displacement = - currentCellStart + cellSpacing;
+        return displacement;
+    }
+
+    @Override
     public int getCellDistanceFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
-        final int currentCellCenter = layoutManager.getCellCenter(cell);
-        return Math.abs(currentCellCenter);
+        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell, cellSpacing);
+        return Math.abs(displacement);
     }
 
     @Override

@@ -50,8 +50,23 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getCellDistanceFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
+    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
+        final int currentCellStart = layoutManager.getCellStart(cell);
+        final int currentCellEnd = layoutManager.getCellEnd(cell);
+        if (currentCellStart < 0) {
+            final int displacement =  - currentCellStart;
+            return displacement;
+        } else if (currentCellEnd > size) {
+            final int displacement = size - currentCellEnd;
+            return displacement;
+        }
         return 0;
+    }
+
+    @Override
+    public int getCellDistanceFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
+        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell, cellSpacing);
+        return Math.abs(displacement);
     }
 
     @Override
