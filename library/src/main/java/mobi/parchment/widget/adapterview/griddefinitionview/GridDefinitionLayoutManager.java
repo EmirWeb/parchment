@@ -373,7 +373,7 @@ public class GridDefinitionLayoutManager extends LayoutManager<DefinitionGroup> 
     }
 
     @Override
-    protected int getCellPosition(final int adapterPosition) {
+    public int getCellPosition(final int adapterPosition) {
         final int adapterPositionOffset = adapterPosition % mNumberOfGridItemsPerRepetition;
         final int numberOfRepetitions = adapterPosition / mNumberOfGridItemsPerRepetition;
 
@@ -381,7 +381,7 @@ public class GridDefinitionLayoutManager extends LayoutManager<DefinitionGroup> 
         int cellOffsetCounter = 0;
         int cellOffset = 0;
 
-        while (position < adapterPositionOffset) {
+        while (position <= adapterPositionOffset) {
             final GridGroupDefinition gridGroupDefinition = mGridGroupDefinitions.get(cellOffsetCounter);
             final int numberOfItems = gridGroupDefinition.getNumberOfItems();
             position += numberOfItems;
