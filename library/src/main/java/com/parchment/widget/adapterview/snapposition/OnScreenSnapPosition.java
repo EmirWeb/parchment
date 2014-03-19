@@ -3,6 +3,7 @@ package com.parchment.widget.adapterview.snapposition;
 import android.view.View;
 
 import com.parchment.widget.adapterview.LayoutManager;
+import com.parchment.widget.adapterview.Move;
 import com.parchment.widget.adapterview.ScrollDirectionManager;
 
 import java.util.List;
@@ -53,10 +54,10 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
         final int currentCellStart = layoutManager.getCellStart(cell);
         final int currentCellEnd = layoutManager.getCellEnd(cell);
-        if (currentCellStart < 0) {
+        if (currentCellStart < 0 && currentCellEnd < size) {
             final int displacement =  - currentCellStart;
             return displacement;
-        } else if (currentCellEnd > size) {
+        } else if (currentCellEnd > size && currentCellStart > 0) {
             final int displacement = size - currentCellEnd;
             return displacement;
         }
@@ -87,5 +88,18 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     public int getRedrawOffset(final ScrollDirectionManager scrollDirectionManager, final View incomingView, final View outgoingView, final int cellSpacing) {
         final int outgoingViewStart = scrollDirectionManager.getViewStart(outgoingView);
         return outgoingViewStart - cellSpacing;
+    }
+
+    @Override
+    public int getAbsoluteSnapPosition(final int size, final int cellSpacing, final int cellSize, final Move move) {
+        switch (move) {
+            case back:
+                return size - cellSize - cellSpacing;
+            case forward:
+                return -cellSpacing;
+            case none:
+            default:
+                return (size - cellSize) / 2;
+        }
     }
 }

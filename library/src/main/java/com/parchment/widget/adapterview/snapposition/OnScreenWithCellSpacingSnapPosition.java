@@ -3,6 +3,7 @@ package com.parchment.widget.adapterview.snapposition;
 import android.view.View;
 
 import com.parchment.widget.adapterview.LayoutManager;
+import com.parchment.widget.adapterview.Move;
 import com.parchment.widget.adapterview.ScrollDirectionManager;
 
 import java.util.List;
@@ -53,10 +54,12 @@ public class OnScreenWithCellSpacingSnapPosition<Cell> implements SnapPositionIn
     public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
         final int currentCellStart = layoutManager.getCellStart(cell);
         final int currentCellEnd = layoutManager.getCellEnd(cell);
-        if (currentCellStart - cellSpacing < 0) {
+        final int cellStartAdjust = currentCellStart - cellSpacing;
+        final int cellEndAdjust = currentCellEnd + cellSpacing;
+        if (cellStartAdjust < 0 && cellEndAdjust < size) {
             final int displacement =  - currentCellStart + cellSpacing;
             return displacement;
-        } else if (currentCellEnd + cellSpacing> size) {
+        } else if (cellEndAdjust > size && cellStartAdjust > 0) {
             final int displacement = size - currentCellEnd - cellSpacing;
             return displacement;
         }
@@ -87,5 +90,18 @@ public class OnScreenWithCellSpacingSnapPosition<Cell> implements SnapPositionIn
     public int getRedrawOffset(final ScrollDirectionManager scrollDirectionManager, final View incomingView, final View outgoingView, final int cellSpacing) {
         final int outgoingViewStart = scrollDirectionManager.getViewStart(outgoingView);
         return outgoingViewStart - cellSpacing;
+    }
+
+    @Override
+    public int getAbsoluteSnapPosition(final int size, final int cellSpacing, final int cellSize, final Move move) {
+        switch (move) {
+            case back:
+                return size - cellSize - 2 * cellSpacing;
+            case forward:
+                return 0;
+            case none:
+            default:
+                return size / 2;
+        }
     }
 }

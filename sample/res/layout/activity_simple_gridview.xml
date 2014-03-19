@@ -15,7 +15,7 @@
         <com.parchment.widget.adapterview.gridview.GridView
                 xmlns:parchment="http://schemas.android.com/apk/res/com.parchment"
                 android:id="@+id/parchment_view"
-                parchment:numberOfColumns="3"
+                parchment:numberOfViewsPerCell="3"
                 parchment:cellSpacing="20px"
                 parchment:orientation="vertical"
                 parchment:gravity="top"

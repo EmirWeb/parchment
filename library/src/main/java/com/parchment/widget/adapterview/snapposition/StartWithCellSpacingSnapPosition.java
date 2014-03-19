@@ -3,6 +3,7 @@ package com.parchment.widget.adapterview.snapposition;
 import android.view.View;
 
 import com.parchment.widget.adapterview.LayoutManager;
+import com.parchment.widget.adapterview.Move;
 import com.parchment.widget.adapterview.ScrollDirectionManager;
 
 import java.util.List;
@@ -47,4 +48,10 @@ public class StartWithCellSpacingSnapPosition<Cell> implements SnapPositionInter
         final int outgoingViewStart = scrollDirectionManager.getViewStart(outgoingView);
         return outgoingViewStart - cellSpacing;
     }
+
+    @Override
+    public int getAbsoluteSnapPosition(final int size, final int cellSpacing, final int cellSize, final Move move) {
+        return 0;
+    }
+
 }

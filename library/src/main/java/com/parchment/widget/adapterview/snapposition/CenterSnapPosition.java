@@ -3,6 +3,7 @@ package com.parchment.widget.adapterview.snapposition;
 import android.view.View;
 
 import com.parchment.widget.adapterview.LayoutManager;
+import com.parchment.widget.adapterview.Move;
 import com.parchment.widget.adapterview.ScrollDirectionManager;
 
 import java.util.List;
@@ -54,5 +55,11 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
         final int viewDifference = (outgoingViewSize - incomingViewSize) / 2;
 
         return outgoingViewStart + viewDifference - cellSpacing;
+    }
+
+    @Override
+    public int getAbsoluteSnapPosition(final int size, final int cellSpacing, final int cellSize, final Move move) {
+        final int snapPosition = (size - cellSize) / 2;
+        return snapPosition - cellSpacing;
     }
 }

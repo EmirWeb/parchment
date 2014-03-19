@@ -39,7 +39,7 @@ public class ListLayoutManagerTest {
 
     @Before
     public void setup() {
-        attributes = new LayoutManagerAttributes(true, true, true, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, false);
+        attributes = new LayoutManagerAttributes(true, true, true, 0, SnapPosition.onScreen, CELL_SPACING, true, true, false);
         listLayoutManager = new ListLayoutManager(mViewGroup, null, adapterViewManager, attributes);
         mTestAdapter = new TestAdapter(VIEW_SIZE);
         adapterViewManager.setAdapter(mTestAdapter);

@@ -93,10 +93,6 @@ public class GridDefinitionLayoutManagerOverScrollTest {
         animation.setDisplacement(displacement);
         doLayout(animation);
 
-        animation.newAnimation();
-        animation.setDisplacement(0);
-        doLayout(animation);
-
         assertThat(mViewGroup.mViews.size()).isEqualTo(1);
 
         firstView = mViewGroup.mViews.get(0);

@@ -172,7 +172,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             mAnimationDisplacement = displacement;
         } else if (continuedAnimation) mAnimationDisplacement += displacement;
 
-        int newSize = size;
+        final int newSize = size; //Todo: consider padding for newSize
         final int adjust = setOffset(displacement, newSize);
 
         if (mIsFirstLayout) setFirstLayoutOffset(newSize);
@@ -183,37 +183,98 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         layoutCells(adapterViewHandler, newSize, breadth, mCenteringOffset);
 
         //Todo: Check overscroll and adjust
+        if (needLayout(newSize, getCellSpacing(), displacement)){
+            if (mAnimationStoppedListener != null){
+                mAnimationStoppedListener.onAnimationStopped();
+            }
+            mAnimationDisplacement = 0;
+            final int overDrawAdjust = setOffset(0, newSize);
+            mOffset += overDrawAdjust;
+            layoutCells(adapterViewHandler, newSize, breadth, mCenteringOffset);
+        }
 
         checkSelectWhileScrollingAttribute(newSize);
         mSelectedPositionManager.onViewsDrawn(mPositions);
     }
 
-//    private boolean needsAdjustAfterLayout(final int size, final int cellSpacing) {
-//        final int adapterCount = mAdapterViewManager.getAdapterCount();
-//        final boolean haveCellsToDraw = adapterCount > 0;
-//        final boolean noCellsBeingDrawn = mCells.isEmpty();
-//
-//        if (haveCellsToDraw && noCellsBeingDrawn) {
-//            return true;
-//        }
-//
-//        final Cell firstPosition = getFirstCell();
-//        final Cell lastPosition = getLastCell();
-//
-//        final boolean firstAndLastNotOnScreen = firstPosition == null && lastPosition == null;
-//        if (firstAndLastNotOnScreen) {
-//            return false;
-//        }
-//
-//        if (firstPosition != null) {
-//            final int firstSnapToPixelDistance = mSnapPositionInterface.getSnapToPixelDistance(this, size, firstPosition, cellSpacing);
-//            if (firstSnapToPixelDistance > 0) {
-//
-//            }
-//        }
-//
-//
-//    }
+
+    private boolean needLayout(final int size, final int cellSpacing, final int scrollDisplacement) {
+        final int adapterCount = mAdapterViewManager.getAdapterCount();
+        final boolean haveCellsToDraw = adapterCount > 0;
+        final boolean noCellsBeingDrawn = mCells.isEmpty();
+        Move direction = Move.none;
+
+        if (scrollDisplacement < 0) {
+            direction = Move.back;
+        } else if (scrollDisplacement > 0) {
+            direction = Move.forward;
+        }
+
+        if (haveCellsToDraw && noCellsBeingDrawn) {
+
+            if (scrollDisplacement > 0) { //too far to the right
+                final Cell cell = getCell(0);
+                final int cellSize = getCellSize(cell);
+                final int absoluteSnapPosition = mSnapPositionInterface.getAbsoluteSnapPosition(size, cellSpacing, cellSize, direction);
+                mOffset = absoluteSnapPosition;
+                mStartCellPosition = 0;
+            } else if (scrollDisplacement < 0) { //too far to the left
+                final Cell cell = getCell(adapterCount - 1);
+                final int cellSize = getCellSize(cell);
+                final int absoluteSnapPosition = mSnapPositionInterface.getAbsoluteSnapPosition(size, cellSpacing, cellSize, direction);
+                mOffset = absoluteSnapPosition;
+                mStartCellPosition = getCellCount() - 1;
+            }
+            return true;
+        }
+
+        final Cell firstPosition = getFirstCell();
+        final Cell lastPosition = getLastCell();
+
+        final boolean firstAndLastNotOnScreen = firstPosition == null && lastPosition == null;
+        if (firstAndLastNotOnScreen) {
+            return false;
+        }
+
+        if (firstPosition != null) {
+            final int displacement = mSnapPositionInterface.getCellDisplacementFromSnapPosition(this, size, firstPosition, cellSpacing);
+            if (displacement < 0) {
+                mStartCellPosition = 0;
+                mOffset += displacement;
+                return true;
+            }
+        }
+
+        if (lastPosition != null) {
+            final int displacement = mSnapPositionInterface.getCellDisplacementFromSnapPosition(this, size, lastPosition, cellSpacing);
+            if (displacement > 0) {
+                mStartCellPosition = getCellCount() - 1;
+                mOffset += displacement;
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private Cell getFirstCell() {
+        if (mStartCellPosition == 0) {
+            return mCells.get(0);
+        }
+        return null;
+    }
+
+    private Cell getLastCell() {
+        final int size = mCells.size();
+        final int cellCount = getCellCount();
+        if (cellCount == -1 || mStartCellPosition + size != cellCount) {
+            return null;
+        }
+
+        return mCells.get(size - 1);
+    }
+
 
     //TODO: handle cells instead of Views
     private void setFirstLayoutOffset(final int width) {

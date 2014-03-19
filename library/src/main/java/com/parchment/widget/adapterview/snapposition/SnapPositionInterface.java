@@ -3,6 +3,7 @@ package com.parchment.widget.adapterview.snapposition;
 import android.view.View;
 
 import com.parchment.widget.adapterview.LayoutManager;
+import com.parchment.widget.adapterview.Move;
 import com.parchment.widget.adapterview.ScrollDirectionManager;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface SnapPositionInterface<Cell> {
     public int getSnapToPixelDistance(final LayoutManager<Cell> layoutManager, final ScrollDirectionManager scrollDirectionManager, final int size, final View view, final int cellSpacing);
 
     public int getRedrawOffset(final ScrollDirectionManager scrollDirectionManager, final View incomingView, final View outgoingView, final int cellSpacing);
+
+    public int getAbsoluteSnapPosition(final int size, final int cellSpacing, final int cellSize, final Move move);
 }
