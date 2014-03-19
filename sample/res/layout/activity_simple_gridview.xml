@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background">
 
-        <com.parchment.widget.adapterview.gridview.GridView
-                xmlns:parchment="http://schemas.android.com/apk/res/com.parchment"
+        <mobi.parchment.widget.adapterview.gridview.GridView
+                xmlns:parchment="http://schemas.android.com/apk/res/mobi.parchment"
                 android:id="@+id/parchment_view"
                 parchment:numberOfViewsPerCell="3"
                 parchment:cellSpacing="20px"

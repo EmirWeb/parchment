@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.parchment"
+          package="mobi.parchment"
           android:versionCode="1"
           android:name="@string/app_name"
           android:versionName="1.0">
@@ -12,26 +12,26 @@
     <application
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
-            android:name="com.parchment.SimpleApplication"
+            android:name=".SimpleApplication"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
         <activity
-                android:name="com.parchment.SimpleListViewActivity"
+                android:name=".SimpleListViewActivity"
                 android:label="@string/app_name"/>
 
         <activity
-                android:name="com.parchment.SimpleGridViewActivity"
+                android:name=".SimpleGridViewActivity"
                 android:label="@string/app_name"/>
 
         <activity
-                android:name="com.parchment.SimpleGridDefinitionViewActivity"
+                android:name=".SimpleGridDefinitionViewActivity"
                 android:label="@string/app_name"/>
 
         <activity
-            android:name="com.parchment.SimpleViewPagerActivity"
+            android:name=".SimpleViewPagerActivity"
             android:label="@string/app_name"/>
 
-        <activity android:name="com.parchment.MenuActivity">
+        <activity android:name=".MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

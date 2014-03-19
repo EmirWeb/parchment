@@ -11,8 +11,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background">
 
-        <com.parchment.widget.adapterview.griddefinitionview.GridDefinitionView
-                xmlns:parchment="http://schemas.android.com/apk/res/com.parchment"
+        <mobi.parchment.widget.adapterview.griddefinitionview.GridDefinitionView
+                xmlns:parchment="http://schemas.android.com/apk/res/mobi.parchment"
                 android:id="@+id/parchment_view"
                 parchment:cellSpacing="20px"
                 parchment:orientation="vertical"

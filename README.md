@@ -19,7 +19,7 @@ Set parchment up as an Android library project. Include it in your main android 
 Add one of the AdapterView classes (GridView, ListView, GridDefinitionView), don't forget to choose an orientation:
 
 ```xml
-<com.parchment.widget.listview.ListView
+<mobi.parchment.widget.listview.ListView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:parchment="http://schemas.android.com/apk/res/<YOUR PACKAGE NAME>"
     android:id="@+id/horizontal_list_view"
