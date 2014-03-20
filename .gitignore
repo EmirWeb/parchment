@@ -9,6 +9,7 @@ gen-external-apklibs/
 target/
 build/
 classes/
+libs/
 .idea/
 
 # IDE files

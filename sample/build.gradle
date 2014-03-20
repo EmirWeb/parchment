@@ -1,0 +1,46 @@
+buildscript {
+    repositories {
+        mavenCentral()        
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.9.0'
+    }
+}
+
+apply plugin: 'android'
+
+repositories {
+        mavenCentral()        
+        mavenLocal()
+    }
+
+dependencies {
+    compile 'mobi.parchment:parchment:1.5.2@aar'
+}
+
+android {
+
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/java']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        androidTest.setRoot('src/test/java')
+    }
+
+    defaultConfig {
+        versionCode 1
+        versionName "1.0.0"
+        minSdkVersion 16
+        targetSdkVersion 19
+    }
+
+}
