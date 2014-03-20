@@ -22,6 +22,14 @@ Include the Parchment library in your pom.xml file as follows:
     <type>apklib</type>
 </dependency>
 ```
+
+or, to your build.gradle as follows:
+
+```json
+dependencies {
+    compile 'mobi.parchment:parchment:1.5.2@aar'
+}
+```
  
 
 ## Step 2: XML
