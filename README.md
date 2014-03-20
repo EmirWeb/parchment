@@ -12,8 +12,17 @@ Android 2.2 +
 
 # Getting Started
 
-## Step 1: Set up 
-Set parchment up as an Android library project. Include it in your main android application. 
+## Step 1: Set up
+Include the Parchment library in your pom.xml file as follows:
+```xml
+<dependency>
+    <groupId>mobi.parchment</groupId>
+    <artifactId>parchment</artifactId>
+    <version>1.5.1</version>
+    <type>apklib</type>
+</dependency>
+```
+ 
 
 ## Step 2: XML
 Add one of the AdapterView classes (GridView, ListView, GridDefinitionView), don't forget to choose an orientation:
