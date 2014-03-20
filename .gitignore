@@ -13,3 +13,5 @@ classes/
 
 # IDE files
 *.iml
+.gradle/
+local.properties
