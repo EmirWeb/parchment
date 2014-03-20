@@ -72,8 +72,8 @@ public class ChildTouchGestureListener extends AdapterAnimator {
 				final View child = viewGroup.getChildAt(i);
 				final float childLeft = child.getLeft();
 				final float childTop = child.getTop();
-				final float childRight = child.getMeasuredWidth() + childLeft;
-				final float childBottom = child.getMeasuredHeight() + childTop;
+				final float childRight = child.getWidth() + childLeft;
+				final float childBottom = child.getHeight() + childTop;
 
 				final boolean xFits = touchX >= childLeft && touchX <= childRight;
 				final boolean yFits = touchY >= childTop && touchY <= childBottom;
