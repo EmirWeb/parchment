@@ -18,7 +18,7 @@ Include the Parchment library in your pom.xml file as follows:
 <dependency>
     <groupId>mobi.parchment</groupId>
     <artifactId>parchment</artifactId>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
     <type>apklib</type>
 </dependency>
 ```
