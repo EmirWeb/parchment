@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
-
-    <include layout="@layout/merge_control_buttons"/>
-
-    <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background">
-
-        <mobi.parchment.widget.adapterview.griddefinitionview.GridDefinitionView
-                xmlns:parchment="http://schemas.android.com/apk/res/mobi.parchment"
-                android:id="@+id/parchment_view"
-                parchment:cellSpacing="20px"
-                parchment:orientation="vertical"
-                parchment:snapPosition="onScreenWithCellSpacing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:cacheColorHint="@android:color/transparent"
-                android:listSelector="@android:color/transparent" />
-
-    </FrameLayout>
-
-</LinearLayout>
+<mobi.parchment.widget.adapterview.griddefinitionview.GridDefinitionView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:parchment="http://schemas.android.com/apk/res/mobi.parchment"
+        parchment:cellSpacing="@dimen/activity_simple_grid_definition_view_cell_spacing"
+        parchment:orientation="horizontal"
+        parchment:snapPosition="onScreenWithCellSpacing"
+        parchment:ratio="1.618"
+        android:background="@drawable/background"
+        android:id="@+id/parchment_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>

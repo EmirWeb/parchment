@@ -17,7 +17,7 @@ public class SimpleListViewActivity extends BaseActivity {
 		setContentView(R.layout.activity_simple_horizontal);
 		
 		mHorizontalListView = (ListView<BaseAdapter>) findViewById(R.id.parchment_view);
-		mHorizontalListView.setAdapter(getCountBaseAdapter());
+		mHorizontalListView.setAdapter(getProductsAdapter());
 	}
 
     @Override

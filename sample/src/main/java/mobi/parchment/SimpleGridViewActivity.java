@@ -17,7 +17,7 @@ public class SimpleGridViewActivity extends BaseActivity {
 		setContentView(R.layout.activity_simple_gridview);
 		
 		mGridView = (GridView<BaseAdapter>) findViewById(R.id.parchment_view);
-		mGridView.setAdapter(getCountBaseAdapter());
+		mGridView.setAdapter(getProductsAdapter());
 	}
 
     @Override

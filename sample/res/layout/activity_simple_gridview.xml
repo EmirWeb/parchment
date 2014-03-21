@@ -1,30 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <include layout="@layout/merge_control_buttons"/>
-
-    <FrameLayout
+<mobi.parchment.widget.adapterview.gridview.GridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:parchment="http://schemas.android.com/apk/res/mobi.parchment"
+        android:background="@drawable/background"
+        android:id="@+id/parchment_view"
+        parchment:numberOfViewsPerCell="3"
+        parchment:cellSpacing="20dp"
+        parchment:orientation="vertical"
+        parchment:gravity="top"
+        parchment:snapPosition="onScreenWithCellSpacing"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background">
-
-        <mobi.parchment.widget.adapterview.gridview.GridView
-                xmlns:parchment="http://schemas.android.com/apk/res/mobi.parchment"
-                android:id="@+id/parchment_view"
-                parchment:numberOfViewsPerCell="3"
-                parchment:cellSpacing="20px"
-                parchment:orientation="vertical"
-                parchment:gravity="top"
-                parchment:snapPosition="onScreenWithCellSpacing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:cacheColorHint="@android:color/transparent"
-                android:listSelector="@android:color/transparent" />
-
-    </FrameLayout>
-
-</LinearLayout>
+        android:layout_height="wrap_content"/>
