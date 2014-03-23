@@ -119,7 +119,9 @@ public class GridDefinitionLayoutManager extends LayoutManager<DefinitionGroup> 
             final GridItemDefinition gridItemDefinition = gridGroupDefinition.getGridItemDefinitions().get(gridItemDefinitionPosition);
             final int maxMeasureWidth = getMaxMeasuredWidth(gridGroupDefinition, gridItemDefinition, cellSpacing);
             final int maxMeasureHeight = getMaxMeasuredHeight(gridGroupDefinition, gridItemDefinition, cellSpacing);
-            final View view = adapterViewManager.getView(mViewGroup, position, maxMeasureWidth, maxMeasureHeight);
+            final int horizontalMeasureSpec = View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, View.MeasureSpec.EXACTLY);
+            final int verticalMeasureSpec = View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, View.MeasureSpec.EXACTLY);
+            final View view = adapterViewManager.getView(mViewGroup, position, horizontalMeasureSpec, verticalMeasureSpec);
             definitionGroup.addView(view);
         }
 
@@ -292,8 +294,10 @@ public class GridDefinitionLayoutManager extends LayoutManager<DefinitionGroup> 
             final GridItemDefinition gridItemDefinition = gridItemDefinitions.get(index);
             final int maxMeasureWidth = getMaxMeasuredWidth(gridGroupDefinition, gridItemDefinition, cellSpacing);
             final int maxMeasureHeight = getMaxMeasuredHeight(gridGroupDefinition, gridItemDefinition, cellSpacing);
+            final int horizontalMeasureSpec = View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, View.MeasureSpec.EXACTLY);
+            final int verticalMeasureSpec = View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, View.MeasureSpec.EXACTLY);
 
-            adapterViewManager.measureView(view, maxMeasureWidth, maxMeasureHeight);
+            adapterViewManager.measureView(viewGroup, view, horizontalMeasureSpec, verticalMeasureSpec);
         }
     }
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -51,12 +52,15 @@ public class ProductsAdapter extends BaseAdapter {
     public View getView(final int position, final View convertView, final ViewGroup parent) {
         final Context context = parent.getContext();
         final View view = getView(context, convertView);
-        final ImageView imageView = (ImageView) view.findViewById(R.id.list_item_product_image_view);
-
         final Product product = (Product) getItem(position);
+
+        final ImageView imageView = (ImageView) view.findViewById(R.id.list_item_product_image_view);
         imageView.setImageBitmap(null);
         Picasso.with(context).load(product.mImageThumbUrl).noFade().into(imageView);
-        return imageView;
+
+        final TextView textView= (TextView) view.findViewById(R.id.list_item_product_text_view);
+        textView.setText(product.mName);
+        return view;
     }
 
     public void setProducts(final List<Products> productList) {

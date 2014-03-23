@@ -38,14 +38,13 @@ public class AdapterViewManager {
         views.add(removedView);
     }
 
-    public View getView(final ViewGroup viewGroup, final int position, final int maxWidth, final int maxHeight) {
+    public View getView(final ViewGroup viewGroup, final int position, final int horizontalMeasureSpec, final int verticalMeasureSpec) {
         final int type = mAdapter.getItemViewType(position);
         final long id = mAdapter.getItemId(position);
 
-        final View view = getView(viewGroup, position, type, id);
+        final View view = getView(viewGroup, position, type, id, horizontalMeasureSpec, verticalMeasureSpec);
         registerViewIsOnScreen(id, type, view);
 
-        measureView(view, maxWidth, maxHeight);
         return view;
     }
 
@@ -56,7 +55,7 @@ public class AdapterViewManager {
         mViewTypeMap.put(view, type);
     }
 
-    private View getView(final ViewGroup viewGroup, final int position, final int type, final long id) {
+    private View getView(final ViewGroup viewGroup, final int position, final int type, final long id, final int horizontalMeasureSpec, final int verticalMeasureSpec) {
         if (mAdapter.hasStableIds() && mIdViewMap.containsKey(id)) {
             final View view = mIdViewMap.remove(id);
             final Queue<View> views = mViews.get(type);
@@ -68,6 +67,10 @@ public class AdapterViewManager {
         final Queue<View> views = mViews.get(type);
         final View convertView = views.poll();
         final View view = mAdapter.getView(position, convertView, viewGroup);
+        final boolean isRecycled =  view == convertView;
+        if (!isRecycled || view.isLayoutRequested()){
+            measureView(viewGroup, view, horizontalMeasureSpec, verticalMeasureSpec);
+        }
 
         if (mAdapter.hasStableIds()) {
             remove(mIdViewMap, convertView);
@@ -102,15 +105,19 @@ public class AdapterViewManager {
         return null;
     }
 
-    public LayoutParams measureView(final View view, final int maxWidth, final int maxHeight) {
-        final int horizontalMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.AT_MOST);
-        final int verticalMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST);
+    public LayoutParams measureView(final ViewGroup viewGroup, final View view, final int horizontalMeasureSpec, final int verticalMeasureSpec) {
         LayoutParams layoutParams = view.getLayoutParams();
-        if (layoutParams == null)
+
+        if (layoutParams == null) {
             layoutParams = new LayoutParams(view.getMeasuredWidth(), view.getMeasuredHeight());
+            view.setLayoutParams(layoutParams);
+        }
+
+//        final int horizontalChildMeasureSpec = viewGroup.getChildMeasureSpec(horizontalMeasureSpec, 0, layoutParams.width);
+//        final int verticalChildMeasureSpec = viewGroup.getChildMeasureSpec(verticalMeasureSpec, 0, layoutParams.height);
 
         view.measure(horizontalMeasureSpec, verticalMeasureSpec);
-        view.setLayoutParams(layoutParams);
+
         return layoutParams;
     }
 

@@ -18,7 +18,7 @@ repositories {
 dependencies {
     compile 'com.squareup.picasso:picasso:2.2.0'
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'mobi.parchment:parchment:1.5.2@aar'
+    compile 'mobi.parchment:parchment:1.5.3@aar'
 }
 
 android {

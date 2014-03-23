@@ -29,7 +29,7 @@ public abstract class BaseActivity extends Activity {
     public abstract AdapterView<?> getAdapterView();
 
     private static final Gson GSON = new Gson();
-    private static final String PRODUCTS_URL = "http://lcboapi.com/products";
+    private static final String PRODUCTS_URL = "http://lcboapi.com/products?page=%d";
 
     public ProductsAdapter getProductsAdapter() {
         return mProductsAdapter;
@@ -47,11 +47,6 @@ public abstract class BaseActivity extends Activity {
         private static final int SIZE = 10;
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected List<Products> doInBackground(String... params) {
 
             final List<Products> products = new ArrayList<Products>(SIZE);
@@ -65,7 +60,8 @@ public abstract class BaseActivity extends Activity {
 
         private Products getProducts(final int page) {
             final HttpClient httpclient = new DefaultHttpClient();
-            final HttpGet httpget = new HttpGet(PRODUCTS_URL + "?page=" + page);
+            final String url = String.format(PRODUCTS_URL, page);
+            final HttpGet httpget = new HttpGet(url);
 
             InputStream inputStream = null;
             InputStreamReader inputStreamReader = null;
@@ -102,7 +98,6 @@ public abstract class BaseActivity extends Activity {
             }
 
             mProductsAdapter.setProducts(products);
-
         }
     }
 

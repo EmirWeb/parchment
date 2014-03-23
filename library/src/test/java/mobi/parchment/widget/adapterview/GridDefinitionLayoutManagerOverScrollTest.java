@@ -120,8 +120,8 @@ public class GridDefinitionLayoutManagerOverScrollTest {
     }
 
     private void doFirstLayout(int viewGroupWidth, int viewGroupHeight) {
-        final int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(VIEW_GROUP_WIDTH, View.MeasureSpec.EXACTLY);
-        final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(VIEW_GROUP_HEIGHT, View.MeasureSpec.EXACTLY);
+        final int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(viewGroupWidth, View.MeasureSpec.EXACTLY);
+        final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(viewGroupHeight, View.MeasureSpec.EXACTLY);
         mViewGroup.measure(widthMeasureSpec, heightMeasureSpec);
         mViewGroup.layout(0, 0, viewGroupWidth, viewGroupHeight);
     }

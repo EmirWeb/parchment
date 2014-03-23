@@ -41,7 +41,7 @@ public class GridLayoutManagerCircularScrollTest {
 
     @Before
     public void setup() {
-        attributes = new GridLayoutManagerAttributes(NUMBER_OF_COLUMNS, true, true, false, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, true, true, false, false, false);
+        attributes = new GridLayoutManagerAttributes(NUMBER_OF_COLUMNS, true, true, false, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, true, true, false, false, false, false);
         listLayoutManager = new GridLayoutManager(mViewGroup, null, adapterViewManager, attributes);
         mTestAdapter = new TestAdapter(VIEW_SIZE);
         adapterViewManager.setAdapter(mTestAdapter);

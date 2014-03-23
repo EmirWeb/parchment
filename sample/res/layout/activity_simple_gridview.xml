@@ -8,6 +8,7 @@
         parchment:cellSpacing="20dp"
         parchment:orientation="vertical"
         parchment:gravity="top"
+        parchment:isPerfectGrid="true"
         parchment:snapPosition="onScreenWithCellSpacing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

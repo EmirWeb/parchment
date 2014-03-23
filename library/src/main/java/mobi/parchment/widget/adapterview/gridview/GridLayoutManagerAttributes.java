@@ -10,17 +10,18 @@ import mobi.parchment.widget.adapterview.SnapPosition;
 public class GridLayoutManagerAttributes extends LayoutManagerAttributes {
     private final int mNumberOfViewsPerCell;
     private final Orientation mOrientation;
-    private boolean mIsLeft;
-    private boolean mIsRight;
-    private boolean mIsTop;
-    private boolean mIsBottom;
+    private final boolean mIsLeft;
+    private final boolean mIsRight;
+    private final boolean mIsTop;
+    private final boolean mIsBottom;
+    private final boolean mIsPerfectGrtid;
 
     public GridLayoutManagerAttributes(final int numberOfViewsPerCell, final boolean isCircularScroll, final boolean snapToPosition,
                                        final boolean isViewPager, final int viewPagerInterval, final SnapPosition snapPosition,
                                        final int cellSpacing, final boolean selectOnSnap,
                                        final boolean selectWhileScrolling, final boolean isVertical,
                                        final boolean isTop, final boolean isBottom, final boolean isLeft,
-                                       final boolean isRight) {
+                                       final boolean isRight, final boolean isPerfectGrid) {
         super(isCircularScroll, snapToPosition, isViewPager, viewPagerInterval, snapPosition, cellSpacing, selectOnSnap, selectWhileScrolling, isVertical);
         mNumberOfViewsPerCell = numberOfViewsPerCell;
         if (isVertical){
@@ -32,6 +33,7 @@ public class GridLayoutManagerAttributes extends LayoutManagerAttributes {
         mIsBottom = isBottom;
         mIsLeft = isLeft;
         mIsRight = isRight;
+        mIsPerfectGrtid = isPerfectGrid;
     }
 
     public int getNumberOfViewsPerCell(){
@@ -56,5 +58,9 @@ public class GridLayoutManagerAttributes extends LayoutManagerAttributes {
 
     public boolean isRight() {
         return mIsRight;
+    }
+
+    public boolean issPerfectGrtid() {
+        return mIsPerfectGrtid;
     }
 }

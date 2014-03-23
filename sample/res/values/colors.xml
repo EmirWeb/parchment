@@ -5,4 +5,6 @@
     <color name="grey">#C8C8C8</color>
 
     <color name="list_item_product_background">#2E2E2E</color>
+    <color name="list_item_product_text_view_background">#FFF</color>
+    <color name="list_item_product_text_view_font_color">#000</color>
 </resources>

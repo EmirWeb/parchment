@@ -71,11 +71,11 @@ public class GridLayoutManager extends LayoutManager<Group> {
 
     @Override
     public void measure(final Group group, final ViewGroup viewGroup) {
-        final int maxMeasureWidth = getMaxMeasureWidth();
-        final int maxMeasureHeight = getMaxMeasureHeight();
+        final int verticalMeasureSpec = getVerticalMeasureSpec();
+        final int horizontalMeasureSpec = getHorizontalMeasureSpec();
         final List<View> views = group.getViews();
         for (final View view : views) {
-            mAdapterViewManager.measureView(view, maxMeasureWidth, maxMeasureHeight);
+            mAdapterViewManager.measureView(viewGroup, view, horizontalMeasureSpec, verticalMeasureSpec);
         }
     }
 
@@ -149,16 +149,41 @@ public class GridLayoutManager extends LayoutManager<Group> {
         return mGridLayoutManagerAttributes.getNumberOfViewsPerCell();
     }
 
+    private int getHorizontalMeasureSpec(){
+        if (isVerticalScroll()){
+            final int maxMeasureWidth = getMaxMeasureWidth();
+            final int measureSpecMode = getMeasureSpecMode();
+            return View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, measureSpecMode);
+        }
+        return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+    }
+
+    private int getMeasureSpecMode() {
+        if (mGridLayoutManagerAttributes.issPerfectGrtid()){
+            return View.MeasureSpec.EXACTLY;
+        }
+        return View.MeasureSpec.AT_MOST;
+    }
+
+    private int getVerticalMeasureSpec(){
+        if (isVerticalScroll()){
+            return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        }
+        final int maxMeasureHeight = getMaxMeasureHeight();
+        final int measureSpecMode = getMeasureSpecMode();
+        return View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, measureSpecMode);
+    }
+
     @Override
     public Group getCell(final int adapterPosition) {
-        final int maxMeasureWidth = getMaxMeasureWidth();
-        final int maxMeasureHeight = getMaxMeasureHeight();
+        final int verticalMeasureSpec = getVerticalMeasureSpec();
+        final int horizontalMeasureSpec = getHorizontalMeasureSpec();
         final int adapterCount = getAdapterCount();
         final int numberOfCells = getNumberOfViewsPerCell();
         final Group group = new Group(isVerticalScroll());
         final int positionLimit = Math.min(adapterPosition + numberOfCells, adapterCount);
         for (int index = adapterPosition; index < positionLimit; index++) {
-            final View view = mAdapterViewManager.getView(mViewGroup, index, maxMeasureWidth, maxMeasureHeight);
+            final View view = mAdapterViewManager.getView(mViewGroup, index, horizontalMeasureSpec, verticalMeasureSpec);
             group.addView(view);
         }
 
