@@ -21,7 +21,7 @@ public class ListLayoutManager extends LayoutManager<View> {
     }
 
     @Override
-    public void measure(final View view, final ViewGroup viewGroup) {
+    public void measure(final View view, final ViewGroup viewGroup ) {
         final int horizontalMeasureSpec = getHorizontalMeasureSpec();
         final int verticalMeasureSpec = getVerticalMeasureSpec();
         mAdapterViewManager.measureView(viewGroup, view, horizontalMeasureSpec, verticalMeasureSpec);
@@ -163,7 +163,10 @@ public class ListLayoutManager extends LayoutManager<View> {
         final int viewBreadth = getViewBreadth(view);
         final int viewBreadthStart = (breadth - viewBreadth) / 2;
         final int viewBreadthEnd = viewBreadthStart + viewBreadth;
-        if (isVerticalScroll()) view.layout(viewBreadthStart, cellStart, viewBreadthEnd, cellEnd);
-        else view.layout(cellStart, viewBreadthStart, cellEnd, viewBreadthEnd);
+        if (isVerticalScroll()) {
+            view.layout(viewBreadthStart, cellStart, viewBreadthEnd, cellEnd);
+        } else {
+            view.layout(cellStart, viewBreadthStart, cellEnd, viewBreadthEnd);
+        }
     }
 }

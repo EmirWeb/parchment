@@ -39,10 +39,10 @@ public class ProductsAdapter extends BaseAdapter {
         return product.mId;
     }
 
-    private View getView(final Context context, final View convertView) {
+    private View getView(final Context context, final View convertView, final ViewGroup viewGroup) {
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
-            final View view = layoutInflater.inflate(R.layout.list_item_product, null);
+            final View view = layoutInflater.inflate(R.layout.list_item_product, viewGroup, false);
             return view;
         }
         return convertView;
@@ -51,12 +51,12 @@ public class ProductsAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
         final Context context = parent.getContext();
-        final View view = getView(context, convertView);
+        final View view = getView(context, convertView, parent);
         final Product product = (Product) getItem(position);
 
         final ImageView imageView = (ImageView) view.findViewById(R.id.list_item_product_image_view);
         imageView.setImageBitmap(null);
-        Picasso.with(context).load(product.mImageThumbUrl).noFade().into(imageView);
+        Picasso.with(context).load(product.mImageThumbUrl).into(imageView);
 
         final TextView textView= (TextView) view.findViewById(R.id.list_item_product_text_view);
         textView.setText(product.mName);
@@ -70,7 +70,7 @@ public class ProductsAdapter extends BaseAdapter {
                 final List<Product> result = products.mResult;
                 if (result != null) {
                     for (final Product product : new ArrayList<Product>(result)) {
-                        if (product.mImageUrl == null) {
+                        if (product.mImageThumbUrl == null) {
                             result.remove(product);
                         }
                     }

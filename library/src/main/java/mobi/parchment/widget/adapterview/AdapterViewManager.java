@@ -109,12 +109,11 @@ public class AdapterViewManager {
         LayoutParams layoutParams = view.getLayoutParams();
 
         if (layoutParams == null) {
-            layoutParams = new LayoutParams(view.getMeasuredWidth(), view.getMeasuredHeight());
+            final int defaultHorizontalMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+            final int defaultVerticalMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+            layoutParams = new LayoutParams(horizontalMeasureSpec, verticalMeasureSpec);
             view.setLayoutParams(layoutParams);
         }
-
-//        final int horizontalChildMeasureSpec = viewGroup.getChildMeasureSpec(horizontalMeasureSpec, 0, layoutParams.width);
-//        final int verticalChildMeasureSpec = viewGroup.getChildMeasureSpec(verticalMeasureSpec, 0, layoutParams.height);
 
         view.measure(horizontalMeasureSpec, verticalMeasureSpec);
 
