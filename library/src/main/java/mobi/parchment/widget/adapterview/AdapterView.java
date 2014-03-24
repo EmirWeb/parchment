@@ -139,6 +139,8 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         mOnItemLongClickListener = onItemLongClickListener;
     }
 
+
+
     @Override
     protected void onLayout(final boolean changed, final int left, final int top, final int right, final int bottom) {
         final ChildTouchGestureListener childTouchListener = mAdapterViewInitializer.getChildTouchListener();
@@ -152,22 +154,28 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         final int viewRight = right - left;
         final int viewBottom = bottom - top;
 
-        if (layoutManager != null)
+        if (layoutManager != null) {
             layoutManager.layout(this, animation, changed, viewLeft, viewTop, viewRight, viewBottom);
-
-        final AdapterAnimator.State state = childTouchListener.getState();
-        switch (state) {
-            case animatingTo:
-            case flinging:
-            case jumpingTo:
-            case snapingTo:
-                post(mRequestLayout);
-                break;
-            case scrolling:
-            case notMoving:
-            default:
-                break;
         }
+
+        if (isLayoutRequested()){
+            post(mRequestLayout);
+        } else {
+            final AdapterAnimator.State state = childTouchListener.getState();
+            switch (state) {
+                case animatingTo:
+                case flinging:
+                case jumpingTo:
+                case snapingTo:
+                    post(mRequestLayout);
+                    break;
+                case scrolling:
+                case notMoving:
+                default:
+                    break;
+            }
+        }
+
     }
 
     @Override
