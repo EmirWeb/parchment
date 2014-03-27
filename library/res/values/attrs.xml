@@ -13,10 +13,10 @@
         <attr name="isViewPager" format="boolean"/>
         <attr name="snapPosition" format="enum">
             <enum name="center" value="0"/>
-            <enum name="floatLeft" value="1"/>
-            <enum name="floatRight" value="2"/>
-            <enum name="floatLeftWithCellSpacing" value="3"/>
-            <enum name="floatRightWithCellSpacing" value="4"/>
+            <enum name="floatStart" value="1"/>
+            <enum name="floatEnd" value="2"/>
+            <enum name="floatStartWithCellSpacing" value="3"/>
+            <enum name="floatEndWithCellSpacing" value="4"/>
             <enum name="onScreen" value="5"/>
             <enum name="onScreenWithCellSpacing" value="6"/>
         </attr>

@@ -46,7 +46,7 @@ Add one of the AdapterView classes (GridView, ListView, GridDefinitionView), don
     parchment:orientation="< horizontal | vertical >"
     parchment:cellSpacing="10dp"
     parchment:isCircularScroll="< true | false >"
-    parchment:snapPosition="< center | floatLeft | floatLeftWithCellSpacing | floatRight | floatRightWithCellSpacing | onScreen | onScreenWithCellSpacing>"
+    parchment:snapPosition="< center | floatStart | floatStartWithCellSpacing | floatEnd | floatEndWithCellSpacing | onScreen | onScreenWithCellSpacing>"
     parchment:snapToPosition="< true | false >" />
 ```
 
