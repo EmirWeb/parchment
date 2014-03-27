@@ -5,7 +5,7 @@ Parchment
 
 ## Horizontal/Vertical List View, GridView, ViewPager, and CustomGrid GridView
 
-The Parchment Library attempts to add the functionality that developers want to their AdapterViews, by providing horizontal and vertical scrolling to all of the AdapterViews. Gives developers more control of how their views layout, choose from a simple horizontal List View, a GridView that wraps heights or a GridDefinitionView that lets a user specify the grid pattern.
+The Parchment library attempts to add the functionality that developers want to their AdapterViews, by providing horizontal and vertical scrolling to all of its AdapterViews. Parchment gives developers more control of layout by choosing from a simple horizontal List View, a GridView that wraps heights or a GridDefinitionView that lets a user specify the grid pattern.
 
 ![alt tag](https://i.imgur.com/MHeZuFg.png)
 
@@ -63,7 +63,7 @@ Set Adapters and go:
 
 ## Story Tracking Tool:
 
-https://www.pivotaltracker.com/s/projects/1000984#
+[PivotalTracker][1]
 
 
 ### License:
@@ -81,3 +81,5 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+[1]: https://www.pivotaltracker.com/s/projects/1000984#
