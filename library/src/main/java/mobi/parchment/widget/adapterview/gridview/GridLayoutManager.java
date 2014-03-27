@@ -159,7 +159,7 @@ public class GridLayoutManager extends LayoutManager<Group> {
     }
 
     private int getMeasureSpecMode() {
-        if (mGridLayoutManagerAttributes.issPerfectGrtid()){
+        if (mGridLayoutManagerAttributes.isPerfectGrid()){
             return View.MeasureSpec.EXACTLY;
         }
         return View.MeasureSpec.AT_MOST;

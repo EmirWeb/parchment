@@ -139,8 +139,6 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         mOnItemLongClickListener = onItemLongClickListener;
     }
 
-
-
     @Override
     protected void onLayout(final boolean changed, final int left, final int top, final int right, final int bottom) {
         final ChildTouchGestureListener childTouchListener = mAdapterViewInitializer.getChildTouchListener();
@@ -175,7 +173,6 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
                     break;
             }
         }
-
     }
 
     @Override

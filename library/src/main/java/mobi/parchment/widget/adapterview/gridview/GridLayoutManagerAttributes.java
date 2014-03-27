@@ -60,7 +60,7 @@ public class GridLayoutManagerAttributes extends LayoutManagerAttributes {
         return mIsRight;
     }
 
-    public boolean issPerfectGrtid() {
+    public boolean isPerfectGrid() {
         return mIsPerfectGrtid;
     }
 }
