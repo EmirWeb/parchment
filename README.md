@@ -7,6 +7,8 @@ Parchment
 
 The Parchment Library attempts to add the functionality that developers want to their AdapterViews, by providing horizontal and vertical scrolling to all of the AdapterViews. Gives developers more control of how their views layout, choose from a simple horizontal List View, a GridView that wraps heights or a GridDefinitionView that lets a user specify the grid pattern.
 
+![alt tag](https://i.imgur.com/MHeZuFg.png)
+
 ## Requires
 Android 2.2 +
 
