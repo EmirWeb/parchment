@@ -17,7 +17,7 @@ public class SimpleViewPagerActivity extends BaseActivity{
 		setContentView(R.layout.activity_simple_view_pager);
 
 		mViewPager = (ListView<BaseAdapter>) findViewById(R.id.parchment_view);
-		mViewPager.setAdapter(getCountBaseAdapter());
+		mViewPager.setAdapter(getProductsAdapter());
 	}
 
     @Override

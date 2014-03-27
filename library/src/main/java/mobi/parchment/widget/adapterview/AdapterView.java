@@ -119,21 +119,7 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
 
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-
-        final int width = MeasureSpec.getSize(widthMeasureSpec);
-        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        final int height = MeasureSpec.getSize(heightMeasureSpec);
-        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-
-        int calculatedWidth;
-        if (widthMode == MeasureSpec.UNSPECIFIED) calculatedWidth = 800;
-        else calculatedWidth = width;
-
-        int calculatedHeight;
-        if (heightMode == MeasureSpec.UNSPECIFIED) calculatedHeight = 800;
-        else calculatedHeight = height;
-
-        setMeasuredDimension(calculatedWidth, calculatedHeight);
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
 
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
         if (layoutManager != null) {
@@ -166,21 +152,26 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         final int viewRight = right - left;
         final int viewBottom = bottom - top;
 
-        if (layoutManager != null)
+        if (layoutManager != null) {
             layoutManager.layout(this, animation, changed, viewLeft, viewTop, viewRight, viewBottom);
+        }
 
-        final AdapterAnimator.State state = childTouchListener.getState();
-        switch (state) {
-            case animatingTo:
-            case flinging:
-            case jumpingTo:
-            case snapingTo:
-                post(mRequestLayout);
-                break;
-            case scrolling:
-            case notMoving:
-            default:
-                break;
+        if (isLayoutRequested()){
+            post(mRequestLayout);
+        } else {
+            final AdapterAnimator.State state = childTouchListener.getState();
+            switch (state) {
+                case animatingTo:
+                case flinging:
+                case jumpingTo:
+                case snapingTo:
+                    post(mRequestLayout);
+                    break;
+                case scrolling:
+                case notMoving:
+                default:
+                    break;
+            }
         }
     }
 
@@ -236,7 +227,9 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
 
     @Override
     public void onSelected(final View view) {
-        if (mOnItemSelectedListener == null) return;
+        if (mOnItemSelectedListener == null) {
+            return;
+        }
 
         if (view != null) {
             final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
@@ -247,7 +240,9 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
 
             final long id = mAdapter.getItemId(position);
             mOnItemSelectedListener.onItemSelected(this, view, position, id);
-        } else mOnItemSelectedListener.onNothingSelected(this);
+        } else {
+            mOnItemSelectedListener.onNothingSelected(this);
+        }
 
     }
 

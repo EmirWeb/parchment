@@ -24,9 +24,19 @@
         <dependency>
             <groupId>mobi.parchment</groupId>
             <artifactId>parchment</artifactId>
-            <version>1.5.1</version>
+            <version>1.5.4</version>
             <optional>true</optional>
             <type>apklib</type>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.picasso</groupId>
+            <artifactId>picasso</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
         </dependency>
     </dependencies>
 

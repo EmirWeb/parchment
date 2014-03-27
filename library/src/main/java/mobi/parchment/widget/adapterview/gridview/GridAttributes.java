@@ -18,9 +18,11 @@ public class GridAttributes extends Attributes {
     private boolean mIsRight;
     private boolean mIsTop;
     private boolean mIsBottom;
+    private boolean mIsPerfectGrid;
 
     private static class DefaultValues {
         private static final int NUMBER_OF_VIEWS_PER_CELL = 1;
+        private static final boolean IS_PERFECT_GRID = true;
         private static final int GRAVITY = Gravity.TOP;
     }
 
@@ -35,12 +37,15 @@ public class GridAttributes extends Attributes {
 
                 final int gravity = typedArray.getInt(R.styleable.GridView_gravity, DefaultValues.GRAVITY);
                 setGravityValues(gravity);
+
+                mIsPerfectGrid = typedArray.getBoolean(R.styleable.GridDefinitionView_isPerfectGrid, DefaultValues.IS_PERFECT_GRID);
             } finally {
                 typedArray.recycle();
             }
         } else {
             setGravityValues(DefaultValues.GRAVITY);
             mNumberOfViewsPerCell = DefaultValues.NUMBER_OF_VIEWS_PER_CELL;
+            mIsPerfectGrid = DefaultValues.IS_PERFECT_GRID;
         }
     }
 
@@ -69,6 +74,10 @@ public class GridAttributes extends Attributes {
 
     public boolean isBottom() {
         return mIsBottom;
+    }
+
+    public boolean isPerfectGrid() {
+        return mIsPerfectGrid;
     }
 
 }

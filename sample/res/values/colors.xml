@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="selected">#0000FF</color>
-    <color name="pressed">#00FF00</color>
-    <color name="focused">#00FFFF</color>
-    <color name="idle">#FF0000</color>
+    <color name="brown_green">#938F5D</color>
+    <color name="green">#384D35</color>
+    <color name="grey">#C8C8C8</color>
+
+    <color name="list_item_product_background">#2E2E2E</color>
+    <color name="list_item_product_text_view_background">#FFF</color>
+    <color name="list_item_product_text_view_font_color">#000</color>
 </resources>

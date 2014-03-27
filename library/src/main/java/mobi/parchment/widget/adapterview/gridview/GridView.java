@@ -48,7 +48,8 @@ public class GridView<ADAPTER extends Adapter> extends AdapterView<ADAPTER, Grou
         final boolean isBottom = gridAttributes.isBottom();
         final boolean isLeft = gridAttributes.isLeft();
         final boolean isRight = gridAttributes.isRight();
-        final GridLayoutManagerAttributes gridLayoutManagerAttributes = new GridLayoutManagerAttributes(numberOfViewsPerCell, isCircularScroll, snapToPosition, isViewPager, viewPagerInterval, snapPosition, cellSpacing, selectOnSnap, selectWhileScrolling, isVertical, isTop, isBottom, isLeft, isRight);
+        final boolean isPerfectGrid = gridAttributes.isPerfectGrid();
+        final GridLayoutManagerAttributes gridLayoutManagerAttributes = new GridLayoutManagerAttributes(numberOfViewsPerCell, isCircularScroll, snapToPosition, isViewPager, viewPagerInterval, snapPosition, cellSpacing, selectOnSnap, selectWhileScrolling, isVertical, isTop, isBottom, isLeft, isRight, isPerfectGrid);
 
         final AdapterViewManager adapterViewManager = new AdapterViewManager();
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(this, this, adapterViewManager, gridLayoutManagerAttributes);

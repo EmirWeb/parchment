@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="list_item_product_text_view_padding_vertical">10dp</dimen>
+    <dimen name="list_item_product_text_view_padding_horizontal">5dp</dimen>
+</resources>

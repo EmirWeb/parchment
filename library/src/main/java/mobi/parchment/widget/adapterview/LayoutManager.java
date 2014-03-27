@@ -527,9 +527,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
                     mPositions.remove(view);
                 }
             } else {
-//                final View firstViewInCell = getFirstView(cell);
                 final int firstViewInCell = getFirstAdapterPositionInCell(endCellPosition);
-//                final int position = mPositions.get(firstViewInCell);
                 layoutCell(cell, cellStart, cellEnd, firstViewInCell, breadth, cellSpacing);
                 endCellPosition = incrementCellPosition(endCellPosition);
             }

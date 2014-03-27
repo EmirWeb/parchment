@@ -21,10 +21,10 @@ public class ListLayoutManager extends LayoutManager<View> {
     }
 
     @Override
-    public void measure(final View view, final ViewGroup viewGroup) {
-        final int maxWidth = getMaxMeasureWidth();
-        final int maxHeight = getMaxMeasureHeight();
-        mAdapterViewManager.measureView(view, maxWidth, maxHeight);
+    public void measure(final View view, final ViewGroup viewGroup ) {
+        final int horizontalMeasureSpec = getHorizontalMeasureSpec();
+        final int verticalMeasureSpec = getVerticalMeasureSpec();
+        mAdapterViewManager.measureView(viewGroup, view, horizontalMeasureSpec, verticalMeasureSpec);
     }
 
     @Override
@@ -126,13 +126,31 @@ public class ListLayoutManager extends LayoutManager<View> {
         return views;
     }
 
+    private int getHorizontalMeasureSpec(){
+        final int cellSpacing = getCellSpacing();
+        if (isVerticalScroll()){
+            final int maxMeasureWidth =  mViewGroup.getMeasuredWidth() - cellSpacing * 2;
+            return View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, View.MeasureSpec.AT_MOST);
+        }
+        return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+    }
+
+    private int getVerticalMeasureSpec(){
+        final int cellSpacing = getCellSpacing();
+        if (isVerticalScroll()){
+            return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        }
+        final int maxMeasureHeight = mViewGroup.getMeasuredHeight() - cellSpacing * 2;
+        return View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, View.MeasureSpec.AT_MOST);
+    }
+
+
     @Override
     public View getCell(int adapterPosition) {
         final AdapterViewManager adapterViewManager = getAdapterViewManager();
-        final int cellSpacing = getCellSpacing() * 2;
-        final int maxWidth = mViewGroup.getMeasuredWidth() - cellSpacing;
-        final int maxHeight = mViewGroup.getMeasuredHeight() - cellSpacing;
-        final View view = adapterViewManager.getView(mViewGroup, adapterPosition, maxWidth, maxHeight);
+        final int horizontalMeasureSpec = getHorizontalMeasureSpec();
+        final int verticalMeasureSpec = getVerticalMeasureSpec();
+        final View view = adapterViewManager.getView(mViewGroup, adapterPosition, horizontalMeasureSpec, verticalMeasureSpec);
         return view;
     }
 
@@ -145,7 +163,10 @@ public class ListLayoutManager extends LayoutManager<View> {
         final int viewBreadth = getViewBreadth(view);
         final int viewBreadthStart = (breadth - viewBreadth) / 2;
         final int viewBreadthEnd = viewBreadthStart + viewBreadth;
-        if (isVerticalScroll()) view.layout(viewBreadthStart, cellStart, viewBreadthEnd, cellEnd);
-        else view.layout(cellStart, viewBreadthStart, cellEnd, viewBreadthEnd);
+        if (isVerticalScroll()) {
+            view.layout(viewBreadthStart, cellStart, viewBreadthEnd, cellEnd);
+        } else {
+            view.layout(cellStart, viewBreadthStart, cellEnd, viewBreadthEnd);
+        }
     }
 }
