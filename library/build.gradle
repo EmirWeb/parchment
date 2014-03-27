@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'android-library'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 18
     buildToolsVersion "19.0.0"
 
     sourceSets {
@@ -30,7 +30,7 @@ android {
         versionCode 1
         versionName "1.0.0"
         minSdkVersion 16
-        targetSdkVersion 19
+        targetSdkVersion 18
     }
 
 }
