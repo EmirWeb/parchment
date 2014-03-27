@@ -44,7 +44,7 @@ public abstract class BaseActivity extends Activity {
 
     private class ProductsAsyncTask extends AsyncTask<String, Integer, List<Products>> {
 
-        private static final int SIZE = 10;
+        private static final int SIZE = 2;
 
         @Override
         protected List<Products> doInBackground(String... params) {

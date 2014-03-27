@@ -7,6 +7,7 @@ import mobi.parchment.widget.adapterview.AdapterViewManager;
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.LayoutManagerAttributes;
 import mobi.parchment.widget.adapterview.OnSelectedListener;
+import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,8 @@ public class ListLayoutManager extends LayoutManager<View> {
     private int getMaxMeasureHeight() {
         final int cellSpacing = getCellSpacing();
         final ViewGroup viewGroup = getViewGroup();
-        final int maxHeight = viewGroup.getMeasuredHeight() - cellSpacing * 2;
+        final int viewGroupMeasuredHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(viewGroup);
+        final int maxHeight = viewGroupMeasuredHeight - cellSpacing * 2;
         return maxHeight;
     }
 
@@ -79,7 +81,8 @@ public class ListLayoutManager extends LayoutManager<View> {
     private int getMaxMeasureWidth() {
         final int cellSpacing = getCellSpacing();
         final ViewGroup viewGroup = getViewGroup();
-        final int maxWidth = viewGroup.getMeasuredWidth() - cellSpacing * 2;
+        final int viewGroupMeasuredWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
+        final int maxWidth = viewGroupMeasuredWidth - cellSpacing * 2;
         return maxWidth;
     }
 
@@ -129,7 +132,8 @@ public class ListLayoutManager extends LayoutManager<View> {
     private int getHorizontalMeasureSpec(){
         final int cellSpacing = getCellSpacing();
         if (isVerticalScroll()){
-            final int maxMeasureWidth =  mViewGroup.getMeasuredWidth() - cellSpacing * 2;
+            final int viewGroupMeasuredWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(mViewGroup);
+            final int maxMeasureWidth =  viewGroupMeasuredWidth - cellSpacing * 2;
             return View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, View.MeasureSpec.AT_MOST);
         }
         return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -140,7 +144,8 @@ public class ListLayoutManager extends LayoutManager<View> {
         if (isVerticalScroll()){
             return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         }
-        final int maxMeasureHeight = mViewGroup.getMeasuredHeight() - cellSpacing * 2;
+        final int viewGroupMeasuredHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(mViewGroup);
+        final int maxMeasureHeight = viewGroupMeasuredHeight - cellSpacing * 2;
         return View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, View.MeasureSpec.AT_MOST);
     }
 
