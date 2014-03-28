@@ -1,5 +1,0 @@
-<com.example.measurementresearch.measureresearch.MeasureFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#111"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-
