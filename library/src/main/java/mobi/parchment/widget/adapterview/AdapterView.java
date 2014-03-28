@@ -141,6 +141,7 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
 
     @Override
     protected void onLayout(final boolean changed, final int left, final int top, final int right, final int bottom) {
+
         final ChildTouchGestureListener childTouchListener = mAdapterViewInitializer.getChildTouchListener();
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
 
@@ -155,23 +156,18 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         if (layoutManager != null) {
             layoutManager.layout(this, animation, changed, leftSize, topSize, rightSize, bottomSize);
         }
-
-        if (isLayoutRequested()){
-            post(mRequestLayout);
-        } else {
-            final AdapterAnimator.State state = childTouchListener.getState();
-            switch (state) {
-                case animatingTo:
-                case flinging:
-                case jumpingTo:
-                case snapingTo:
-                    post(mRequestLayout);
-                    break;
-                case scrolling:
-                case notMoving:
-                default:
-                    break;
-            }
+        final AdapterAnimator.State state = childTouchListener.getState();
+        switch (state) {
+            case animatingTo:
+            case flinging:
+            case jumpingTo:
+            case snapingTo:
+                post(mRequestLayout);
+                break;
+            case scrolling:
+            case notMoving:
+            default:
+                break;
         }
     }
 
@@ -201,7 +197,7 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         final Rect rect = new Rect(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
         final int childCount = getChildCount();
         final int drawPosition = Math.min(index, childCount);
-        final boolean success = addViewInLayout(child, drawPosition, layoutParams);
+        final boolean success = addViewInLayout(child, drawPosition, layoutParams, true);
         invalidate(rect);
         return success;
     }

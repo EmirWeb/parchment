@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Parchment Sample Application</string>
     <string name="button_activity_menu_horizontal_list_view">Horizontal ListView</string>
-    <string name="button_activity_menu_wrapping_height_grid_view">Warpping Height GridView</string>
+    <string name="button_activity_menu_wrapping_height_grid_view">Wrapping Height GridView</string>
     <string name="button_activity_menu_custom_grid_view">Custom GridView</string>
     <string name="button_activity_menu_view_pager">View Pager</string>
 </resources>

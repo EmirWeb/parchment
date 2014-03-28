@@ -35,8 +35,6 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     private AnimationStoppedListener mAnimationStoppedListener;
     private final LayoutManagerAttributes mLayoutManagerAttributes;
 
-    private boolean mIsFirstLayout = true;
-
     protected final List<Cell> mCells = new ArrayList<Cell>();
     private final SnapPositionInterface<Cell> mSnapPositionInterface;
 
@@ -175,21 +173,17 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         final int newSize = size; //Todo: consider padding for newSize
         final int adjust = setOffset(displacement, newSize);
 
-        if (mIsFirstLayout) setFirstLayoutOffset(newSize);
-
         if (continuedAnimation) mAnimationDisplacement += adjust;
 
         final int breadth = mScrollDirectionManager.getDrawBreadth(left, top, right, bottom);
         layoutCells(adapterViewHandler, newSize, breadth, mCenteringOffset);
 
-        //Todo: Check overscroll and adjust
         if (needLayout(newSize, getCellSpacing(), displacement)){
             if (mAnimationStoppedListener != null){
                 mAnimationStoppedListener.onAnimationStopped();
             }
             mAnimationDisplacement = 0;
-            final int overDrawAdjust = setOffset(0, newSize);
-            mOffset += overDrawAdjust;
+            setOffset(0, newSize);
             layoutCells(adapterViewHandler, newSize, breadth, mCenteringOffset);
         }
 
@@ -273,21 +267,6 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         }
 
         return mCells.get(size - 1);
-    }
-
-
-    //TODO: handle cells instead of Views
-    private void setFirstLayoutOffset(final int width) {
-        int positionToJumpTo = mSelectedPositionManager.getSelectedPosition();
-        if (mAdapterViewManager.getAdapterCount() <= 0) return;
-        else if (positionToJumpTo == INVALID_POSITION) positionToJumpTo = 0;
-
-        final int cellSpacing = mLayoutManagerAttributes.getCellSpacing();
-        final View selectedView = getView(positionToJumpTo);
-        mAdapterViewManager.recycle(selectedView);
-        mOffset += getSnapToPixelDistance(width, selectedView) - cellSpacing;
-        mStartCellPosition = positionToJumpTo;
-        mIsFirstLayout = false;
     }
 
     private void checkSelectWhileScrollingAttribute(final int newWidth) {

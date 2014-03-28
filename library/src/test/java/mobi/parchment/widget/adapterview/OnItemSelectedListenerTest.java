@@ -47,7 +47,7 @@ public class OnItemSelectedListenerTest {
             public void onSelected(View view) {
                 mWasSelected = true;
                 assertThat(view).isNotNull();
-                assertThat(view.getTag()).isEqualTo(0);
+                assertThat(view.getTag()).isEqualTo(7);
             }
         };
 
