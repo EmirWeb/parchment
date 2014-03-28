@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import mobi.parchment.widget.adapterview.AdapterViewManager;
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.OnSelectedListener;
+import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class GridLayoutManager extends LayoutManager<Group> {
 
     private int getMaxMeasureWidth() {
         final ViewGroup viewGroup = getViewGroup();
-        final int viewGroupWidth = viewGroup.getWidth();
+        final int viewGroupWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
         final int cellSpacing = mGridLayoutManagerAttributes.getCellSpacing();
 
         if (isVerticalScroll()) {
@@ -45,7 +46,7 @@ public class GridLayoutManager extends LayoutManager<Group> {
 
     private int getMaxMeasureHeight() {
         final ViewGroup viewGroup = getViewGroup();
-        final int viewGroupHeight = viewGroup.getHeight();
+        final int viewGroupHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(viewGroup);
         final int cellSpacing = mGridLayoutManagerAttributes.getCellSpacing();
 
         if (isVerticalScroll()) {

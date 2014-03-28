@@ -39,6 +39,11 @@ public class ProductsAdapter extends BaseAdapter {
         return product.mId;
     }
 
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
     private View getView(final Context context, final View convertView, final ViewGroup viewGroup) {
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);

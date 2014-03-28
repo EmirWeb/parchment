@@ -147,13 +147,13 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         childTouchListener.computeScrollOffset();
         final Animation animation = childTouchListener.getAnimation();
 
-        final int viewLeft = 0;
-        final int viewTop = 0;
-        final int viewRight = right - left;
-        final int viewBottom = bottom - top;
+        final int leftSize = MeasureSpec.getSize(left);
+        final int rightSize = MeasureSpec.getSize(right);
+        final int topSize = MeasureSpec.getSize(top);
+        final int bottomSize = MeasureSpec.getSize(bottom);
 
         if (layoutManager != null) {
-            layoutManager.layout(this, animation, changed, viewLeft, viewTop, viewRight, viewBottom);
+            layoutManager.layout(this, animation, changed, leftSize, topSize, rightSize, bottomSize);
         }
 
         if (isLayoutRequested()){

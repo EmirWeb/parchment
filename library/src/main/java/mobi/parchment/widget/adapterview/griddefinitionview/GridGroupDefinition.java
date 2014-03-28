@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
+
 /**
  * Created by Emir Hasanbegovic on 2014-03-03.
  */
@@ -145,7 +147,7 @@ public class GridGroupDefinition {
             return gridItemHeight * numberOfGridItemsPerColumn + numberOfCellSpacings * cellSpacing;
         }
 
-        final int viewGroupHeight = viewGroup.getMeasuredHeight();
+        final int viewGroupHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(viewGroup);
         return viewGroupHeight - 2 * cellSpacing;
     }
 
@@ -179,7 +181,7 @@ public class GridGroupDefinition {
 
     public int getMeasuredWidth(final ViewGroup viewGroup, final int cellSpacing, final float ratio) {
         if (mIsVerticalScroll) {
-            final int viewGroupWidth = viewGroup.getMeasuredWidth();
+            final int viewGroupWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
             return viewGroupWidth - 2 * cellSpacing;
         }
 

@@ -3,6 +3,8 @@ package mobi.parchment.widget.adapterview;
 import android.view.View;
 import android.view.ViewGroup;
 
+import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
+
 /**
  * Created by Emir Hasanbegovic on 2014-03-03.
  */
@@ -48,8 +50,8 @@ public class ScrollDirectionManager {
 
     public int getViewGroupSize(final ViewGroup viewGroup) {
         if (isVerticalScroll())
-            return viewGroup.getMeasuredHeight();
-        return viewGroup.getMeasuredWidth();
+            return ViewGroupUtilities.getViewGroupMeasuredHeight(viewGroup);
+        return ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
     }
 
     public int getDrawSize(int left, int top, int right, int bottom) {
