@@ -139,7 +139,7 @@ public class GridPatternGroupDefinition {
         return mHeight;
     }
 
-    public int getMeasuredHeight(final ViewGroup viewGroup, final int cellSpacing, final float ratio) {
+    public int getGroupHeight(final ViewGroup viewGroup, final int cellSpacing, final float ratio) {
         if (mIsVerticalScroll) {
             final int gridItemHeight = getGridItemHeight(viewGroup, cellSpacing, ratio);
             final int numberOfGridItemsPerColumn = getHeight();
@@ -158,7 +158,7 @@ public class GridPatternGroupDefinition {
         }
 
 
-        final int viewGroupHeight = getMeasuredHeight(viewGroup, cellSpacing, ratio);
+        final int viewGroupHeight = getGroupHeight(viewGroup, cellSpacing, ratio);
         final int numberOfGridItemsPerColumn = getHeight();
         final int numberOfCellSpacings = numberOfGridItemsPerColumn - 1;
         return (viewGroupHeight - numberOfCellSpacings * cellSpacing) / numberOfGridItemsPerColumn;
@@ -167,7 +167,7 @@ public class GridPatternGroupDefinition {
 
     public int getGridItemWidth(final ViewGroup viewGroup, final int cellSpacing, final float ratio) {
         if (mIsVerticalScroll) {
-            final int viewGroupWidth = getMeasuredWidth(viewGroup, cellSpacing, ratio);
+            final int viewGroupWidth = getGroupWidth(viewGroup, cellSpacing, ratio);
             final int numberOfGridItemsPerRow = getWidth();
             final int numberOfCellSpacings = numberOfGridItemsPerRow - 1;
             return (viewGroupWidth - numberOfCellSpacings * cellSpacing) / numberOfGridItemsPerRow;
@@ -179,7 +179,7 @@ public class GridPatternGroupDefinition {
     }
 
 
-    public int getMeasuredWidth(final ViewGroup viewGroup, final int cellSpacing, final float ratio) {
+    public int getGroupWidth(final ViewGroup viewGroup, final int cellSpacing, final float ratio) {
         if (mIsVerticalScroll) {
             final int viewGroupWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
             return viewGroupWidth - 2 * cellSpacing;
@@ -192,4 +192,35 @@ public class GridPatternGroupDefinition {
 
     }
 
+    public int getTopOffset(final ViewGroup viewGroup, final int cellSpacing, final float ratio, final int index) {
+
+        final GridPatternItemDefinition gridPatternItemDefinition = mGridPatternItemDefinitions.get(index);
+        final int top = gridPatternItemDefinition.getTop();
+        final int numberOfCellSpacings = top;
+        final int gridItemHeight = getGridItemHeight(viewGroup, cellSpacing, ratio);
+        final int numberOfGridItems = top ;
+        final int topOffset = numberOfGridItems * gridItemHeight + numberOfCellSpacings * cellSpacing;
+
+        if (!mIsVerticalScroll){
+            return topOffset + cellSpacing;
+        }
+
+        return topOffset;
+    }
+
+    public int getLeftOffset(final ViewGroup viewGroup, final int cellSpacing, final float ratio, final int index) {
+
+        final GridPatternItemDefinition gridPatternItemDefinition = mGridPatternItemDefinitions.get(index);
+        final int left = gridPatternItemDefinition.getLeft();
+        final int numberOfCellSpacings = left;
+        final int gridItemWidth = getGridItemWidth(viewGroup, cellSpacing, ratio);
+        final int numberOfGridItems = left;
+        final int leftOffset = numberOfGridItems * gridItemWidth + numberOfCellSpacings * cellSpacing;
+
+        if (mIsVerticalScroll){
+            return leftOffset + cellSpacing;
+        }
+
+        return leftOffset;
+    }
 }

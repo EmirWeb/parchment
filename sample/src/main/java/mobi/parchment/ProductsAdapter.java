@@ -25,7 +25,7 @@ public class ProductsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mProducts.size();
+        return Math.max(0,mProducts.size() -2) ;
     }
 
     @Override

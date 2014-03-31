@@ -48,8 +48,10 @@ public class GridPatternGroup {
 
     public int getBottom() {
         if (mIsVerticalScroll) {
-            final int height = mGridPatternGroupDefinition.getMeasuredHeight(mViewGroup, mCellSpacing, mStretchRatio);
-            return mStartOffset + height;
+            final int top = getTop();
+            final int height = getHeight();
+            final int bottom = top + height;
+            return bottom;
         }
 
         final int viewGroupHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(mViewGroup);
@@ -63,10 +65,12 @@ public class GridPatternGroup {
     }
 
     public int getRight() {
-        final View lastView = getLastView();
-        final int right = lastView.getRight();
+        final int left = getLeft();
+        final int width = getWidth();
+        final int right = left + width;
         return right;
     }
+
 
     public View getLastView() {
         final int numberOfItems = getNumberOfItems();
@@ -96,10 +100,10 @@ public class GridPatternGroup {
 
     public int getBreadth() {
         if (!mIsVerticalScroll) {
-            return mGridPatternGroupDefinition.getMeasuredHeight(mViewGroup, mCellSpacing, mStretchRatio);
+            return mGridPatternGroupDefinition.getGroupHeight(mViewGroup, mCellSpacing, mStretchRatio);
         }
 
-        return mGridPatternGroupDefinition.getMeasuredWidth(mViewGroup, mCellSpacing, mStretchRatio);
+        return mGridPatternGroupDefinition.getGroupWidth(mViewGroup, mCellSpacing, mStretchRatio);
     }
 
     public boolean isEmpty() {
@@ -108,5 +112,56 @@ public class GridPatternGroup {
 
     public List<View> getViews() {
         return mViews;
+    }
+
+    public int getWidth() {
+        if (mViews.isEmpty()) {
+            return 0;
+        }
+        int left = Integer.MAX_VALUE;
+        int right = 0;
+
+        for (int index = 0; index < mViews.size(); index++) {
+            final View view = mViews.get(index);
+            final int currentLeft = mGridPatternGroupDefinition.getLeftOffset(mViewGroup, mCellSpacing, mStretchRatio, index);
+            final int width = view.getMeasuredWidth();
+            final int currentRight = currentLeft + width;
+
+            if (left > currentLeft) {
+                left = currentLeft;
+            }
+            if (right < currentRight) {
+                right = currentRight;
+            }
+        }
+
+        final int width = right - left;
+        return width;
+    }
+
+    public int getHeight() {
+        if (mViews.isEmpty()) {
+            return 0;
+        }
+        int top = Integer.MAX_VALUE;
+        int bottom = 0;
+
+        for (int index = 0; index < mViews.size(); index++) {
+            final View view = mViews.get(index);
+            final int currentTop = mGridPatternGroupDefinition.getTopOffset(mViewGroup, mCellSpacing, mStretchRatio, index);
+            final int height = view.getMeasuredHeight();
+            final int currentBottom = currentTop + height;
+
+            if (top > currentTop) {
+                top = currentTop;
+            }
+            if (bottom < currentBottom) {
+                bottom = currentBottom;
+            }
+        }
+
+        final int height = bottom - top;
+        return height;
+
     }
 }

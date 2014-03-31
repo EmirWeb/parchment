@@ -72,8 +72,8 @@ public class AdapterViewManagerTest {
     public void MeasuringTest() {
         final View view = mAdapterViewManager.getView(mViewGroup,0,100,100);
 
-//        assertThat(view.getMeasuredHeight()).isEqualTo(100);
-//        assertThat(view.getMeasuredWidth()).isEqualTo(100);
+//        assertThat(view.getGroupHeight()).isEqualTo(100);
+//        assertThat(view.getGroupWidth()).isEqualTo(100);
 
     }
 

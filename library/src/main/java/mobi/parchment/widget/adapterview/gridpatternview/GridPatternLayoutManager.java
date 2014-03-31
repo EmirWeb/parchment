@@ -90,9 +90,9 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
         final int cellSpacing = mGridPatternLayoutManagerAttributes.getCellSpacing();
         final float ratio = mGridPatternLayoutManagerAttributes.getRatio();
         if (isVerticalScroll()) {
-            return gridPatternGroupDefinition.getMeasuredHeight(viewGroup, cellSpacing, ratio);
+            return gridPatternGroup.getHeight();
         }
-        return gridPatternGroupDefinition.getMeasuredWidth(viewGroup, cellSpacing, ratio);
+        return gridPatternGroup.getWidth();
     }
 
     @Override

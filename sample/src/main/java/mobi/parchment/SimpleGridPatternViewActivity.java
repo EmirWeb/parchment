@@ -18,7 +18,7 @@ public class SimpleGridPatternViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_simple_grid_definition_view);
+        setContentView(R.layout.activity_simple_grid_pattern_view);
 
         mGridPatternView = (GridPatternView<BaseAdapter>) findViewById(R.id.parchment_view);
 

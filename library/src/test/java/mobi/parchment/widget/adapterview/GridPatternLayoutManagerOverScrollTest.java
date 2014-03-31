@@ -111,6 +111,31 @@ public class GridPatternLayoutManagerOverScrollTest {
         assertThat(firstView.getBottom()).isEqualTo(90);
     }
 
+    @Test
+    public void scrollOffScreen() {
+        mTestAdapter.setAdapterSize(5);
+
+        final Animation animation = new Animation();
+        animation.newAnimation();
+        doLayout(animation);
+
+
+        int displacement = -1300;
+        animation.newAnimation();
+        animation.setDisplacement(displacement);
+        doLayout(animation);
+
+        displacement = -10;
+        animation.newAnimation();
+        animation.setDisplacement(displacement);
+        doLayout(animation);
+
+        final View lastView = mViewGroup.mViews.get(mViewGroup.mViews.size() - 1);
+
+        assertThat(mViewGroup.mViews.size()).isEqualTo(2);
+        assertThat(lastView.getBottom()).isEqualTo(90);
+    }
+
     private void doLayout() {
         doLayout(new Animation());
     }
