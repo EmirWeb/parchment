@@ -10,7 +10,7 @@ import mobi.parchment.widget.adapterview.gridpatternview.GridPatternItemDefiniti
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleGridDefinitionViewActivity extends BaseActivity {
+public class SimpleGridPatternViewActivity extends BaseActivity {
 
     private GridPatternView<BaseAdapter> mGridPatternView;
 

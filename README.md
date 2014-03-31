@@ -3,9 +3,9 @@ Parchment
 
 [![Build Status](https://travis-ci.org/EmirWeb/parchment.png?branch=master)](https://travis-ci.org/EmirWeb/parchment)
 
-## Horizontal/Vertical List View, GridView, ViewPager, and CustomGrid GridView
+## Horizontal/Vertical ListView, GridView, ViewPager, and GridPatternView
 
-The Parchment library attempts to add the functionality that developers want to their AdapterViews, by providing horizontal and vertical scrolling to all of its AdapterViews. Parchment gives developers more control of layout by choosing from a simple horizontal List View, a GridView that wraps heights or a GridDefinitionView that lets a user specify the grid pattern.
+The Parchment library attempts to add the functionality that developers want to their AdapterViews, by providing horizontal and vertical scrolling to all of its AdapterViews. Parchment gives developers more control of layout by choosing from a simple horizontal List View, a GridView that wraps heights or a GridPatternView that lets a user specify the grid pattern.
 
 ![alt tag](https://i.imgur.com/MHeZuFg.png)
 
@@ -35,7 +35,7 @@ dependencies {
  
 
 ## Step 2: XML
-Add one of the AdapterView classes (GridView, ListView, GridDefinitionView), don't forget to choose an orientation:
+Add one of the AdapterView classes (GridView, ListView, GridPatternView), don't forget to choose an orientation:
 
 ```xml
 <mobi.parchment.widget.listview.ListView

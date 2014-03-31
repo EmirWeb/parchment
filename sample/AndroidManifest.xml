@@ -27,7 +27,7 @@
                 android:label="@string/app_name"/>
 
         <activity
-                android:name=".SimpleGridDefinitionViewActivity"
+                android:name=".SimpleGridPatternViewActivity"
                 android:label="@string/app_name"/>
 
         <activity

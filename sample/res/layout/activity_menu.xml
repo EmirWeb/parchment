@@ -26,8 +26,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_activity_menu_custom_grid_view"
-        android:onClick="onClickGridDefinitionView"
+        android:text="@string/button_activity_grid_pattern_view"
+        android:onClick="onCLickGridPatternView"
         android:layout_gravity="center_horizontal" />
 
     <Button

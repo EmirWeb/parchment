@@ -27,8 +27,8 @@ public class MenuActivity extends Activity {
         startActivity(SimpleGridViewActivity.class);
     }
 
-    public void onClickGridDefinitionView(final View view){
-        startActivity(SimpleGridDefinitionViewActivity.class);
+    public void onCLickGridPatternView(final View view){
+        startActivity(SimpleGridPatternViewActivity.class);
     }
 
     public void onClickViewPager(final View view){
