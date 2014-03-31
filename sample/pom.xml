@@ -24,7 +24,7 @@
         <dependency>
             <groupId>mobi.parchment</groupId>
             <artifactId>parchment</artifactId>
-            <version>1.5.6</version>
+            <version>1.5.8</version>
             <optional>true</optional>
             <type>apklib</type>
         </dependency>
