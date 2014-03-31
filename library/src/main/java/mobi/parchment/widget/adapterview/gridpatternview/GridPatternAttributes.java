@@ -1,4 +1,4 @@
-package mobi.parchment.widget.adapterview.griddefinitionview;
+package mobi.parchment.widget.adapterview.gridpatternview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,7 +10,7 @@ import mobi.parchment.R;
 /**
  * Created by Emir Hasanbegovic on 2014-02-25.
  */
-public class GridDefinitionAttributes extends Attributes {
+public class GridPatternAttributes extends Attributes {
 
     private final float mRatio;
 
@@ -18,14 +18,14 @@ public class GridDefinitionAttributes extends Attributes {
         private static final float RATIO = 1.0f;
     }
 
-    public GridDefinitionAttributes(Context context, AttributeSet attributeSet) {
+    public GridPatternAttributes(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         if (attributeSet != null) {
-            final TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.GridDefinitionView, 0, 0);
+            final TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.GridPatternView, 0, 0);
 
             try {
 
-                final float ratio = typedArray.getFloat(R.styleable.GridDefinitionView_ratio, DefaultValues.RATIO);
+                final float ratio = typedArray.getFloat(R.styleable.GridPatternView_ratio, DefaultValues.RATIO);
                 mRatio = ratio;
             } finally {
                 typedArray.recycle();

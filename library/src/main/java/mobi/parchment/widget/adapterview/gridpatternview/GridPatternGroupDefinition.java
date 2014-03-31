@@ -1,4 +1,4 @@
-package mobi.parchment.widget.adapterview.griddefinitionview;
+package mobi.parchment.widget.adapterview.gridpatternview;
 
 import android.view.ViewGroup;
 
@@ -10,15 +10,15 @@ import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
 /**
  * Created by Emir Hasanbegovic on 2014-03-03.
  */
-public class GridGroupDefinition {
+public class GridPatternGroupDefinition {
 
     private final boolean mIsVerticalScroll;
-    private final List<GridItemDefinition> mGridItemDefinitions = new ArrayList<GridItemDefinition>();
+    private final List<GridPatternItemDefinition> mGridPatternItemDefinitions = new ArrayList<GridPatternItemDefinition>();
 
-    public GridGroupDefinition(final boolean isVerticalScroll, final List<GridItemDefinition> gridItemDefinitions) {
+    public GridPatternGroupDefinition(final boolean isVerticalScroll, final List<GridPatternItemDefinition> gridPatternItemDefinitions) {
         mIsVerticalScroll = isVerticalScroll;
-        for (final GridItemDefinition gridItemDefinition : gridItemDefinitions) {
-            addGridItemDefinition(gridItemDefinition);
+        for (final GridPatternItemDefinition gridPatternItemDefinition : gridPatternItemDefinitions) {
+            addGridPatternItemDefinition(gridPatternItemDefinition);
         }
     }
 
@@ -60,14 +60,14 @@ public class GridGroupDefinition {
         return mLastGridGroupPositions.get(0);
     }
 
-    public void addGridItemDefinition(final GridItemDefinition gridItemDefinition) {
-        mGridItemDefinitions.add(gridItemDefinition);
-        final int gridPosition = mGridItemDefinitions.size() - 1;
+    public void addGridPatternItemDefinition(final GridPatternItemDefinition gridPatternItemDefinition) {
+        mGridPatternItemDefinitions.add(gridPatternItemDefinition);
+        final int gridPosition = mGridPatternItemDefinitions.size() - 1;
 
-        final int top = gridItemDefinition.getTop();
-        final int left = gridItemDefinition.getLeft();
-        final int width = gridItemDefinition.getWidth();
-        final int height = gridItemDefinition.getHeight();
+        final int top = gridPatternItemDefinition.getTop();
+        final int left = gridPatternItemDefinition.getLeft();
+        final int width = gridPatternItemDefinition.getWidth();
+        final int height = gridPatternItemDefinition.getHeight();
         final int bottom = top + height - 1;
         final int right = left + width - 1;
         final int maxHeight = bottom + 1;
@@ -91,9 +91,9 @@ public class GridGroupDefinition {
 
         {
             for (int index = 0; index < mFirstGridGroupPositions.size(); index++) {
-                final GridItemDefinition currentFirstGridItemDefinition = mGridItemDefinitions.get(index);
-                final int currentTop = currentFirstGridItemDefinition.getTop();
-                final int currentLeft = currentFirstGridItemDefinition.getLeft();
+                final GridPatternItemDefinition currentFirstGridPatternItemDefinition = mGridPatternItemDefinitions.get(index);
+                final int currentTop = currentFirstGridPatternItemDefinition.getTop();
+                final int currentLeft = currentFirstGridPatternItemDefinition.getLeft();
 
 
                 if (mIsVerticalScroll && top <= currentTop || !mIsVerticalScroll && left <= currentLeft) {
@@ -105,11 +105,11 @@ public class GridGroupDefinition {
 
         {
             for (int index = 0; index < mLastGridGroupPositions.size(); index++) {
-                final GridItemDefinition currentLastGridItemDefinition = mGridItemDefinitions.get(index);
-                final int currentTop = currentLastGridItemDefinition.getTop();
-                final int currentLeft = currentLastGridItemDefinition.getLeft();
-                final int currentWidth = currentLastGridItemDefinition.getWidth();
-                final int currentHeight = currentLastGridItemDefinition.getHeight();
+                final GridPatternItemDefinition currentLastGridPatternItemDefinition = mGridPatternItemDefinitions.get(index);
+                final int currentTop = currentLastGridPatternItemDefinition.getTop();
+                final int currentLeft = currentLastGridPatternItemDefinition.getLeft();
+                final int currentWidth = currentLastGridPatternItemDefinition.getWidth();
+                final int currentHeight = currentLastGridPatternItemDefinition.getHeight();
                 final int currentBottom = currentTop + currentHeight - 1;
                 final int currentRight = currentLeft + currentWidth - 1;
 
@@ -124,11 +124,11 @@ public class GridGroupDefinition {
     }
 
     public int getNumberOfItems() {
-        return mGridItemDefinitions.size();
+        return mGridPatternItemDefinitions.size();
     }
 
-    public List<GridItemDefinition> getGridItemDefinitions() {
-        return mGridItemDefinitions;
+    public List<GridPatternItemDefinition> getGridPatternItemDefinitions() {
+        return mGridPatternItemDefinitions;
     }
 
     public int getWidth() {

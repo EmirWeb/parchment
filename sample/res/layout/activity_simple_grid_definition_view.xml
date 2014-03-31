@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mobi.parchment.widget.adapterview.griddefinitionview.GridDefinitionView
+<mobi.parchment.widget.adapterview.gridpatternview.GridPatternView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:parchment="http://schemas.android.com/apk/res/mobi.parchment"
         parchment:cellSpacing="@dimen/activity_simple_grid_definition_view_cell_spacing"

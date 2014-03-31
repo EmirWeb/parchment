@@ -31,11 +31,11 @@
             <flag name="top" value="0x08"/>
             <flag name="bottom" value="0x10"/>
         </attr>
+        <attr name="isPerfectGrid" format="boolean"/>
     </declare-styleable>
 
-    <declare-styleable name="GridDefinitionView">
+    <declare-styleable name="GridPatternView">
         <attr name="ratio" format="float"/>
-        <attr name="isPerfectGrid" format="boolean"/>
     </declare-styleable>
 
 

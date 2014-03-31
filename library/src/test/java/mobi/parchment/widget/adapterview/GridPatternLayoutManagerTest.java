@@ -7,10 +7,10 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import mobi.parchment.widget.adapterview.griddefinitionview.GridDefinitionLayoutManager;
-import mobi.parchment.widget.adapterview.griddefinitionview.GridDefinitionLayoutManagerAttributes;
-import mobi.parchment.widget.adapterview.griddefinitionview.GridGroupDefinition;
-import mobi.parchment.widget.adapterview.griddefinitionview.GridItemDefinition;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManager;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManagerAttributes;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternGroupDefinition;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternItemDefinition;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
  * Created by Emir Hasanbegovic
  */
 @RunWith(RobolectricTestRunner.class)
-public class GridDefinitionLayoutManagerTest {
+public class GridPatternLayoutManagerTest {
 
     public static final int VIEW_GROUP_SIZE = 300;
     public static final int VIEW_SIZE = 100;
@@ -37,29 +37,29 @@ public class GridDefinitionLayoutManagerTest {
     final MyViewGroup mViewGroup = new MyViewGroup(Robolectric.application);
     final AdapterViewManager adapterViewManager = new AdapterViewManager();
     TestAdapter mTestAdapter;
-    GridDefinitionLayoutManagerAttributes attributes;
-    GridDefinitionLayoutManager listLayoutManager;
+    GridPatternLayoutManagerAttributes attributes;
+    GridPatternLayoutManager listLayoutManager;
 
     @Before
     public void setup() {
-        attributes = new GridDefinitionLayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, true, 1f);
-        listLayoutManager = new GridDefinitionLayoutManager(mViewGroup, null, adapterViewManager, attributes);
+        attributes = new GridPatternLayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, true, 1f);
+        listLayoutManager = new GridPatternLayoutManager(mViewGroup, null, adapterViewManager, attributes);
         mTestAdapter = new TestAdapter(VIEW_SIZE);
         adapterViewManager.setAdapter(mTestAdapter);
         doFirstLayout(VIEW_GROUP_SIZE);
 
         {
-            final List<GridItemDefinition> gridItemDefinitions = new ArrayList<GridItemDefinition>();
-            gridItemDefinitions.add(new GridItemDefinition(0, 0, 1, 1));
-            gridItemDefinitions.add(new GridItemDefinition(0, 1, 1, 1));
-            final GridGroupDefinition gridGroupDefinition = new GridGroupDefinition(true, gridItemDefinitions);
-            listLayoutManager.addGridGroupDefinition(gridGroupDefinition);
+            final List<GridPatternItemDefinition> gridPatternItemDefinitions = new ArrayList<GridPatternItemDefinition>();
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0, 0, 1, 1));
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0, 1, 1, 1));
+            final GridPatternGroupDefinition gridPatternGroupDefinition = new GridPatternGroupDefinition(true, gridPatternItemDefinitions);
+            listLayoutManager.addGridPatternGroupDefinition(gridPatternGroupDefinition);
         }
         {
-            final List<GridItemDefinition> gridItemDefinitions = new ArrayList<GridItemDefinition>();
-            gridItemDefinitions.add(new GridItemDefinition(0, 0, 1, 2));
-            final GridGroupDefinition gridGroupDefinition = new GridGroupDefinition(true, gridItemDefinitions);
-            listLayoutManager.addGridGroupDefinition(gridGroupDefinition);
+            final List<GridPatternItemDefinition> gridPatternItemDefinitions = new ArrayList<GridPatternItemDefinition>();
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0, 0, 1, 2));
+            final GridPatternGroupDefinition gridPatternGroupDefinition = new GridPatternGroupDefinition(true, gridPatternItemDefinitions);
+            listLayoutManager.addGridPatternGroupDefinition(gridPatternGroupDefinition);
         }
 
     }

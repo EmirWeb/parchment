@@ -1,9 +1,9 @@
-package mobi.parchment.widget.adapterview.griddefinitionview;
+package mobi.parchment.widget.adapterview.gridpatternview;
 
 /**
  * Created by Emir Hasanbegovic on 2014-03-03.
  */
-public class GridItemDefinition {
+public class GridPatternItemDefinition {
 
     private final int mTop;
     private final int mLeft;
@@ -11,7 +11,7 @@ public class GridItemDefinition {
     private final int mWidth;
 
 
-    public GridItemDefinition(final int top, final int left, final int height, final int width) {
+    public GridPatternItemDefinition(final int top, final int left, final int height, final int width) {
         mTop = top;
         mLeft = left;
         mHeight = height;

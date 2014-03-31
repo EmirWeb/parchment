@@ -18,10 +18,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import mobi.parchment.widget.adapterview.griddefinitionview.GridDefinitionLayoutManager;
-import mobi.parchment.widget.adapterview.griddefinitionview.GridDefinitionLayoutManagerAttributes;
-import mobi.parchment.widget.adapterview.griddefinitionview.GridGroupDefinition;
-import mobi.parchment.widget.adapterview.griddefinitionview.GridItemDefinition;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManager;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManagerAttributes;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternGroupDefinition;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternItemDefinition;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -29,7 +29,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
  * Created by Emir Hasanbegovic
  */
 @RunWith(RobolectricTestRunner.class)
-public class GridDefinitionLayoutManagerGetCellPositionTest {
+public class GridPatternLayoutManagerGetCellPositionTest {
 
     public static final int VIEW_GROUP_SIZE = 300;
     public static final int VIEW_SIZE = 100;
@@ -37,38 +37,38 @@ public class GridDefinitionLayoutManagerGetCellPositionTest {
     final MyViewGroup mViewGroup = new MyViewGroup(Robolectric.application);
     final AdapterViewManager adapterViewManager = new AdapterViewManager();
     TestAdapter mTestAdapter;
-    GridDefinitionLayoutManagerAttributes attributes;
-    GridDefinitionLayoutManager gridDefinitionLayoutManager;
+    GridPatternLayoutManagerAttributes attributes;
+    GridPatternLayoutManager gridPatternLayoutManager;
 
     @Before
     public void setup() {
-        attributes = new GridDefinitionLayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, true, 1f);
-        gridDefinitionLayoutManager = new GridDefinitionLayoutManager(mViewGroup, null, adapterViewManager, attributes);
+        attributes = new GridPatternLayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, true, 1f);
+        gridPatternLayoutManager = new GridPatternLayoutManager(mViewGroup, null, adapterViewManager, attributes);
         mTestAdapter = new TestAdapter(VIEW_SIZE);
         adapterViewManager.setAdapter(mTestAdapter);
         doFirstLayout(VIEW_GROUP_SIZE);
 
         {
-            final List<GridItemDefinition> gridItemDefinitions = new ArrayList<GridItemDefinition>();
-            gridItemDefinitions.add(new GridItemDefinition(0, 0, 1, 1));
-            gridItemDefinitions.add(new GridItemDefinition(0, 1, 1, 1));
-            final GridGroupDefinition gridGroupDefinition = new GridGroupDefinition(true, gridItemDefinitions);
-            gridDefinitionLayoutManager.addGridGroupDefinition(gridGroupDefinition);
+            final List<GridPatternItemDefinition> gridPatternItemDefinitions = new ArrayList<GridPatternItemDefinition>();
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0, 0, 1, 1));
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0, 1, 1, 1));
+            final GridPatternGroupDefinition gridPatternGroupDefinition = new GridPatternGroupDefinition(true, gridPatternItemDefinitions);
+            gridPatternLayoutManager.addGridPatternGroupDefinition(gridPatternGroupDefinition);
         }
         {
-            final List<GridItemDefinition> gridItemDefinitions = new ArrayList<GridItemDefinition>();
-            gridItemDefinitions.add(new GridItemDefinition(0, 0, 1, 2));
-            final GridGroupDefinition gridGroupDefinition = new GridGroupDefinition(true, gridItemDefinitions);
-            gridDefinitionLayoutManager.addGridGroupDefinition(gridGroupDefinition);
+            final List<GridPatternItemDefinition> gridPatternItemDefinitions = new ArrayList<GridPatternItemDefinition>();
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0, 0, 1, 2));
+            final GridPatternGroupDefinition gridPatternGroupDefinition = new GridPatternGroupDefinition(true, gridPatternItemDefinitions);
+            gridPatternLayoutManager.addGridPatternGroupDefinition(gridPatternGroupDefinition);
         }
         {
-            final List<GridItemDefinition> gridItemDefinitions = new ArrayList<GridItemDefinition>();
-            gridItemDefinitions.add(new GridItemDefinition(0, 0, 1, 1));
-            gridItemDefinitions.add(new GridItemDefinition(0, 1, 1, 1));
-            gridItemDefinitions.add(new GridItemDefinition(1, 0, 1, 1));
-            gridItemDefinitions.add(new GridItemDefinition(1, 1, 1, 1));
-            final GridGroupDefinition gridGroupDefinition = new GridGroupDefinition(true, gridItemDefinitions);
-            gridDefinitionLayoutManager.addGridGroupDefinition(gridGroupDefinition);
+            final List<GridPatternItemDefinition> gridPatternItemDefinitions = new ArrayList<GridPatternItemDefinition>();
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0, 0, 1, 1));
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0, 1, 1, 1));
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(1, 0, 1, 1));
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(1, 1, 1, 1));
+            final GridPatternGroupDefinition gridPatternGroupDefinition = new GridPatternGroupDefinition(true, gridPatternItemDefinitions);
+            gridPatternLayoutManager.addGridPatternGroupDefinition(gridPatternGroupDefinition);
         }
 
     }
@@ -78,16 +78,16 @@ public class GridDefinitionLayoutManagerGetCellPositionTest {
     public void getCellPosition() {
         mTestAdapter.setAdapterSize(14);
 
-        int cellPosition = gridDefinitionLayoutManager.getCellPosition(10);
+        int cellPosition = gridPatternLayoutManager.getCellPosition(10);
         assertThat(cellPosition).isEqualTo(5);
 
-        cellPosition = gridDefinitionLayoutManager.getCellPosition(11);
+        cellPosition = gridPatternLayoutManager.getCellPosition(11);
         assertThat(cellPosition).isEqualTo(5);
 
-        cellPosition = gridDefinitionLayoutManager.getCellPosition(4);
+        cellPosition = gridPatternLayoutManager.getCellPosition(4);
         assertThat(cellPosition).isEqualTo(2);
 
-        cellPosition = gridDefinitionLayoutManager.getCellPosition(3);
+        cellPosition = gridPatternLayoutManager.getCellPosition(3);
         assertThat(cellPosition).isEqualTo(2);
 
     }
@@ -98,7 +98,7 @@ public class GridDefinitionLayoutManagerGetCellPositionTest {
     }
 
     private void doLayout(Animation animation) {
-        gridDefinitionLayoutManager.layout(mViewGroup, animation, false, 0, 0, VIEW_GROUP_SIZE, VIEW_GROUP_SIZE);
+        gridPatternLayoutManager.layout(mViewGroup, animation, false, 0, 0, VIEW_GROUP_SIZE, VIEW_GROUP_SIZE);
     }
 
     private void doFirstLayout(int viewGroupSize) {

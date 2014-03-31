@@ -1,4 +1,4 @@
-package mobi.parchment.widget.adapterview.griddefinitionview;
+package mobi.parchment.widget.adapterview.gridpatternview;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +11,9 @@ import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
 /**
  * Created by Emir Hasanbegovic on 2014-03-03.
  */
-public class DefinitionGroup {
+public class GridPatternGroup {
 
-    private final GridGroupDefinition mGridGroupDefinition;
+    private final GridPatternGroupDefinition mGridPatternGroupDefinition;
     private final ViewGroup mViewGroup;
     private final boolean mIsVerticalScroll;
     private final float mStretchRatio;
@@ -22,8 +22,8 @@ public class DefinitionGroup {
 
     private final List<View> mViews = new ArrayList<View>();
 
-    public DefinitionGroup(final GridGroupDefinition gridGroupDefinition, final ViewGroup viewGroup, final boolean isVerticalScroll, final float stretchRatio, final int cellSpacing) {
-        mGridGroupDefinition = gridGroupDefinition;
+    public GridPatternGroup(final GridPatternGroupDefinition gridPatternGroupDefinition, final ViewGroup viewGroup, final boolean isVerticalScroll, final float stretchRatio, final int cellSpacing) {
+        mGridPatternGroupDefinition = gridPatternGroupDefinition;
         mViewGroup = viewGroup;
         mIsVerticalScroll = isVerticalScroll;
         mStretchRatio = stretchRatio;
@@ -42,13 +42,13 @@ public class DefinitionGroup {
         return mCellSpacing;
     }
 
-    public GridGroupDefinition getGridGroupDefinition() {
-        return mGridGroupDefinition;
+    public GridPatternGroupDefinition getGridPatternGroupDefinition() {
+        return mGridPatternGroupDefinition;
     }
 
     public int getBottom() {
         if (mIsVerticalScroll) {
-            final int height = mGridGroupDefinition.getMeasuredHeight(mViewGroup, mCellSpacing, mStretchRatio);
+            final int height = mGridPatternGroupDefinition.getMeasuredHeight(mViewGroup, mCellSpacing, mStretchRatio);
             return mStartOffset + height;
         }
 
@@ -70,14 +70,14 @@ public class DefinitionGroup {
 
     public View getLastView() {
         final int numberOfItems = getNumberOfItems();
-        final int lastGridGroupPosition = mGridGroupDefinition.getLastGridGroupPosition(numberOfItems);
+        final int lastGridGroupPosition = mGridPatternGroupDefinition.getLastGridGroupPosition(numberOfItems);
         final View lastView = mViews.get(lastGridGroupPosition);
         return lastView;
     }
 
     public View getFirstView() {
         final int numberOfItems = getNumberOfItems();
-        final int firstGridGroupPosition = mGridGroupDefinition.getFirstGridGroupPosition(numberOfItems);
+        final int firstGridGroupPosition = mGridPatternGroupDefinition.getFirstGridGroupPosition(numberOfItems);
         final View firstView = mViews.get(firstGridGroupPosition);
         return firstView;
     }
@@ -96,10 +96,10 @@ public class DefinitionGroup {
 
     public int getBreadth() {
         if (!mIsVerticalScroll) {
-            return mGridGroupDefinition.getMeasuredHeight(mViewGroup, mCellSpacing, mStretchRatio);
+            return mGridPatternGroupDefinition.getMeasuredHeight(mViewGroup, mCellSpacing, mStretchRatio);
         }
 
-        return mGridGroupDefinition.getMeasuredWidth(mViewGroup, mCellSpacing, mStretchRatio);
+        return mGridPatternGroupDefinition.getMeasuredWidth(mViewGroup, mCellSpacing, mStretchRatio);
     }
 
     public boolean isEmpty() {

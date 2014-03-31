@@ -38,7 +38,7 @@ public class GridAttributes extends Attributes {
                 final int gravity = typedArray.getInt(R.styleable.GridView_gravity, DefaultValues.GRAVITY);
                 setGravityValues(gravity);
 
-                mIsPerfectGrid = typedArray.getBoolean(R.styleable.GridDefinitionView_isPerfectGrid, DefaultValues.IS_PERFECT_GRID);
+                mIsPerfectGrid = typedArray.getBoolean(R.styleable.GridView_isPerfectGrid, DefaultValues.IS_PERFECT_GRID);
             } finally {
                 typedArray.recycle();
             }
