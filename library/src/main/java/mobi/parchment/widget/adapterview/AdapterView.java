@@ -3,12 +3,16 @@ package mobi.parchment.widget.adapterview;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewConfiguration;
 import android.widget.Adapter;
 
 /**
@@ -64,7 +68,8 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
 
     protected AdapterViewInitializer<Cell> createAdapterViewInitializer(final Context context, final boolean isViewPager, final AdapterViewManager adapterViewManager, final LayoutManager<Cell> layoutManager, final boolean isVerticalScroll) {
         final LayoutManagerBridge layoutManagerBridge = new LayoutManagerBridge(layoutManager);
-        final ChildTouchGestureListener childTouchGestureListener = new ChildTouchGestureListener(this, isViewPager, isVerticalScroll, this, this, layoutManagerBridge);
+        final ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
+        final ChildTouchGestureListener childTouchGestureListener = new ChildTouchGestureListener(this, isViewPager, isVerticalScroll, this, this, layoutManagerBridge, viewConfiguration);
         final AdapterViewGestureDetector adapterViewGestureDetector = new AdapterViewGestureDetector(context, childTouchGestureListener);
 
         return new AdapterViewInitializer<Cell>(childTouchGestureListener, adapterViewGestureDetector, layoutManager, adapterViewManager);
@@ -171,25 +176,57 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         }
     }
 
+
+
     @Override
     public boolean dispatchTouchEvent(final MotionEvent motionEvent) {
-        final boolean consumed = super.dispatchTouchEvent(motionEvent);
-        final GestureDetector gestureDetector = mAdapterViewInitializer.getGestureDetector();
-        gestureDetector.onTouchEvent(motionEvent);
+        final boolean isChildConsumingTouch = super.dispatchTouchEvent(motionEvent);
+        final ChildTouchGestureListener childTouchListener = mAdapterViewInitializer.getChildTouchListener();
+        childTouchListener.setIsChildConsumingTouch(isChildConsumingTouch);
+
         return true;
     }
 
     @Override
-    public void onClick(final View view) {
-        if (mOnItemClickListener == null) return;
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        final GestureDetector gestureDetector = mAdapterViewInitializer.getGestureDetector();
+        final boolean gestureConsumed = gestureDetector.onTouchEvent(motionEvent);
 
+        return gestureConsumed || super.onTouchEvent(motionEvent);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent motionEvent) {
+        final GestureDetector gestureDetector = mAdapterViewInitializer.getGestureDetector();
+        final boolean gestureConsumed = gestureDetector.onTouchEvent(motionEvent);
+
+        if (gestureConsumed) {
+            final ChildTouchGestureListener childTouchListener = mAdapterViewInitializer.getChildTouchListener();
+            childTouchListener.setIsChildConsumingTouch(false);
+        }
+
+        return gestureConsumed || super.onTouchEvent(motionEvent);
+    }
+
+    @Override
+    public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        super.requestDisallowInterceptTouchEvent(disallowIntercept);
+    }
+
+    @Override
+    public void onClick(final View view) {
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
         if (layoutManager == null || mAdapter == null) return;
 
         final int position = getPositionForView(view);
         final long id = mAdapter.getItemId(position);
-        if (position != android.widget.AdapterView.INVALID_POSITION)
+        if (position != android.widget.AdapterView.INVALID_POSITION) {
+            layoutManager.onItemClick(view, position, id);
+            if (mOnItemClickListener == null) {
+                return;
+            }
             mOnItemClickListener.onItemClick(this, view, position, id);
+        }
     }
 
     @Override
@@ -254,6 +291,22 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
 
         final long id = mAdapter.getItemId(position);
         return mOnItemLongClickListener.onItemLongClick(this, view, position, id);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        final Parcelable parcelable = super.onSaveInstanceState();
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        return layoutManager.onSaveInstanceState(parcelable);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Parcelable parcelable) {
+        final BaseSavedState baseSavedState = (BaseSavedState) parcelable;
+        final Parcelable superState = baseSavedState.getSuperState();
+        super.onRestoreInstanceState(superState);
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        layoutManager.onRestoreInstanceState(parcelable);
     }
 
 }

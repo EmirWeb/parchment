@@ -3,6 +3,7 @@ package mobi.parchment.widget.adapterview;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 /**
@@ -17,7 +18,8 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
     private static final int FINAL_ANIMATE_TO_DURATION_IN_MILLISECONDS = 500;
 
     private static final int ANIMATION_DURATION = 500;
-
+    private final int mScaledTouchSlop;
+    private final boolean mIsVerticalScroll;
     private final Animation mAnimation = new Animation();
     private final ScrollAnimator mScrollAnimator;
     private final ViewGroup mViewGroup;
@@ -29,18 +31,20 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
 
     private boolean mComputedOffsetReady;
 
-    public AdapterAnimator(final ViewGroup view, final boolean isViewPager, final boolean isVertical, final LayoutManagerBridge layoutManagerBridge) {
+    public AdapterAnimator(final ViewGroup view, final boolean isViewPager, final boolean isVerticalScroll, final LayoutManagerBridge layoutManagerBridge, ViewConfiguration viewConfiguration) {
         mLayoutManagerBridge = layoutManagerBridge;
         mLayoutManagerBridge.setAnimationStoppedListener(this);
         mViewGroup = view;
         mIsViewPager = isViewPager;
-        mScrollAnimator = new ScrollAnimator(view.getContext(), isVertical);
+        mIsVerticalScroll = isVerticalScroll;
+        mScrollAnimator = new ScrollAnimator(view.getContext(), isVerticalScroll);
+        mScaledTouchSlop = viewConfiguration.getScaledTouchSlop();
     }
 
     @Override
     public boolean onDown(MotionEvent motionEvent) {
         setState(State.notMoving);
-        return true;
+        return false;
     }
 
     @Override
@@ -64,6 +68,17 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
 
     @Override
     public boolean onScroll(final MotionEvent e1, final MotionEvent e2, final float distanceX, final float distanceY) {
+        if (mIsVerticalScroll){
+            final float yTouchSlop = getYTouchSlop(e1, e2);
+            if (yTouchSlop < mScaledTouchSlop){
+                return false;
+            }
+        } else {
+            final float xTouchSlop = getXTouchSlop(e1, e2);
+            if (xTouchSlop < mScaledTouchSlop){
+                return false;
+            }
+        }
         setState(State.scrolling);
         final int displacement = (int) mLayoutManagerBridge.getScrollDisplacement(distanceX, distanceY);
         mAnimation.setDisplacement((int) displacement);
@@ -91,7 +106,7 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
     @Override
     public boolean onSingleTapUp(final MotionEvent e) {
         setState(State.notMoving);
-        return true;
+        return false;
     }
 
     public void onUp() {
@@ -169,5 +184,19 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
     @Override
     public void onAnimationStopped() {
         setState(State.notMoving);
+    }
+
+    public static float getXTouchSlop(final MotionEvent e1, final MotionEvent e2) {
+        if (e1 == null || e2 == null){
+            return 0;
+        }
+        return Math.abs(e1.getX() - e2.getX());
+    }
+
+    public static float getYTouchSlop(final MotionEvent e1, final MotionEvent e2) {
+        if (e1 == null || e2 == null){
+            return 0;
+        }
+        return Math.abs(e1.getY() - e2.getY());
     }
 }

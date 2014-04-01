@@ -4,6 +4,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 /**
@@ -11,114 +12,134 @@ import android.view.ViewGroup;
  */
 public class ChildTouchGestureListener extends AdapterAnimator {
 
-	private final OnClickListener mOnClickListener;
-	private OnLongClickListener mOnLongClickListener;
-	private final int MAX_FOCUS_DISPLACEMENT = 300;
-	private View mPressedView;
+    private final OnClickListener mOnClickListener;
+    private OnLongClickListener mOnLongClickListener;
+    private int mScaledTouchSlop;
+    private View mInitialTouchView;
+    private boolean mIsChildConsumingTouch;
+    private boolean mIsSingleTapUp;
 
-	public ChildTouchGestureListener(final ViewGroup viewGroup, final boolean isViewPager, final boolean isVertical, final OnClickListener onClickListener, final OnLongClickListener onLongClickListener, final LayoutManagerBridge layoutManagerBridge) {
-		super(viewGroup, isViewPager, isVertical, layoutManagerBridge);
-		mOnClickListener = onClickListener;
-		mOnLongClickListener = onLongClickListener;
-	}
-	
-	@Override
-	public void onLongPress(final MotionEvent motionEvent) {
-		if (mPressedView != null) {
-			mPressedView.setPressed(false);
-			onItemLongClick(mPressedView);
-			super.onLongPress(motionEvent);
-		}
-		mPressedView = null;
-		super.onLongPress(motionEvent);
-	}
+    public ChildTouchGestureListener(final ViewGroup viewGroup, final boolean isViewPager, final boolean isVertical, final OnClickListener onClickListener, final OnLongClickListener onLongClickListener, final LayoutManagerBridge layoutManagerBridge, final ViewConfiguration viewConfiguration) {
+        super(viewGroup, isViewPager, isVertical, layoutManagerBridge, viewConfiguration);
+        mOnClickListener = onClickListener;
+        mOnLongClickListener = onLongClickListener;
+        mScaledTouchSlop = viewConfiguration.getScaledTouchSlop();
+    }
 
-	@Override
-	public boolean onScroll(final MotionEvent e1, final MotionEvent e2, final float distanceX, final float distanceY) {
-		if (e1 != null && e2 != null && Math.abs(e1.getX() - e2.getX()) > MAX_FOCUS_DISPLACEMENT) {
-			if (mPressedView != null) {
-				mPressedView.setPressed(false);
-				mPressedView = null;
-			}
-		}
-		return super.onScroll(e1, e2, distanceX, distanceY);
-	}
+    @Override
+    public void onLongPress(final MotionEvent motionEvent) {
+        if (mInitialTouchView != null) {
+            mInitialTouchView.setPressed(false);
+            onItemLongClick(mInitialTouchView);
+            super.onLongPress(motionEvent);
+        }
+        mInitialTouchView = null;
+        super.onLongPress(motionEvent);
+    }
 
-	@Override
-	public boolean onSingleTapUp(MotionEvent motionEvent) {
-		if (mPressedView != null) {
-			mPressedView.setPressed(false);
-			onItemClick(mPressedView);
-			return super.onSingleTapUp(motionEvent, mPressedView);
-		}
-		mPressedView = null;
-		return super.onSingleTapUp(motionEvent);
-	}
+    @Override
+    public boolean onScroll(final MotionEvent e1, final MotionEvent e2, final float distanceX, final float distanceY) {
+        final float xTouchSlop = getXTouchSlop(e1, e2);
+        final float yTouchSlop = getYTouchSlop(e1, e2);
+        if (xTouchSlop > mScaledTouchSlop || yTouchSlop > mScaledTouchSlop ) {
+            if (mInitialTouchView != null) {
+                mInitialTouchView.setPressed(false);
+                mInitialTouchView = null;
+            }
+            return super.onScroll(e1, e2, distanceX, distanceY);
+        }
+        return false;
+    }
 
-	@Override
-	public boolean onDown(final MotionEvent event) {
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        mIsSingleTapUp = true;
+        if (!mIsChildConsumingTouch &&  mInitialTouchView != null) {
+            onItemClick(mInitialTouchView);
+            return super.onSingleTapUp(motionEvent, mInitialTouchView);
+        }
+        mInitialTouchView = null;
+        return super.onSingleTapUp(motionEvent);
+    }
 
-		mPressedView = null;
+    @Override
+    public void onShowPress(final MotionEvent event) {
+        if (!mIsChildConsumingTouch && mInitialTouchView != null){
+            mInitialTouchView.setPressed(true);
+        }
+        super.onShowPress(event);
+    }
 
-		final ViewGroup viewGroup = getViewGroup();
+    @Override
+    public boolean onDown(final MotionEvent event) {
+        mInitialTouchView = null;
+        mIsSingleTapUp = false;
 
-		final int pointerCount = event.getPointerCount();
+        final ViewGroup viewGroup = getViewGroup();
 
-		for (int p = 0; p < pointerCount; p++) {
-			final double touchX = event.getX(p);
-			final double touchY = event.getY(p);
+        final int pointerCount = event.getPointerCount();
 
-			for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
-				final View child = viewGroup.getChildAt(i);
-				final float childLeft = child.getLeft();
-				final float childTop = child.getTop();
-				final float childRight = child.getWidth() + childLeft;
-				final float childBottom = child.getHeight() + childTop;
+        for (int p = 0; p < pointerCount; p++) {
+            final double touchX = event.getX(p);
+            final double touchY = event.getY(p);
 
-				final boolean xFits = touchX >= childLeft && touchX <= childRight;
-				final boolean yFits = touchY >= childTop && touchY <= childBottom;
+            for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
+                final View child = viewGroup.getChildAt(i);
+                final float childLeft = child.getLeft();
+                final float childTop = child.getTop();
+                final float childRight = child.getWidth() + childLeft;
+                final float childBottom = child.getHeight() + childTop;
 
-				if (xFits && yFits) {
-					mPressedView = child;
-					child.setPressed(true);
-					return super.onDown(event);
-				}
-			}
-		}
+                final boolean xFits = touchX >= childLeft && touchX <= childRight;
+                final boolean yFits = touchY >= childTop && touchY <= childBottom;
 
-		return super.onDown(event);
-	}
+                if (xFits && yFits) {
+                    mInitialTouchView = child;
+                    return super.onDown(event);
+                }
+            }
+        }
+        return super.onDown(event);
+    }
 
-	private void onItemLongClick(final View view) {
-		if (mOnLongClickListener== null)
-			return;
+    private void onItemLongClick(final View view) {
+        if (mOnLongClickListener== null) {
+            return;
+        }
 
-		mOnLongClickListener.onLongClick(view);
-		
-	}
+        mOnLongClickListener.onLongClick(view);
+    }
 
-	
-	private void onItemClick(final View view) {
-		if (mOnClickListener == null)
-			return;
 
-		mOnClickListener.onClick(view);
-	}
+    private void onItemClick(final View view) {
+        if (mOnClickListener == null) {
+            return;
+        }
 
-	public void onCancel() {
-		stopTouch();
-	}
+        mOnClickListener.onClick(view);
+    }
 
-	@Override
-	public void onUp() {
-		stopTouch();
-		super.onUp();
-	}
+    public void onCancel() {
+        stopTouch();
+    }
 
-	private void stopTouch() {
-		if (mPressedView != null)
-			mPressedView.setPressed(false);
-		mPressedView = null;
-	}
+    @Override
+    public void onUp() {
+        stopTouch();
+        super.onUp();
+    }
+
+    private void stopTouch() {
+        if (!mIsSingleTapUp && mInitialTouchView != null){
+            mInitialTouchView.setPressed(false);
+        }
+        mIsSingleTapUp = false;
+        mInitialTouchView = null;
+        mIsChildConsumingTouch = false;
+    }
+
+    public void setIsChildConsumingTouch(final boolean isChildConsumingTouch) {
+        mIsChildConsumingTouch = isChildConsumingTouch;
+    }
 
 }

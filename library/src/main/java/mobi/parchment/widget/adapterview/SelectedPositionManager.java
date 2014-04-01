@@ -1,6 +1,7 @@
 package mobi.parchment.widget.adapterview;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import android.view.View;
 
@@ -32,7 +33,7 @@ public class SelectedPositionManager {
 		mSelectedPosition = -1;
 	}
 	
-	public void onViewsDrawn(final HashMap<View, Integer> positions) {
+	public void onViewsDrawn(final Map<View, Integer> positions) {
 		if (mItemSelectedListenerCalled)
 			return;
 		

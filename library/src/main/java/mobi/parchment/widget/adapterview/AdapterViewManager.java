@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -21,11 +22,11 @@ import java.util.Queue;
 public class AdapterViewManager {
 
     private final DataSetObserverManager mDataSetObserverManager = new DataSetObserverManager();
-    private final AbstractMap<View, Long> mViewIdMap = new HashMap<View, Long>();
-    private final AbstractMap<View, Integer> mViewTypeMap = new HashMap<View, Integer>();
-    private final AbstractMap<Long, View> mIdViewMap = new HashMap<Long, View>();
+    private final Map<View, Long> mViewIdMap = new HashMap<View, Long>();
+    private final Map<View, Integer> mViewTypeMap = new HashMap<View, Integer>();
+    private final Map<Long, View> mIdViewMap = new HashMap<Long, View>();
     private Adapter mAdapter;
-    private List<Queue<View>> mViews;
+    private Queue<View>[] mViews;
 
     public void recycle(final View removedView) {
         if (mAdapter.hasStableIds()) {
@@ -34,7 +35,7 @@ public class AdapterViewManager {
         }
 
         final Integer type = mViewTypeMap.remove(removedView);
-        final Queue<View> views = mViews.get(type);
+        final Queue<View> views = mViews[type];
         views.add(removedView);
     }
 
@@ -58,13 +59,13 @@ public class AdapterViewManager {
     private View getView(final ViewGroup viewGroup, final int position, final int type, final long id, final int horizontalMeasureSpec, final int verticalMeasureSpec) {
         if (mAdapter.hasStableIds() && mIdViewMap.containsKey(id)) {
             final View view = mIdViewMap.remove(id);
-            final Queue<View> views = mViews.get(type);
+            final Queue<View> views = mViews[type];
             views.remove(view);
 
             return view;
         }
 
-        final Queue<View> views = mViews.get(type);
+        final Queue<View> views = mViews[type];
         final View convertView = views.poll();
         final View view = mAdapter.getView(position, convertView, viewGroup);
         final boolean isRecycled =  view == convertView;
@@ -79,7 +80,7 @@ public class AdapterViewManager {
         return view;
     }
 
-    private <KEY, VALUE> void remove(final AbstractMap<KEY, VALUE> map, final VALUE value) {
+    private <KEY, VALUE> void remove(final Map<KEY, VALUE> map, final VALUE value) {
         if (map == null || value == null) return;
 
         if (map.containsValue(value)) {
@@ -90,7 +91,7 @@ public class AdapterViewManager {
         }
     }
 
-    private <KEY, VALUE> KEY getKeyForValue(final AbstractMap<KEY, VALUE> map, final VALUE value) {
+    private <KEY, VALUE> KEY getKeyForValue(final Map<KEY, VALUE> map, final VALUE value) {
         if (value == null) {
             return null;
         }
@@ -109,8 +110,6 @@ public class AdapterViewManager {
         LayoutParams layoutParams = view.getLayoutParams();
 
         if (layoutParams == null) {
-            final int defaultHorizontalMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
-            final int defaultVerticalMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
             layoutParams = new LayoutParams(horizontalMeasureSpec, verticalMeasureSpec);
             view.setLayoutParams(layoutParams);
         }
@@ -135,9 +134,9 @@ public class AdapterViewManager {
 
         final int typeCount = adapter.getViewTypeCount();
 
-        mViews = new ArrayList<Queue<View>>(typeCount);
+        mViews = new Queue[typeCount];
         for (int index = 0; index < typeCount; index++)
-            mViews.add(new LinkedList<View>());
+            mViews[index] = new LinkedList<View>();
 
         mViewTypeMap.clear();
 

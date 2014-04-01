@@ -1,7 +1,15 @@
 package mobi.parchment.widget.adapterview;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import mobi.parchment.widget.adapterview.snapposition.CenterSnapPosition;
 import mobi.parchment.widget.adapterview.snapposition.EndSnapPosition;
@@ -12,15 +20,11 @@ import mobi.parchment.widget.adapterview.snapposition.SnapPositionInterface;
 import mobi.parchment.widget.adapterview.snapposition.StartSnapPosition;
 import mobi.parchment.widget.adapterview.snapposition.StartWithCellSpacingSnapPosition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 
 public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     public static final int INVALID_POSITION = -1;
 
-    private final HashMap<View, Integer> mPositions = new HashMap<View, Integer>();
+    private final Map<View, Integer> mPositions = new HashMap<View, Integer>();
 
     private int mAnimationId = -1;
     private int mOffset = 0;
@@ -37,6 +41,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     protected final List<Cell> mCells = new ArrayList<Cell>();
     private final SnapPositionInterface<Cell> mSnapPositionInterface;
+    private View mPressedView;
 
     public LayoutManager(final ViewGroup viewGroup, final OnSelectedListener onSelectedListener, final AdapterViewManager adapterViewManager, final LayoutManagerAttributes layoutManagerAttributes) {
         super(adapterViewManager);
@@ -178,8 +183,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         final int breadth = mScrollDirectionManager.getDrawBreadth(left, top, right, bottom);
         layoutCells(adapterViewHandler, newSize, breadth, mCenteringOffset);
 
-        if (needLayout(newSize, getCellSpacing(), displacement)){
-            if (mAnimationStoppedListener != null){
+        if (needLayout(newSize, getCellSpacing(), displacement)) {
+            if (mAnimationStoppedListener != null) {
                 mAnimationStoppedListener.onAnimationStopped();
             }
             mAnimationDisplacement = 0;
@@ -840,5 +845,37 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     public boolean isVerticalScroll() {
         return mScrollDirectionManager.isVerticalScroll();
+    }
+
+    public Parcelable onSaveInstanceState(final Parcelable parcelable) {
+        final LayoutManagerState<Cell> layoutManagerState = new LayoutManagerState<Cell>(parcelable, mOffset, mStartCellPosition);
+        return layoutManagerState;
+    }
+
+
+    public void onRestoreInstanceState(final Parcelable parcelable) {
+        if (!(parcelable instanceof LayoutManagerState)){
+            return;
+        }
+
+        final LayoutManagerState<Cell> layoutManagerState = (LayoutManagerState<Cell>) parcelable;
+        mOffset = layoutManagerState.getOffset();
+        mStartCellPosition = layoutManagerState.getStartCellPosition();
+    }
+
+    public void onItemClick(final View view, final int position, final long id) {
+        if (mPressedView != null){
+            mPressedView.setPressed(false);
+        }
+        mPressedView = view;
+        mPressedView.setPressed(true);
+
+        mViewGroup.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                view.setPressed(false);
+                mPressedView = null;
+            }
+        }, ViewConfiguration.getPressedStateDuration());
     }
 }
