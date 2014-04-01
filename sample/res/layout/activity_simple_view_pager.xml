@@ -10,5 +10,8 @@
         parchment:snapToPosition="true"
         parchment:gravity="top"
         parchment:isViewPager="true"
+        parchment:isCircularScroll="true"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

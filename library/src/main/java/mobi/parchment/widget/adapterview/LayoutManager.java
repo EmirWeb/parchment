@@ -1,6 +1,5 @@
 package mobi.parchment.widget.adapterview;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -26,6 +25,9 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     private final Map<View, Integer> mPositions = new HashMap<View, Integer>();
 
+    public float mLayoutSize;
+    public float mLayoutCellCount;
+    private final int MAX = Integer.MAX_VALUE / 2;
     private int mAnimationId = -1;
     private int mOffset = 0;
     private int mStartCellPosition;
@@ -475,6 +477,9 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
      * When moving left, every time a view is removed, this means that we are removing the leftMost view and therefore have to increment the mOffset by the removed view's width
      */
     private void layoutCells(final AdapterViewHandler adapterViewHandler, final int size, final int breadth, final int centerOffset) {
+        mLayoutCellCount = 0;
+        mLayoutSize = 0;
+
         final int cellSpacing = mLayoutManagerAttributes.getCellSpacing();
         int currentOffset = mOffset;
         int endCellPosition = mStartCellPosition;
@@ -514,6 +519,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
                 final int firstViewInCell = getFirstAdapterPositionInCell(endCellPosition);
                 layoutCell(cell, cellStart, cellEnd, firstViewInCell, breadth, cellSpacing);
                 endCellPosition = incrementCellPosition(endCellPosition);
+                mLayoutCellCount++;
+                mLayoutSize += cellSize;
             }
         }
 
@@ -556,6 +563,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
                 }
 
                 mCells.add(cell);
+                mLayoutCellCount++;
+                mLayoutSize += cellSize;
             }
 
             endCellPosition = incrementCellPosition(endCellPosition);
@@ -593,6 +602,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
                 }
                 mCells.add(0, cell);
                 mStartCellPosition = cellPosition;
+                mLayoutCellCount++;
+                mLayoutSize += cellSize;
             } else {
                 final List<View> views = getViews(cell);
                 for (final View view : views) {
@@ -854,7 +865,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
 
     public void onRestoreInstanceState(final Parcelable parcelable) {
-        if (!(parcelable instanceof LayoutManagerState)){
+        if (!(parcelable instanceof LayoutManagerState)) {
             return;
         }
 
@@ -864,7 +875,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
     public void onItemClick(final View view, final int position, final long id) {
-        if (mPressedView != null){
+        if (mPressedView != null) {
             mPressedView.setPressed(false);
         }
         mPressedView = view;
@@ -877,5 +888,50 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
                 mPressedView = null;
             }
         }, ViewConfiguration.getPressedStateDuration());
+    }
+
+    public float getExtent() {
+        final float averageVisibleCellSize = mLayoutSize / mLayoutCellCount;
+        final float totalCellCount = getCellCount();
+        final float maxAverageCellSize = MAX / totalCellCount;
+        if (averageVisibleCellSize < maxAverageCellSize) {
+            return getViewGroupSize(mViewGroup);
+        }
+
+        final float ratio = mLayoutCellCount / totalCellCount;
+        return MAX * ratio;
+    }
+
+    public float getRange() {
+        if (mAdapterViewManager.getAdapterCount() == 0) {
+            return 0;
+        }
+
+        final float averageVisibleCellSize = mLayoutSize / mLayoutCellCount;
+        final float totalCellCount = getCellCount();
+        final float maxAverageCellSize = MAX / totalCellCount;
+
+        return Math.min(averageVisibleCellSize, maxAverageCellSize) * totalCellCount;
+    }
+
+    public float getOffset() {
+        if (mAdapterViewManager.getAdapterCount() == 0) {
+            return 0;
+        }
+
+        final Cell cell = getCell(mStartCellPosition);
+        final float totalCellCount = getCellCount();
+        final float averageVisibleCellSize = mLayoutSize / mLayoutCellCount;
+        final float maxAverageCellSize = MAX / totalCellCount;
+        final float startPosition = mStartCellPosition;
+        final float offset = mOffset;
+
+        if (averageVisibleCellSize < maxAverageCellSize) {
+            return averageVisibleCellSize * startPosition - offset;
+        } else {
+            final float viewSize = Math.max(getCellSize(cell), 1);
+            final float ratio = maxAverageCellSize / viewSize;
+            return maxAverageCellSize * startPosition - offset * ratio;
+        }
     }
 }

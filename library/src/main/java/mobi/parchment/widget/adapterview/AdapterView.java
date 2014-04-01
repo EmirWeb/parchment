@@ -168,8 +168,10 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
             case jumpingTo:
             case snapingTo:
                 post(mRequestLayout);
+                awakenScrollBars();
                 break;
             case scrolling:
+                awakenScrollBars();
             case notMoving:
             default:
                 break;
@@ -309,4 +311,48 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         layoutManager.onRestoreInstanceState(parcelable);
     }
 
+    @Override
+    protected int computeHorizontalScrollExtent() {
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        return (int) layoutManager.getExtent();
+    }
+
+    @Override
+    protected int computeHorizontalScrollOffset() {
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        return (int) layoutManager.getOffset();
+    }
+
+    @Override
+    protected int computeHorizontalScrollRange() {
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        return (int) layoutManager.getRange();
+    }
+
+    @Override
+    protected int computeVerticalScrollExtent() {
+        return computeHorizontalScrollExtent();
+    }
+
+    @Override
+    protected int computeVerticalScrollOffset() {
+        return computeHorizontalScrollOffset();
+    }
+
+    @Override
+    protected int computeVerticalScrollRange() {
+        return computeHorizontalScrollRange();
+    }
+
+    @Override
+    public boolean isHorizontalScrollBarEnabled() {
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        return !layoutManager.isVerticalScroll();
+    }
+
+    @Override
+    public boolean isVerticalScrollBarEnabled() {
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        return layoutManager.isVerticalScroll();
+    }
 }

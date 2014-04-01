@@ -6,6 +6,8 @@
         parchment:orientation="horizontal"
         parchment:snapPosition="onScreenWithCellSpacing"
         parchment:ratio="1.618"
+        android:scrollbars="horizontal"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
         android:background="@drawable/background"
         android:id="@+id/parchment_view"
         android:layout_width="match_parent"

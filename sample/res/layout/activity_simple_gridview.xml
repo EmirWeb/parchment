@@ -10,5 +10,7 @@
         parchment:gravity="top"
         parchment:isPerfectGrid="false"
         parchment:snapPosition="onScreenWithCellSpacing"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
