@@ -122,9 +122,8 @@ public class GridPatternGroup {
         int right = 0;
 
         for (int index = 0; index < mViews.size(); index++) {
-            final View view = mViews.get(index);
             final int currentLeft = mGridPatternGroupDefinition.getLeftOffset(mViewGroup, mCellSpacing, mStretchRatio, index);
-            final int width = view.getMeasuredWidth();
+            final int width = mGridPatternGroupDefinition.getItemWidth(mViewGroup, mCellSpacing, mStretchRatio, index);
             final int currentRight = currentLeft + width;
 
             if (left > currentLeft) {
@@ -147,9 +146,8 @@ public class GridPatternGroup {
         int bottom = 0;
 
         for (int index = 0; index < mViews.size(); index++) {
-            final View view = mViews.get(index);
             final int currentTop = mGridPatternGroupDefinition.getTopOffset(mViewGroup, mCellSpacing, mStretchRatio, index);
-            final int height = view.getMeasuredHeight();
+            final int height = mGridPatternGroupDefinition.getItemHeight(mViewGroup, mCellSpacing, mStretchRatio, index);
             final int currentBottom = currentTop + height;
 
             if (top > currentTop) {

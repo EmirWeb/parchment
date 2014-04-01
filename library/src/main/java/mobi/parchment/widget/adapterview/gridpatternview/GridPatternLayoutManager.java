@@ -161,9 +161,9 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
         final int cellSpacing = mGridPatternLayoutManagerAttributes.getCellSpacing();
         final float ratio = mGridPatternLayoutManagerAttributes.getRatio();
         if (isVerticalScroll()) {
-            return gridPatternGroupDefinition.getGridItemHeight(viewGroup, cellSpacing, ratio);
+            return gridPatternGroupDefinition.getGridHeight(viewGroup, cellSpacing, ratio);
         }
-        return gridPatternGroupDefinition.getGridItemWidth(viewGroup, cellSpacing, ratio);
+        return gridPatternGroupDefinition.getGridWidth(viewGroup, cellSpacing, ratio);
     }
 
     private int getGridItemBreadth(final GridPatternGroupDefinition gridPatternGroupDefinition) {
@@ -171,9 +171,9 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
         final int cellSpacing = mGridPatternLayoutManagerAttributes.getCellSpacing();
         final float ratio = mGridPatternLayoutManagerAttributes.getRatio();
         if (isVerticalScroll()) {
-            return gridPatternGroupDefinition.getGridItemWidth(viewGroup, cellSpacing, ratio);
+            return gridPatternGroupDefinition.getGridWidth(viewGroup, cellSpacing, ratio);
         }
-        return gridPatternGroupDefinition.getGridItemHeight(viewGroup, cellSpacing, ratio);
+        return gridPatternGroupDefinition.getGridHeight(viewGroup, cellSpacing, ratio);
     }
 
     private int getGridItemSizeStartOffset(final GridPatternGroupDefinition gridPatternGroupDefinition, final GridPatternItemDefinition gridPatternItemDefinition, final int cellSpacing) {
