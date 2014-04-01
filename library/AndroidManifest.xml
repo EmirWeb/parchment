@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mobi.parchment"
     android:versionCode="3"
-    android:versionName="1.5.9" >
+    android:versionName="1.6.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
