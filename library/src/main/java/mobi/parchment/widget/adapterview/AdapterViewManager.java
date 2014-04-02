@@ -26,7 +26,7 @@ public class AdapterViewManager {
     private final Map<View, Integer> mViewTypeMap = new HashMap<View, Integer>();
     private final Map<Long, View> mIdViewMap = new HashMap<Long, View>();
     private Adapter mAdapter;
-    private Queue<View>[] mViews;
+    private List<Queue<View>> mViews = new ArrayList<Queue<View>>();
 
     public void recycle(final View removedView) {
         if (mAdapter.hasStableIds()) {
@@ -35,7 +35,7 @@ public class AdapterViewManager {
         }
 
         final Integer type = mViewTypeMap.remove(removedView);
-        final Queue<View> views = mViews[type];
+        final Queue<View> views = mViews.get(type);
         views.add(removedView);
     }
 
@@ -59,13 +59,13 @@ public class AdapterViewManager {
     private View getView(final ViewGroup viewGroup, final int position, final int type, final long id, final int horizontalMeasureSpec, final int verticalMeasureSpec) {
         if (mAdapter.hasStableIds() && mIdViewMap.containsKey(id)) {
             final View view = mIdViewMap.remove(id);
-            final Queue<View> views = mViews[type];
+            final Queue<View> views = mViews.get(type);
             views.remove(view);
 
             return view;
         }
 
-        final Queue<View> views = mViews[type];
+        final Queue<View> views = mViews.get(type);
         final View convertView = views.poll();
         final View view = mAdapter.getView(position, convertView, viewGroup);
         final boolean isRecycled =  view == convertView;
@@ -134,9 +134,9 @@ public class AdapterViewManager {
 
         final int typeCount = adapter.getViewTypeCount();
 
-        mViews = new Queue[typeCount];
+        mViews = new ArrayList<Queue<View>>(typeCount);
         for (int index = 0; index < typeCount; index++)
-            mViews[index] = new LinkedList<View>();
+            mViews.add(new LinkedList<View>());
 
         mViewTypeMap.clear();
 

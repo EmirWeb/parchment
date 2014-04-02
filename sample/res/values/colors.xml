@@ -9,4 +9,5 @@
     <color name="list_item_product_text_view_font_color">#000</color>
 
     <color name="press_state_colour">#CC123456</color>
+    <color name="selected_state_colour">#CC654321</color>
 </resources>

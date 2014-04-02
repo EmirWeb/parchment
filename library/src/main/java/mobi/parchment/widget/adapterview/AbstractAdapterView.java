@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewConfiguration;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 
 /**
  * Created by Emir Hasanbegovic
@@ -268,6 +269,14 @@ public abstract class AbstractAdapterView<ADAPTER extends Adapter, Cell> extends
         }
 
         return position;
+    }
+
+    @Override
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
+        super.setOnItemLongClickListener(onItemLongClickListener);
+        if (isLongClickable()) {
+            setLongClickable(false);
+        }
     }
 
     @Override
