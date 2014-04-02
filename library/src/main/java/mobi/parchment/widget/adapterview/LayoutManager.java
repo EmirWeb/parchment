@@ -58,6 +58,10 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         mSnapPositionInterface = getSnapPositionInterface(snapPosition);
     }
 
+    public int getSelectedPosition(){
+        return mSelectedPositionManager.getSelectedPosition();
+    }
+
     private SnapPositionInterface<Cell> getSnapPositionInterface(final SnapPosition snapPosition) {
         switch (snapPosition) {
             case center:

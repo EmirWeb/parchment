@@ -6,7 +6,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Adapter;
 
-import mobi.parchment.widget.adapterview.AdapterView;
+import mobi.parchment.widget.adapterview.AbstractAdapterView;
 import mobi.parchment.widget.adapterview.AdapterViewHandler;
 import mobi.parchment.widget.adapterview.AdapterViewInitializer;
 import mobi.parchment.widget.adapterview.AdapterViewManager;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Emir Hasanbegovic
  */
-public class GridPatternView<ADAPTER extends Adapter> extends AdapterView<ADAPTER, GridPatternGroup> implements OnLongClickListener, OnClickListener, OnSelectedListener, AdapterViewHandler {
+public class GridPatternView<ADAPTER extends Adapter> extends AbstractAdapterView<ADAPTER, GridPatternGroup> implements OnLongClickListener, OnClickListener, OnSelectedListener, AdapterViewHandler {
 
     private GridPatternLayoutManager mGridPatternLayoutManager;
     private boolean mIsVerticalScroll;

@@ -6,7 +6,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Adapter;
 
-import mobi.parchment.widget.adapterview.AdapterView;
+import mobi.parchment.widget.adapterview.AbstractAdapterView;
 import mobi.parchment.widget.adapterview.AdapterViewHandler;
 import mobi.parchment.widget.adapterview.AdapterViewInitializer;
 import mobi.parchment.widget.adapterview.AdapterViewManager;
@@ -16,7 +16,7 @@ import mobi.parchment.widget.adapterview.SnapPosition;
 /**
  * Created by Emir Hasanbegovic
  */
-public class GridView<ADAPTER extends Adapter> extends AdapterView<ADAPTER, Group> implements OnLongClickListener, OnClickListener, OnSelectedListener, AdapterViewHandler {
+public class GridView<ADAPTER extends Adapter> extends AbstractAdapterView<ADAPTER, Group> implements OnLongClickListener, OnClickListener, OnSelectedListener, AdapterViewHandler {
 
     public GridView(Context context) {
         super(context);

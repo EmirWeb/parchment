@@ -3,10 +3,8 @@ package mobi.parchment.widget.adapterview;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,11 +16,9 @@ import android.widget.Adapter;
 /**
  * Created by Emir Hasanbegovic
  */
-public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android.widget.AdapterView<ADAPTER> implements OnLongClickListener, OnClickListener, OnSelectedListener, AdapterViewHandler {
+public abstract class AbstractAdapterView<ADAPTER extends Adapter, Cell> extends android.widget.AdapterView<ADAPTER> implements OnLongClickListener, OnClickListener, OnSelectedListener, AdapterViewHandler {
 
-    private OnItemClickListener mOnItemClickListener;
     private OnItemSelectedListener mOnItemSelectedListener;
-    private OnItemLongClickListener mOnItemLongClickListener;
     private ADAPTER mAdapter;
     private AdapterViewInitializer<Cell> mAdapterViewInitializer;
 
@@ -47,17 +43,17 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         }
     };
 
-    public AdapterView(Context context) {
+    public AbstractAdapterView(Context context) {
         super(context);
         initialize(context, null);
     }
 
-    public AdapterView(Context context, AttributeSet attributeSet) {
+    public AbstractAdapterView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         initialize(context, attributeSet);
     }
 
-    public AdapterView(Context context, AttributeSet attributeSet, int defStyle) {
+    public AbstractAdapterView(Context context, AttributeSet attributeSet, int defStyle) {
         super(context, attributeSet, defStyle);
         initialize(context, attributeSet);
     }
@@ -78,13 +74,34 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
     protected abstract AdapterViewInitializer<Cell> getAdapterViewInitializer(final Context context, final AttributeSet attributeSet);
 
     @Override
+    public int getSelectedItemPosition() {
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        return layoutManager.getSelectedPosition();
+    }
+
+    @Override
     public ADAPTER getAdapter() {
         return mAdapter;
     }
 
     @Override
     public View getSelectedView() {
-        return null;
+        final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
+        final int selectedPosition = getSelectedItemPosition();
+        if (selectedPosition == INVALID_POSITION) {
+            return null;
+        }
+        return layoutManager.getView(selectedPosition);
+    }
+
+    @Override
+    public long getSelectedItemId() {
+        final Adapter adapter = getAdapter();
+        final int selectedPosition = getSelectedItemPosition();
+        if (adapter == null || selectedPosition == INVALID_POSITION) {
+            return INVALID_ROW_ID;
+        }
+        return adapter.getItemId(selectedPosition);
     }
 
     @Override
@@ -132,16 +149,10 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         }
     }
 
-    public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
-        mOnItemClickListener = onItemClickListener;
-    }
-
+    @Override
     public void setOnItemSelectedListener(final OnItemSelectedListener onItemSelectedListener) {
         mOnItemSelectedListener = onItemSelectedListener;
-    }
-
-    public void setOnItemLongClickListener(final OnItemLongClickListener onItemLongClickListener) {
-        mOnItemLongClickListener = onItemLongClickListener;
+        super.setOnItemSelectedListener(onItemSelectedListener);
     }
 
     @Override
@@ -177,7 +188,6 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
                 break;
         }
     }
-
 
 
     @Override
@@ -224,10 +234,7 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         final long id = mAdapter.getItemId(position);
         if (position != android.widget.AdapterView.INVALID_POSITION) {
             layoutManager.onItemClick(view, position, id);
-            if (mOnItemClickListener == null) {
-                return;
-            }
-            mOnItemClickListener.onItemClick(this, view, position, id);
+            performItemClick(view, position, id);
         }
     }
 
@@ -251,11 +258,14 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
     @Override
     public int getPositionForView(final View view) {
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
-        if (layoutManager == null) return android.widget.AdapterView.INVALID_POSITION;
+        if (layoutManager == null) {
+            return INVALID_POSITION;
+        }
 
         final int position = layoutManager.getPosition(view);
-        if (position == LayoutManager.INVALID_POSITION)
-            return android.widget.AdapterView.INVALID_POSITION;
+        if (position == LayoutManager.INVALID_POSITION) {
+            return INVALID_POSITION;
+        }
 
         return position;
     }
@@ -283,7 +293,8 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
 
     @Override
     public boolean onLongClick(final View view) {
-        if (mOnItemLongClickListener == null || view == null) return false;
+        final OnItemLongClickListener onItemLongClickListener = getOnItemLongClickListener();
+        if (onItemLongClickListener == null || view == null) return false;
 
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
         if (layoutManager == null || mAdapter == null) return false;
@@ -292,7 +303,8 @@ public abstract class AdapterView<ADAPTER extends Adapter, Cell> extends android
         if (position == android.widget.AdapterView.INVALID_POSITION) return false;
 
         final long id = mAdapter.getItemId(position);
-        return mOnItemLongClickListener.onItemLongClick(this, view, position, id);
+
+        return onItemLongClickListener.onItemLongClick(this, view, position, id);
     }
 
     @Override

@@ -22,7 +22,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
  * Created by emir on 22/03/14.
  */
 @RunWith(RobolectricTestRunner.class)
-public class AdapterViewManagerTest {
+public class AbstractAdapterViewManagerTest {
 
     private AdapterViewManager mAdapterViewManager;
     private Adapter mAdapter = new MeasuringAdapter();
