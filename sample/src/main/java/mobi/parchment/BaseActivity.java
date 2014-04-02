@@ -2,6 +2,7 @@ package mobi.parchment;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.widget.AdapterView;
 
 import com.google.gson.Gson;
@@ -30,16 +31,30 @@ public abstract class BaseActivity extends Activity {
 
     private static final Gson GSON = new Gson();
     private static final String PRODUCTS_URL = "http://lcboapi.com/products?page=%d";
+    private boolean mIsDestroyed;
 
     public ProductsAdapter getProductsAdapter() {
         return mProductsAdapter;
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        mIsDestroyed = false;
+        super.onCreate(savedInstanceState);
+    }
+
+
+    @Override
     protected void onResume() {
         super.onResume();
         final ProductsAsyncTask productsAsyncTask = new ProductsAsyncTask();
         productsAsyncTask.execute((String[]) null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mIsDestroyed = true;
+        super.onDestroy();
     }
 
     private class ProductsAsyncTask extends AsyncTask<String, Integer, List<Products>> {
@@ -93,7 +108,7 @@ public abstract class BaseActivity extends Activity {
 
         @Override
         protected void onPostExecute(final List<Products> products) {
-            if (products == null) {
+            if (mIsDestroyed || products == null) {
                 return;
             }
 
