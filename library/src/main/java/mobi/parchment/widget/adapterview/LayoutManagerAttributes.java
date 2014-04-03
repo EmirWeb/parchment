@@ -66,15 +66,9 @@ public class LayoutManagerAttributes {
 		return mIsVertical;
 	}
 
-	public boolean usesCellSpacing(){
-		return mSnapPosition == SnapPosition.floatStartWithCellSpacing
-		||  mSnapPosition == SnapPosition.floatStartWithCellSpacing
-		||  mSnapPosition == SnapPosition.floatEndWithCellSpacing
-		||  mSnapPosition == SnapPosition.onScreenWithCellSpacing;
-	}
-	
+
 	public boolean isSnapPositionOnScreen() {
-		return mSnapPosition == SnapPosition.onScreen || mSnapPosition == SnapPosition.onScreenWithCellSpacing;
+		return mSnapPosition == SnapPosition.onScreen;
 	}
 	
 	public boolean selectWhileScrolling() {

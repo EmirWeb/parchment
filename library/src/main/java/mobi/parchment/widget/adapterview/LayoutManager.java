@@ -12,12 +12,9 @@ import java.util.Map;
 
 import mobi.parchment.widget.adapterview.snapposition.CenterSnapPosition;
 import mobi.parchment.widget.adapterview.snapposition.EndSnapPosition;
-import mobi.parchment.widget.adapterview.snapposition.EndWithCellSpacingSnapPosition;
 import mobi.parchment.widget.adapterview.snapposition.OnScreenSnapPosition;
-import mobi.parchment.widget.adapterview.snapposition.OnScreenWithCellSpacingSnapPosition;
 import mobi.parchment.widget.adapterview.snapposition.SnapPositionInterface;
 import mobi.parchment.widget.adapterview.snapposition.StartSnapPosition;
-import mobi.parchment.widget.adapterview.snapposition.StartWithCellSpacingSnapPosition;
 
 
 public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
@@ -60,15 +57,15 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         mSnapPositionInterface = getSnapPositionInterface(snapPosition);
     }
 
-    public int getSelectedPosition(){
+    public int getSelectedPosition() {
         return mSelectedPositionManager.getSelectedPosition();
     }
 
-    public int getWidthMeasureSpec(){
+    public int getWidthMeasureSpec() {
         return mWidthMeasureSpec;
     }
 
-    public int getHeightMeasureSpec(){
+    public int getHeightMeasureSpec() {
         return mHeightMeasureSpec;
     }
 
@@ -78,17 +75,11 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
                 return new CenterSnapPosition<Cell>();
             case floatEnd:
                 return new EndSnapPosition<Cell>();
-            case floatEndWithCellSpacing:
-                return new EndWithCellSpacingSnapPosition<Cell>();
             case floatStart:
                 return new StartSnapPosition<Cell>();
-            case floatStartWithCellSpacing:
-                return new StartWithCellSpacingSnapPosition<Cell>();
             case onScreen:
-                return new OnScreenSnapPosition<Cell>();
-            case onScreenWithCellSpacing:
             default:
-                return new OnScreenWithCellSpacingSnapPosition<Cell>();
+                return new OnScreenSnapPosition<Cell>();
         }
     }
 
@@ -196,7 +187,9 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             mAnimationId = animationId;
             mViewPageDistance = getViewPageDistance(size);
             mAnimationDisplacement = displacement;
-        } else if (continuedAnimation) mAnimationDisplacement += displacement;
+        } else if (continuedAnimation){
+            mAnimationDisplacement += displacement;
+        }
 
         final int newSize = size; //Todo: consider padding for newSize
         final int adjust = setOffset(displacement, newSize);
@@ -206,7 +199,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         final int breadth = mScrollDirectionManager.getDrawBreadth(left, top, right, bottom);
         layoutCells(adapterViewHandler, newSize, breadth, mCenteringOffset);
 
-        if (needLayout(newSize, getCellSpacing(), displacement)) {
+        if (needLayout(newSize, displacement)) {
             if (mAnimationStoppedListener != null) {
                 mAnimationStoppedListener.onAnimationStopped();
             }
@@ -220,7 +213,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
 
-    private boolean needLayout(final int size, final int cellSpacing, final int scrollDisplacement) {
+    private boolean needLayout(final int size, final int scrollDisplacement) {
         final int adapterCount = mAdapterViewManager.getAdapterCount();
         final boolean haveCellsToDraw = adapterCount > 0;
         final boolean noCellsBeingDrawn = mCells.isEmpty();
@@ -237,13 +230,13 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             if (scrollDisplacement > 0) { //too far to the right
                 final Cell cell = getCell(0);
                 final int cellSize = getCellSize(cell);
-                final int absoluteSnapPosition = mSnapPositionInterface.getAbsoluteSnapPosition(size, cellSpacing, cellSize, direction);
+                final int absoluteSnapPosition = mSnapPositionInterface.getAbsoluteSnapPosition(size, cellSize, direction);
                 mOffset = absoluteSnapPosition;
                 mStartCellPosition = 0;
             } else if (scrollDisplacement < 0) { //too far to the left
                 final Cell cell = getCell(adapterCount - 1);
                 final int cellSize = getCellSize(cell);
-                final int absoluteSnapPosition = mSnapPositionInterface.getAbsoluteSnapPosition(size, cellSpacing, cellSize, direction);
+                final int absoluteSnapPosition = mSnapPositionInterface.getAbsoluteSnapPosition(size, cellSize, direction);
                 mOffset = absoluteSnapPosition;
                 mStartCellPosition = getCellCount() - 1;
             }
@@ -259,7 +252,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         }
 
         if (firstPosition != null) {
-            final int displacement = mSnapPositionInterface.getCellDisplacementFromSnapPosition(this, size, firstPosition, cellSpacing);
+            final int displacement = mSnapPositionInterface.getCellDisplacementFromSnapPosition(this, size, firstPosition);
             if (displacement < 0) {
                 mStartCellPosition = 0;
                 mOffset += displacement;
@@ -268,7 +261,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         }
 
         if (lastPosition != null) {
-            final int displacement = mSnapPositionInterface.getCellDisplacementFromSnapPosition(this, size, lastPosition, cellSpacing);
+            final int displacement = mSnapPositionInterface.getCellDisplacementFromSnapPosition(this, size, lastPosition);
             if (displacement > 0) {
                 mStartCellPosition = getCellCount() - 1;
                 mOffset += displacement;
@@ -309,28 +302,31 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     private int getViewPageDistance(final int size) {
         final int cellSpacing = mLayoutManagerAttributes.getCellSpacing();
         int viewPageDistance = 0;
+        int numberOfCells = 0;
         for (final Cell cell : mCells) {
-            final int start = getCellStart(cell) - cellSpacing;
-            final int end = getCellEnd(cell) + cellSpacing;
+            final int start = getCellStart(cell);
+            final int end = getCellEnd(cell);
 
             if (start >= 0 && end <= size) {
-                final int viewSize = end - start;
-                viewPageDistance += viewSize;
+                final int cellSize = end - start;
+                viewPageDistance += cellSize;
+                numberOfCells++;
             } else if (start < 0 && end > size) {
-                final int viewSize = end - start;
-                return viewSize;
+                final int cellSize = end - start;
+                return cellSize + cellSpacing;
             }
         }
+        viewPageDistance += Math.max(0, numberOfCells -1 ) * cellSpacing;
 
         final boolean calculateFirstView = !mCells.isEmpty() && viewPageDistance == 0;
         if (calculateFirstView) {
             final Cell cell = mCells.get(0);
-            final int start = getCellStart(cell) - cellSpacing;
-            final int end = getCellEnd(cell) + cellSpacing;
+            final int start = getCellStart(cell);
+            final int end = getCellEnd(cell) ;
             viewPageDistance = end - start;
         }
 
-        return viewPageDistance;
+        return viewPageDistance + cellSpacing;
     }
 
     private View getNearestViewToSnapPosition(final int size) {
@@ -338,8 +334,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         int nearestCellDistance = Integer.MAX_VALUE;
 
         for (final Cell currentCell : mCells) {
-            final int cellSpacing = mLayoutManagerAttributes.getCellSpacing();
-            final int currentViewDistance = mSnapPositionInterface.getCellDistanceFromSnapPosition(this, size, currentCell, cellSpacing);
+            final int currentViewDistance = mSnapPositionInterface.getCellDistanceFromSnapPosition(this, size, currentCell);
             final boolean currentViewIsCloser = currentViewDistance < nearestCellDistance;
 
             if (currentViewIsCloser) {
@@ -357,6 +352,10 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     private int setOffset(final int displacement, final int size) {
         final boolean isCircularScroll = mLayoutManagerAttributes.isCircularScroll();
+        final boolean isViewPager = mLayoutManagerAttributes.isViewPager();
+        if (isViewPager){
+
+        }
 
         final int overDrawAdjust = getOverDrawAdjust(isCircularScroll, size, displacement);
         mOffset += displacement + overDrawAdjust;
@@ -364,17 +363,18 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
     private SnapPosition getSnapPosition(final boolean isCircularScroll) {
-        if (isCircularScroll) return SnapPosition.onScreenWithCellSpacing;
+        if (isCircularScroll) return SnapPosition.onScreen;
         return mLayoutManagerAttributes.getSnapPosition();
     }
 
 
     public int getCellSizeTotal() {
-        final int cellSpacing = mLayoutManagerAttributes.getCellSpacing() * 2;
         int viewSizeTotal = 0;
         for (final Cell cell : mCells)
-            viewSizeTotal += getCellSize(cell) + cellSpacing;
-        return viewSizeTotal;
+            viewSizeTotal += getCellSize(cell);
+        final int cellSpacingCount = Math.max(0,mCells.size() -1);
+        final int cellSpacing = getCellSpacing();
+        return viewSizeTotal + cellSpacingCount * cellSpacing;
     }
 
     private int getOverDrawAdjust(final boolean isCircularScroll, final int size, final int displacement) {
@@ -399,7 +399,6 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
 
     private int getMoveBackwardOverDrawAdjust(final int size, final int displacement) {
-        final int cellSpacing = mLayoutManagerAttributes.getCellSpacing();
         final int index = mCells.size() - 1;
 
         final Cell cell = mCells.get(index);
@@ -411,7 +410,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             return 0;
         }
 
-        final int drawLimit = mSnapPositionInterface.getDrawLimitMoveBackwardOverDrawAdjust(this, mCells, size, cell, cellSpacing);
+        final int drawLimit = mSnapPositionInterface.getDrawLimitMoveBackwardOverDrawAdjust(this, mCells, size, cell);
 
         final int startMostPixel = getCellStart(cell) + displacement;
         final boolean isOverDrawn = startMostPixel < drawLimit;
@@ -435,7 +434,6 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     private int getMoveForwardOverDrawAdjust(final int size, final int displacement) {
 
-        final int cellSpacing = mLayoutManagerAttributes.getCellSpacing();
         final int index = 0;
         final Cell cell = mCells.get(index);
 
@@ -447,7 +445,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             return 0;
         }
 
-        final int drawLimit = mSnapPositionInterface.getDrawLimitMoveForwardOverDrawAdjust(this, mCells, size, cell, cellSpacing);
+        final int drawLimit = mSnapPositionInterface.getDrawLimitMoveForwardOverDrawAdjust(this, mCells, size, cell);
 
         final int endMostPixel = getCellEnd(cell) + displacement;
         final boolean isOverDrawn = endMostPixel > drawLimit;
@@ -473,7 +471,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         if (mCells.size() == 0) return null;
 
         final SnapPosition snapPosition = mLayoutManagerAttributes.getSnapPosition();
-        final boolean snapPositionIsOnScreen = snapPosition == SnapPosition.onScreen || snapPosition == SnapPosition.onScreenWithCellSpacing;
+        final boolean snapPositionIsOnScreen = snapPosition == SnapPosition.onScreen;
         if (snapPositionIsOnScreen) return null;
 
         final View nearestView = getNearestViewToSnapPosition(size);
@@ -485,8 +483,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
     public int getSnapToPixelDistance(final int size, final View view) {
-        final int cellSpacing = mLayoutManagerAttributes.getCellSpacing();
-        return mSnapPositionInterface.getSnapToPixelDistance(this, mScrollDirectionManager, size, view, cellSpacing);
+        return mSnapPositionInterface.getSnapToPixelDistance(this, mScrollDirectionManager, size, view);
     }
 
 
@@ -506,13 +503,13 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         int endCellPosition = mStartCellPosition;
 
         for (final Cell cell : new ArrayList<Cell>(mCells)) {
-            final int cellStart = currentOffset + cellSpacing;
+            final int cellStart = currentOffset;
             final int cellSize = getCellSize(cell);
             final int cellEnd = cellStart + cellSize;
 
-            currentOffset = cellEnd;
-            final boolean cellIsOffScreenBehind = currentOffset < centerOffset;
-            final boolean cellIsOffScreenAhead = cellStart - cellSpacing > size + centerOffset;
+            currentOffset = cellEnd + cellSpacing;
+            final boolean cellIsOffScreenBehind = cellEnd < centerOffset;
+            final boolean cellIsOffScreenAhead = cellStart > size + centerOffset;
 
             if (cellIsOffScreenBehind) {
                 mOffset = currentOffset;
@@ -556,12 +553,12 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
             final Cell cell = getCell(firstAdapterPosition);
 
-            final int cellStart = currentOffset + cellSpacing;
+            final int cellStart = currentOffset;
             final int cellSize = getCellSize(cell);
             final int cellEnd = cellStart + cellSize;
-            currentOffset = cellEnd;
+            currentOffset = cellEnd + cellSpacing;
 
-            final boolean removeCell = currentOffset < centerOffset;
+            final boolean removeCell = cellEnd < centerOffset;
 
             if (removeCell) {
                 mOffset = currentOffset;
@@ -604,12 +601,12 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
             final Cell cell = getCell(adapterPosition);
 
-            final int cellEnd = currentOffset;
+            final int cellEnd = currentOffset - cellSpacing;
             final int cellSize = getCellSize(cell);
             final int cellStart = cellEnd - cellSize;
-            currentOffset = cellStart - cellSpacing;
+            currentOffset = cellStart;
 
-            final boolean cellIsOnScreen = currentOffset <= size + centerOffset;
+            final boolean cellIsOnScreen = cellStart <= size + centerOffset;
 
             if (cellIsOnScreen) {
                 layoutCell(cell, cellStart, cellEnd, cellPosition, breadth, cellSpacing);
@@ -823,9 +820,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
             final View outgoingView = getDrawnView(outgoingPosition);
             final View incomingView = getView(incomingPosition);
-            final int cellSpacing = mLayoutManagerAttributes.getCellSpacing();
 
-            mOffset = mSnapPositionInterface.getRedrawOffset(mScrollDirectionManager, incomingView, outgoingView, cellSpacing);
+            mOffset = mSnapPositionInterface.getRedrawOffset(mScrollDirectionManager, incomingView, outgoingView);
 
             mStartCellPosition = getCellPosition(incomingPosition);
 
@@ -966,7 +962,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         }
         for (final View view : mPositions.keySet()) {
             final Integer viewPosition = mPositions.get(view);
-            if (viewPosition == position){
+            if (viewPosition == position) {
                 return view;
             }
         }

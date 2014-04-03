@@ -42,7 +42,7 @@ public class GridPatternLayoutManagerTest {
 
     @Before
     public void setup() {
-        attributes = new GridPatternLayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, true, 1f);
+        attributes = new GridPatternLayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreen, CELL_SPACING, true, true, true, 1f);
         listLayoutManager = new GridPatternLayoutManager(mViewGroup, null, adapterViewManager, attributes);
         mTestAdapter = new TestAdapter(VIEW_SIZE);
         adapterViewManager.setAdapter(mTestAdapter);
@@ -95,9 +95,9 @@ public class GridPatternLayoutManagerTest {
         View secondView = mViewGroup.mViews.get(1);
         View thirdView = mViewGroup.mViews.get(2);
 
-        assertThat(firstView.getTop()).isEqualTo(10);
-        assertThat(secondView.getTop()).isEqualTo(10);
-        assertThat(thirdView.getTop()).isEqualTo(165);
+        assertThat(firstView.getTop()).isEqualTo(0);
+        assertThat(secondView.getTop()).isEqualTo(00);
+        assertThat(thirdView.getTop()).isEqualTo(155);
 
         assertThat(firstView.getLeft()).isEqualTo(0);
         assertThat(secondView.getLeft()).isEqualTo(155);
@@ -162,7 +162,7 @@ public class GridPatternLayoutManagerTest {
 
         View firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(10);
+        assertThat(firstView.getTop()).isEqualTo(0);
 
     }
 
@@ -181,7 +181,7 @@ public class GridPatternLayoutManagerTest {
 
         View firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(145);
+        assertThat(firstView.getTop()).isEqualTo(155);
     }
 
     @Test
@@ -194,7 +194,7 @@ public class GridPatternLayoutManagerTest {
 
         View firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(10);
+        assertThat(firstView.getTop()).isEqualTo(0);
 
         int displacement = -10;
         animation.newAnimation();
@@ -203,7 +203,7 @@ public class GridPatternLayoutManagerTest {
 
         firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(10);
+        assertThat(firstView.getTop()).isEqualTo(0);
 
     }
 
@@ -222,7 +222,7 @@ public class GridPatternLayoutManagerTest {
 
         View firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(145);
+        assertThat(firstView.getTop()).isEqualTo(155);
 
 
     }
@@ -236,14 +236,14 @@ public class GridPatternLayoutManagerTest {
         animation.setDisplacement(-20);
         doLayout(animation);
 
-        View firstView = mViewGroup.mViews.get(3);
-        View secondView = mViewGroup.mViews.get(4);
+        View fourthView = mViewGroup.mViews.get(3);
+        View fifthView = mViewGroup.mViews.get(4);
 
-        assertThat(firstView.getTop()).isEqualTo(300);
-        assertThat(secondView.getTop()).isEqualTo(300);
+        assertThat(fourthView.getTop()).isEqualTo(290);
+        assertThat(fifthView.getTop()).isEqualTo(290);
 
-        assertThat(firstView.getLeft()).isEqualTo(0);
-        assertThat(secondView.getLeft()).isEqualTo(155);
+        assertThat(fourthView.getLeft()).isEqualTo(0);
+        assertThat(fifthView.getLeft()).isEqualTo(155);
     }
 
     @Test
@@ -264,12 +264,12 @@ public class GridPatternLayoutManagerTest {
 
         assertThat(firstView.getLeft()).isEqualTo(0);
         assertThat(firstView.getRight()).isEqualTo(300);
-        assertThat(firstView.getTop()).isEqualTo(5);
-        assertThat(firstView.getBottom()).isEqualTo(150);
+        assertThat(firstView.getTop()).isEqualTo(-5);
+        assertThat(firstView.getBottom()).isEqualTo(140);
         assertThat(secondView.getLeft()).isEqualTo(0);
         assertThat(secondView.getRight()).isEqualTo(145);
-        assertThat(secondView.getTop()).isEqualTo(160);
-        assertThat(secondView.getBottom()).isEqualTo(305);
+        assertThat(secondView.getTop()).isEqualTo(150);
+        assertThat(secondView.getBottom()).isEqualTo(295);
 
         displacement = -displacement;
         animation.newAnimation();
@@ -283,18 +283,18 @@ public class GridPatternLayoutManagerTest {
         View thirdView = mViewGroup.mViews.get(2);
         assertThat(firstView.getLeft()).isEqualTo(0);
         assertThat(firstView.getRight()).isEqualTo(145);
-        assertThat(firstView.getTop()).isEqualTo(10);
-        assertThat(firstView.getBottom()).isEqualTo(155);
+        assertThat(firstView.getTop()).isEqualTo(0);
+        assertThat(firstView.getBottom()).isEqualTo(145);
 
         assertThat(secondView.getLeft()).isEqualTo(155);
         assertThat(secondView.getRight()).isEqualTo(300);
-        assertThat(secondView.getTop()).isEqualTo(10);
-        assertThat(secondView.getBottom()).isEqualTo(155);
+        assertThat(secondView.getTop()).isEqualTo(0);
+        assertThat(secondView.getBottom()).isEqualTo(145);
 
         assertThat(thirdView.getLeft()).isEqualTo(0);
         assertThat(thirdView.getRight()).isEqualTo(300);
-        assertThat(thirdView.getTop()).isEqualTo(165);
-        assertThat(thirdView.getBottom()).isEqualTo(310);
+        assertThat(thirdView.getTop()).isEqualTo(155);
+        assertThat(thirdView.getBottom()).isEqualTo(300);
     }
 
     private void doLayout() {

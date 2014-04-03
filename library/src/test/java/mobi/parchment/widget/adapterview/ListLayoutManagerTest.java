@@ -74,10 +74,10 @@ public class ListLayoutManagerTest {
         doLayout(new Animation());
         final View firstView = mViewGroup.mViews.get(0);
         final View secondView = mViewGroup.mViews.get(1);
-        assertThat(firstView.getLeft()).isEqualTo(CELL_SPACING);
-        assertThat(firstView.getRight()).isEqualTo(CELL_SPACING + VIEW_SIZE);
-        assertThat(secondView.getLeft()).isEqualTo(CELL_SPACING + VIEW_SIZE + CELL_SPACING);
-        assertThat(secondView.getRight()).isEqualTo(CELL_SPACING + VIEW_SIZE + CELL_SPACING + VIEW_SIZE);
+        assertThat(firstView.getLeft()).isEqualTo(0);
+        assertThat(firstView.getRight()).isEqualTo(VIEW_SIZE);
+        assertThat(secondView.getLeft()).isEqualTo(VIEW_SIZE + CELL_SPACING);
+        assertThat(secondView.getRight()).isEqualTo(VIEW_SIZE + CELL_SPACING + VIEW_SIZE);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class ListLayoutManagerTest {
         doLayout(animation);
 
         final View firstView = mViewGroup.forPosition(0);
-        assertThat(firstView.getLeft()).isEqualTo(-20 + CELL_SPACING);
+        assertThat(firstView.getLeft()).isEqualTo(-20 );
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ListLayoutManagerTest {
         doLayout();
 
         final View firstView = mViewGroup.forPosition(0);
-        assertThat(firstView.getLeft()).isEqualTo(CELL_SPACING);
+        assertThat(firstView.getLeft()).isEqualTo(0);
     }
 
 
@@ -163,7 +163,7 @@ public class ListLayoutManagerTest {
         doLayout(animation);
 
         View firstView = mViewGroup.forPosition(0);
-        assertThat(firstView.getLeft()).isEqualTo(CELL_SPACING);
+        assertThat(firstView.getLeft()).isEqualTo(0);
     }
 
     private void doLayout() {

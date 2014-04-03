@@ -6,7 +6,7 @@
         android:id="@+id/parchment_view"
         parchment:cellSpacing="20dp"
         parchment:orientation="horizontal"
-        parchment:snapPosition="onScreenWithCellSpacing"
+        parchment:snapPosition="onScreen"
         parchment:snapToPosition="true"
         parchment:gravity="top"
         android:scrollbars="horizontal"

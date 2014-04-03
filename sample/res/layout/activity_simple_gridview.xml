@@ -8,7 +8,7 @@
         parchment:cellSpacing="20dp"
         parchment:orientation="vertical"
         parchment:gravity="top"
-        parchment:snapPosition="onScreenWithCellSpacing"
+        parchment:snapPosition="onScreen"
         android:scrollbars="vertical"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_width="match_parent"

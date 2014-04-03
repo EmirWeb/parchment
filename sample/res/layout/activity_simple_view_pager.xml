@@ -6,7 +6,7 @@
         android:id="@+id/parchment_view"
         parchment:cellSpacing="20dp"
         parchment:orientation="vertical"
-        parchment:snapPosition="floatStartWithCellSpacing"
+        parchment:snapPosition="floatStart"
         parchment:snapToPosition="true"
         parchment:gravity="top"
         parchment:isViewPager="true"

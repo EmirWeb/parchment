@@ -5,11 +5,8 @@ import android.view.ViewGroup;
 
 import mobi.parchment.widget.adapterview.snapposition.CenterSnapPosition;
 import mobi.parchment.widget.adapterview.snapposition.EndSnapPosition;
-import mobi.parchment.widget.adapterview.snapposition.EndWithCellSpacingSnapPosition;
 import mobi.parchment.widget.adapterview.snapposition.OnScreenSnapPosition;
-import mobi.parchment.widget.adapterview.snapposition.OnScreenWithCellSpacingSnapPosition;
 import mobi.parchment.widget.adapterview.snapposition.StartSnapPosition;
-import mobi.parchment.widget.adapterview.snapposition.StartWithCellSpacingSnapPosition;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +44,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testCenterDisplacementNegative() {
         final CenterSnapPosition<Cell> snapPosition = new CenterSnapPosition();
         final Cell cell = new Cell(50, 100);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(-25);
     }
 
@@ -55,7 +52,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testCenterDisplacementIs0() {
         final CenterSnapPosition<Cell> snapPosition = new CenterSnapPosition();
         final Cell cell = new Cell(25, 75);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(0);
     }
 
@@ -63,7 +60,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testCenterDisplacementIsPositive() {
         final CenterSnapPosition<Cell> snapPosition = new CenterSnapPosition();
         final Cell cell = new Cell(0, 50);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(25);
     }
 
@@ -72,7 +69,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testStartDisplacementIsNegative() {
         final StartSnapPosition<Cell> snapPosition = new StartSnapPosition();
         final Cell cell = new Cell(75, 100);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(-75);
     }
 
@@ -80,7 +77,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testStartDisplacementIs0() {
         final StartSnapPosition<Cell> snapPosition = new StartSnapPosition();
         final Cell cell = new Cell(0, 25);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(0);
     }
 
@@ -88,31 +85,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testStartDisplacementIsPositive() {
         final StartSnapPosition<Cell> snapPosition = new StartSnapPosition();
         final Cell cell = new Cell(-10, 15);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(10);
-    }
-
-    @Test
-    public void testStartWithCellSpacingDisplacementIsNegative() {
-        final StartWithCellSpacingSnapPosition<Cell> snapPosition = new StartWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(75, 100);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(-65);
-    }
-
-    @Test
-    public void testStartWithCellSpacingDisplacementIs0() {
-        final StartWithCellSpacingSnapPosition<Cell> snapPosition = new StartWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(10, 35);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(0);
-    }
-
-    @Test
-    public void testStartWithCellSpacingDisplacementIsPositive() {
-        final StartWithCellSpacingSnapPosition<Cell> snapPosition = new StartWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(0, 25);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(10);
     }
 
@@ -120,7 +93,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testEndDisplacementIsNegative() {
         final EndSnapPosition<Cell> snapPosition = new EndSnapPosition();
         final Cell cell = new Cell(85,110);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(-10);
     }
 
@@ -128,7 +101,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testEndDisplacementIs0() {
         final EndSnapPosition<Cell> snapPosition = new EndSnapPosition();
         final Cell cell = new Cell(75,100);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(0);
     }
 
@@ -136,63 +109,15 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testEndDisplacementIsPositive() {
         final EndSnapPosition<Cell> snapPosition = new EndSnapPosition();
         final Cell cell = new Cell(65,90);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(10);
-    }
-
-    @Test
-    public void testEndWithCellSpacingDisplacementIsNegative() {
-        final EndWithCellSpacingSnapPosition<Cell> snapPosition = new EndWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(75,100);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(-10);
-    }
-
-    @Test
-    public void testEndWithCellSpacingDisplacementIs0() {
-        final EndWithCellSpacingSnapPosition<Cell> snapPosition = new EndWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(65,90);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(0);
-    }
-
-    @Test
-    public void testEndWithCellSpacingDisplacementIsPositive() {
-        final EndWithCellSpacingSnapPosition<Cell> snapPosition = new EndWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(55,80);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(10);
-    }
-
-    @Test
-    public void testOnScreenWithCellSpacingDisplacementIsNegative() {
-        final OnScreenWithCellSpacingSnapPosition<Cell> snapPosition = new OnScreenWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(90, 100);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(-10);
-    }
-
-    @Test
-    public void testOnScreenWithCellSpacingDisplacementIs0() {
-        final OnScreenWithCellSpacingSnapPosition<Cell> snapPosition = new OnScreenWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(65, 90);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(0);
-    }
-
-    @Test
-    public void testOnScreenWithCellSpacingDisplacementIsPositive() {
-        final OnScreenWithCellSpacingSnapPosition<Cell> snapPosition = new OnScreenWithCellSpacingSnapPosition();
-        final Cell cell = new Cell(-10,10);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
-        assertThat(displacement).isEqualTo(20);
     }
 
     @Test
     public void testOnScreenDisplacementIsNegative() {
         final OnScreenSnapPosition<Cell> snapPosition = new OnScreenSnapPosition();
         final Cell cell = new Cell(90, 110);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(-10);
     }
 
@@ -200,11 +125,11 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testOnScreenDisplacementIs0() {
         final OnScreenSnapPosition<Cell> snapPosition = new OnScreenSnapPosition();
         Cell cell = new Cell(65, 100);
-        int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(0);
 
         cell = new Cell(0, 10);
-        displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(0);
     }
 
@@ -212,7 +137,7 @@ public class getCellCisplacementFromSnapPositionTests {
     public void testOnScreenDisplacementIsPositive() {
         final OnScreenSnapPosition<Cell> snapPosition = new OnScreenSnapPosition();
         final Cell cell = new Cell(-10,10);
-        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell, 10);
+        final int displacement = snapPosition.getCellDisplacementFromSnapPosition(mLayoutManager, 100, cell);
         assertThat(displacement).isEqualTo(10);
     }
 

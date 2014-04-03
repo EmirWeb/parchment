@@ -14,19 +14,19 @@ import java.util.List;
 public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
 
     @Override
-    public int getDrawLimitMoveForwardOverDrawAdjust(final LayoutManager<Cell> layoutManager, final List<Cell> cells, final int size, final Cell cell, final int cellSpacing) {
+    public int getDrawLimitMoveForwardOverDrawAdjust(final LayoutManager<Cell> layoutManager, final List<Cell> cells, final int size, final Cell cell) {
         final int cellSize = layoutManager.getCellSize(cell);
         return (size + cellSize) / 2;
     }
 
     @Override
-    public int getDrawLimitMoveBackwardOverDrawAdjust(LayoutManager<Cell> layoutManager, List<Cell> cells, int size, Cell cell, int cellSpacing) {
+    public int getDrawLimitMoveBackwardOverDrawAdjust(LayoutManager<Cell> layoutManager, List<Cell> cells, int size, Cell cell) {
         final int cellSize = layoutManager.getCellSize(cell);
         return (size - cellSize) / 2;
     }
 
     @Override
-    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell, int cellSpacing) {
+    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
         final int currentCellCenter = layoutManager.getCellCenter(cell);
         final int center = size / 2;
         final int displacement = center - currentCellCenter;
@@ -34,13 +34,13 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getCellDistanceFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell cell, final int cellSpacing) {
-        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell, cellSpacing);
+    public int getCellDistanceFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell cell) {
+        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell);
         return Math.abs(displacement);
     }
 
     @Override
-    public int getSnapToPixelDistance(LayoutManager<Cell> layoutManager, ScrollDirectionManager scrollDirectionManager, int size, View view, int cellSpacing) {
+    public int getSnapToPixelDistance(LayoutManager<Cell> layoutManager, ScrollDirectionManager scrollDirectionManager, int size, View view) {
         final int viewSize = scrollDirectionManager.getViewSize(view);
         final int startPixel = scrollDirectionManager.getViewStart(view);
 
@@ -48,18 +48,18 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getRedrawOffset(final ScrollDirectionManager scrollDirectionManager, final View incomingView, final View outgoingView, final int cellSpacing) {
+    public int getRedrawOffset(final ScrollDirectionManager scrollDirectionManager, final View incomingView, final View outgoingView) {
         final int outgoingViewStart = scrollDirectionManager.getViewStart(outgoingView);
         final int incomingViewSize = scrollDirectionManager.getViewSize(incomingView);
         final int outgoingViewSize = scrollDirectionManager.getViewSize(outgoingView);
         final int viewDifference = (outgoingViewSize - incomingViewSize) / 2;
 
-        return outgoingViewStart + viewDifference - cellSpacing;
+        return outgoingViewStart + viewDifference;
     }
 
     @Override
-    public int getAbsoluteSnapPosition(final int size, final int cellSpacing, final int cellSize, final Move move) {
+    public int getAbsoluteSnapPosition(final int size, final int cellSize, final Move move) {
         final int snapPosition = (size - cellSize) / 2;
-        return snapPosition - cellSpacing;
+        return snapPosition;
     }
 }

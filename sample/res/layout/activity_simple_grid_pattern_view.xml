@@ -4,7 +4,7 @@
         xmlns:parchment="http://schemas.android.com/apk/res/mobi.parchment"
         parchment:cellSpacing="@dimen/activity_simple_grid_definition_view_cell_spacing"
         parchment:orientation="horizontal"
-        parchment:snapPosition="onScreenWithCellSpacing"
+        parchment:snapPosition="onScreen"
         parchment:ratio="1.618"
         android:scrollbars="horizontal"
         android:scrollbarAlwaysDrawHorizontalTrack="true"

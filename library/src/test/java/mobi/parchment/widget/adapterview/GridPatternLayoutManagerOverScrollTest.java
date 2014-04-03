@@ -43,7 +43,7 @@ public class GridPatternLayoutManagerOverScrollTest {
 
     @Before
     public void setup() {
-        attributes = new GridPatternLayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreenWithCellSpacing, CELL_SPACING, true, true, true, 1f);
+        attributes = new GridPatternLayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreen, CELL_SPACING, true, true, true, 1f);
         listLayoutManager = new GridPatternLayoutManager(mViewGroup, null, adapterViewManager, attributes);
         mTestAdapter = new TestAdapter(VIEW_SIZE);
         adapterViewManager.setAdapter(mTestAdapter);
@@ -85,7 +85,7 @@ public class GridPatternLayoutManagerOverScrollTest {
         assertThat(mViewGroup.mViews.size()).isEqualTo(2);
 
         View firstView = mViewGroup.mViews.get(0);
-        assertThat(firstView.getTop()).isEqualTo(10);
+        assertThat(firstView.getTop()).isEqualTo(0);
 
 
         int displacement = -1300;
@@ -97,8 +97,8 @@ public class GridPatternLayoutManagerOverScrollTest {
 
         firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(-20);
-        assertThat(firstView.getBottom()).isEqualTo(90);
+        assertThat(firstView.getTop()).isEqualTo(-10);
+        assertThat(firstView.getBottom()).isEqualTo(100);
 
         displacement = -50;
         animation.newAnimation();
@@ -107,8 +107,8 @@ public class GridPatternLayoutManagerOverScrollTest {
 
         firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(-20);
-        assertThat(firstView.getBottom()).isEqualTo(90);
+        assertThat(firstView.getTop()).isEqualTo(-10);
+        assertThat(firstView.getBottom()).isEqualTo(100);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class GridPatternLayoutManagerOverScrollTest {
         final View lastView = mViewGroup.mViews.get(mViewGroup.mViews.size() - 1);
 
         assertThat(mViewGroup.mViews.size()).isEqualTo(2);
-        assertThat(lastView.getBottom()).isEqualTo(90);
+        assertThat(lastView.getBottom()).isEqualTo(100);
     }
 
     private void doLayout() {
