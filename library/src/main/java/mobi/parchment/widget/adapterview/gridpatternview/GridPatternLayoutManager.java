@@ -102,7 +102,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
     }
 
     @Override
-    public GridPatternGroup getCell(final int adapterPosition) {
+    protected GridPatternGroup getCell(final int adapterPosition) {
         final GridPatternGroupDefinition gridPatternGroupDefinition = getGridPatternGroupDefinition(adapterPosition);
         final ViewGroup viewGroup = getViewGroup();
         final int cellSpacing = getCellSpacing();

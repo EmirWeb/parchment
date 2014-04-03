@@ -134,7 +134,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     public abstract List<View> getViews(final Cell cell);
 
-    public abstract Cell getCell(final int adapterPosition);
+    protected abstract Cell getCell(final int adapterPosition);
 
     public abstract void layoutCell(final Cell cell, final int cellStart, final int cellEnd, final int firstAdapterPositionInCell, final int breadth, final int cellSpacing);
 
@@ -756,7 +756,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             mSelectedPositionManager.setSelectedPosition(lastItemIndex);
     }
 
-    public View getView(final int position) {
+    private View getView(final int position) {
         final boolean isPositionBeingDrawn = isPositionBeingDrawn(position);
         if (isPositionBeingDrawn) return getDrawnView(position);
 
@@ -923,7 +923,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             return 0;
         }
 
-        final Cell cell = getCell(mStartCellPosition);
+        final Cell cell = mCells.get(0);
         final float totalCellCount = getCellCount();
         final float averageVisibleCellSize = mLayoutSize / mLayoutCellCount;
         final float maxAverageCellSize = MAX / totalCellCount;
@@ -938,4 +938,19 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             return maxAverageCellSize * startPosition - offset * ratio;
         }
     }
+
+    public View getViewForPosition(final int position) {
+        if (!mPositions.containsValue(position)) {
+            return null;
+        }
+        for (final View view : mPositions.keySet()) {
+            final Integer viewPosition = mPositions.get(view);
+            if (viewPosition == position){
+                return view;
+            }
+        }
+
+        return null;
+    }
+
 }

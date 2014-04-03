@@ -151,7 +151,7 @@ public class ListLayoutManager extends LayoutManager<View> {
 
 
     @Override
-    public View getCell(int adapterPosition) {
+    protected View getCell(int adapterPosition) {
         final AdapterViewManager adapterViewManager = getAdapterViewManager();
         final int horizontalMeasureSpec = getHorizontalMeasureSpec();
         final int verticalMeasureSpec = getVerticalMeasureSpec();

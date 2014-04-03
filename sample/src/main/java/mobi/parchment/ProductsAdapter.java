@@ -25,7 +25,7 @@ public class ProductsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return Math.max(0,mProducts.size() -2) ;
+        return Math.max(0,mProducts.size() - 2) ;
     }
 
     @Override
@@ -35,8 +35,7 @@ public class ProductsAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(final int position) {
-        final Product product = (Product) getItem(position);
-        return product.mId;
+        return position;
     }
 
     @Override

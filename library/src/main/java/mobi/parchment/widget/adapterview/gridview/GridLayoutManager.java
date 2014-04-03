@@ -176,7 +176,7 @@ public class GridLayoutManager extends LayoutManager<Group> {
     }
 
     @Override
-    public Group getCell(final int adapterPosition) {
+    protected Group getCell(final int adapterPosition) {
         final int verticalMeasureSpec = getVerticalMeasureSpec();
         final int horizontalMeasureSpec = getHorizontalMeasureSpec();
         final int adapterCount = getAdapterCount();

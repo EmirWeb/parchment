@@ -92,7 +92,7 @@ public abstract class AbstractAdapterView<ADAPTER extends Adapter, Cell> extends
         if (selectedPosition == INVALID_POSITION) {
             return null;
         }
-        return layoutManager.getView(selectedPosition);
+        return layoutManager.getViewForPosition(selectedPosition);
     }
 
     @Override
