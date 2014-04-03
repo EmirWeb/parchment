@@ -33,7 +33,7 @@ public class GridPatternLayoutManagerOverScrollTest {
 
     public static final int VIEW_GROUP_WIDTH = 230;
     public static final int VIEW_GROUP_HEIGHT = 100;
-    public static final int VIEW_SIZE = 100;
+    public static final int VIEW_SIZE = 110;
     public static final int CELL_SPACING = 10;
     final MyViewGroup mViewGroup = new MyViewGroup(Robolectric.application);
     final AdapterViewManager adapterViewManager = new AdapterViewManager();
@@ -97,7 +97,7 @@ public class GridPatternLayoutManagerOverScrollTest {
 
         firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(-10);
+        assertThat(firstView.getTop()).isEqualTo(-20);
         assertThat(firstView.getBottom()).isEqualTo(90);
 
         displacement = -50;
@@ -107,7 +107,7 @@ public class GridPatternLayoutManagerOverScrollTest {
 
         firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(-10);
+        assertThat(firstView.getTop()).isEqualTo(-20);
         assertThat(firstView.getBottom()).isEqualTo(90);
     }
 

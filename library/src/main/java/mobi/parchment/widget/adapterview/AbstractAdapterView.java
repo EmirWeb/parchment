@@ -95,6 +95,7 @@ public abstract class AbstractAdapterView<ADAPTER extends Adapter, Cell> extends
         return layoutManager.getViewForPosition(selectedPosition);
     }
 
+
     @Override
     public long getSelectedItemId() {
         final Adapter adapter = getAdapter();
@@ -146,7 +147,7 @@ public abstract class AbstractAdapterView<ADAPTER extends Adapter, Cell> extends
 
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
         if (layoutManager != null) {
-            layoutManager.measure(this);
+            layoutManager.measure(this, widthMeasureSpec, heightMeasureSpec);
         }
     }
 

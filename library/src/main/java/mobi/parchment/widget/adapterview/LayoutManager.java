@@ -44,6 +44,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     protected final List<Cell> mCells = new ArrayList<Cell>();
     private final SnapPositionInterface<Cell> mSnapPositionInterface;
     private View mPressedView;
+    private int mWidthMeasureSpec;
+    private int mHeightMeasureSpec;
 
     public LayoutManager(final ViewGroup viewGroup, final OnSelectedListener onSelectedListener, final AdapterViewManager adapterViewManager, final LayoutManagerAttributes layoutManagerAttributes) {
         super(adapterViewManager);
@@ -60,6 +62,14 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     public int getSelectedPosition(){
         return mSelectedPositionManager.getSelectedPosition();
+    }
+
+    public int getWidthMeasureSpec(){
+        return mWidthMeasureSpec;
+    }
+
+    public int getHeightMeasureSpec(){
+        return mHeightMeasureSpec;
     }
 
     private SnapPositionInterface<Cell> getSnapPositionInterface(final SnapPosition snapPosition) {
@@ -114,7 +124,9 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         mCells.clear();
     }
 
-    public void measure(final ViewGroup viewGroup) {
+    public void measure(final ViewGroup viewGroup, final int widthMeasureSpec, final int heightMeasureSpec) {
+        mWidthMeasureSpec = widthMeasureSpec;
+        mHeightMeasureSpec = heightMeasureSpec;
         for (final Cell cell : mCells) {
             measure(cell, viewGroup);
         }

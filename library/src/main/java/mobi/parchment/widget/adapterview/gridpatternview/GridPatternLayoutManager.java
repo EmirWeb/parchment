@@ -85,10 +85,6 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
 
     @Override
     public int getCellSize(final GridPatternGroup gridPatternGroup) {
-        final GridPatternGroupDefinition gridPatternGroupDefinition = gridPatternGroup.getGridPatternGroupDefinition();
-        final ViewGroup viewGroup = getViewGroup();
-        final int cellSpacing = mGridPatternLayoutManagerAttributes.getCellSpacing();
-        final float ratio = mGridPatternLayoutManagerAttributes.getRatio();
         if (isVerticalScroll()) {
             return gridPatternGroup.getHeight();
         }
@@ -230,7 +226,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
 
             final int viewBreadth = getViewBreadth(gridPatternGroupDefinition, gridPatternItemDefinition, cellSpacing);
             final int gridItemBreadthStartOffset = getGridItemBreadthStartOffset(gridPatternGroupDefinition, gridPatternItemDefinition, cellSpacing);
-            final int viewBreadthStart = gridItemBreadthStartOffset + cellSpacing;
+            final int viewBreadthStart = gridItemBreadthStartOffset ;
             final int viewBreadthEnd = viewBreadthStart + viewBreadth;
 
             final boolean isSelected = isViewSelected(adapterPosition++);
