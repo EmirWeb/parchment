@@ -895,6 +895,10 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
     public float getExtent() {
+        if (mAdapterViewManager.getAdapterCount() == 0 || mCells.isEmpty()) {
+            return 0;
+        }
+
         final float averageVisibleCellSize = mLayoutSize / mLayoutCellCount;
         final float totalCellCount = getCellCount();
         final float maxAverageCellSize = MAX / totalCellCount;
@@ -907,7 +911,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
     public float getRange() {
-        if (mAdapterViewManager.getAdapterCount() == 0) {
+        if (mAdapterViewManager.getAdapterCount() == 0 || mCells.isEmpty()) {
             return 0;
         }
 
@@ -919,7 +923,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
     public float getOffset() {
-        if (mAdapterViewManager.getAdapterCount() == 0) {
+        if (mAdapterViewManager.getAdapterCount() == 0 || mCells.isEmpty()) {
             return 0;
         }
 

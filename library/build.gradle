@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         versionCode 3
-        versionName "1.6.2"
+        versionName "1.6.3"
         minSdkVersion 8
         targetSdkVersion 18
     }
