@@ -8,7 +8,6 @@ import mobi.parchment.widget.adapterview.gridview.GridView;
 
 public class SimpleGridViewActivity extends BaseActivity {
 
-	private GridView<BaseAdapter> mGridView;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -16,13 +15,8 @@ public class SimpleGridViewActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_simple_gridview);
 		
-		mGridView = (GridView<BaseAdapter>) findViewById(R.id.parchment_view);
-		mGridView.setAdapter(getProductsAdapter());
+		final GridView gridView = (GridView<BaseAdapter>) findViewById(R.id.parchment_view);
+		gridView.setAdapter(getProductsAdapter());
 	}
-
-    @Override
-    public AdapterView<?> getAdapterView() {
-        return mGridView;
-    }
 
 }

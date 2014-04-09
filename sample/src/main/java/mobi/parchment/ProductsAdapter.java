@@ -13,24 +13,54 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobi.parchment.model.Product;
-import mobi.parchment.model.Products;
+import mobi.parchment.models.Picture;
 
 /**
  * Created by Emir Hasanbegovic on 2014-03-21.
  */
 public class ProductsAdapter extends BaseAdapter {
 
-    private List<Product> mProducts = new ArrayList<Product>();
+    public ProductsAdapter() {
+        super();
+        mPictures = getPictures();
+    }
+
+    public static List<Picture> getPictures() {
+        final List<Picture> pictures = new ArrayList<Picture>();
+        pictures.add(new Picture("https://i.imgur.com/8LOZwbE.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/EfLvmlO.png", "Cheetahs"));
+        pictures.add(new Picture("https://i.imgur.com/VfH1siL.png", "Cloud Break"));
+        pictures.add(new Picture("https://i.imgur.com/rmU8E53.png", "Lighthouse"));
+        pictures.add(new Picture("https://i.imgur.com/qZCCdFW.png", "Uluru"));
+        pictures.add(new Picture("https://i.imgur.com/zkt4IEl.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/xL9BSy3.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/lYQPhnY.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/5tM1vxy.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/lUbn6U6.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/fk4l1QY.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/wk49eIK.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/qwz8VUx.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/XR8Dc2D.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/lGBUYjK.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/8AgQWCh.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/YMwlUy3.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/MyWKsZf.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/gTghrcj.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/ePH4nP4.png", "National photo contest"));
+        pictures.add(new Picture("https://i.imgur.com/KVJuX7O.png", "National photo contest"));
+        return pictures;
+    }
+
+    private List<Picture> mPictures = new ArrayList<Picture>();
 
     @Override
     public int getCount() {
-        return Math.max(0,mProducts.size() - 2) ;
+        return Math.max(0, mPictures.size() - 2);
     }
 
     @Override
     public Object getItem(final int position) {
-        return mProducts.get(position);
+        return mPictures.get(position);
     }
 
     @Override
@@ -46,7 +76,7 @@ public class ProductsAdapter extends BaseAdapter {
     private View getView(final Context context, final View convertView, final ViewGroup viewGroup) {
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
-            final View view = layoutInflater.inflate(R.layout.list_item_product, viewGroup, false);
+            final View view = layoutInflater.inflate(R.layout.list_item_picture, viewGroup, false);
             return view;
         }
         return convertView;
@@ -56,32 +86,15 @@ public class ProductsAdapter extends BaseAdapter {
     public View getView(final int position, final View convertView, final ViewGroup parent) {
         final Context context = parent.getContext();
         final View view = getView(context, convertView, parent);
-        final Product product = (Product) getItem(position);
+        final Picture picture = (Picture) getItem(position);
 
-        final ImageView imageView = (ImageView) view.findViewById(R.id.list_item_product_image_view);
+        final ImageView imageView = (ImageView) view.findViewById(R.id.list_item_picture_image_view);
         imageView.setImageBitmap(null);
-        Picasso.with(context).load(product.mImageThumbUrl).into(imageView);
+        Picasso.with(context).load(picture.mUrl).into(imageView);
 
-        final TextView textView= (TextView) view.findViewById(R.id.list_item_product_text_view);
-        textView.setText(product.mName);
+        final TextView textView = (TextView) view.findViewById(R.id.list_item_picture_text_view);
+        textView.setText(picture.mCaption);
         return view;
     }
 
-    public void setProducts(final List<Products> productList) {
-        mProducts = new ArrayList<Product>();
-        if (productList != null) {
-            for (final Products products : productList) {
-                final List<Product> result = products.mResult;
-                if (result != null) {
-                    for (final Product product : new ArrayList<Product>(result)) {
-                        if (product.mImageThumbUrl == null) {
-                            result.remove(product);
-                        }
-                    }
-                    mProducts.addAll(result);
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
 }
