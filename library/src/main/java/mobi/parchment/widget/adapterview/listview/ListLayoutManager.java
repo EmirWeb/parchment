@@ -67,7 +67,7 @@ public class ListLayoutManager extends LayoutManager<View> {
 
     private int getMaxMeasureHeight() {
         final ViewGroup viewGroup = getViewGroup();
-        final int viewGroupMeasuredHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(viewGroup);
+        final int viewGroupMeasuredHeight = ViewGroupUtilities.getViewGroupMeasuredHeightPadding(viewGroup);
         final int maxHeight = viewGroupMeasuredHeight;
         return maxHeight;
     }
@@ -79,7 +79,7 @@ public class ListLayoutManager extends LayoutManager<View> {
 
     private int getMaxMeasureWidth() {
         final ViewGroup viewGroup = getViewGroup();
-        final int viewGroupMeasuredWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
+        final int viewGroupMeasuredWidth = ViewGroupUtilities.getViewGroupMeasuredWidthPadding(viewGroup);
         final int maxWidth = viewGroupMeasuredWidth;
         return maxWidth;
     }

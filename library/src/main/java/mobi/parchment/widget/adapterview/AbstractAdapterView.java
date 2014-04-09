@@ -12,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewConfiguration;
 import android.widget.Adapter;
-import android.widget.AdapterView;
 
 /**
  * Created by Emir Hasanbegovic
@@ -336,19 +335,19 @@ public abstract class AbstractAdapterView<ADAPTER extends Adapter, Cell> extends
     @Override
     protected int computeHorizontalScrollExtent() {
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
-        return (int) layoutManager.getExtent();
+        return (int) layoutManager.getScrollBarExtent();
     }
 
     @Override
     protected int computeHorizontalScrollOffset() {
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
-        return (int) layoutManager.getOffset();
+        return (int) layoutManager.getScrollBarOffset();
     }
 
     @Override
     protected int computeHorizontalScrollRange() {
         final LayoutManager<Cell> layoutManager = mAdapterViewInitializer.getLayoutManager();
-        return (int) layoutManager.getRange();
+        return (int) layoutManager.getScrollBarRange();
     }
 
     @Override

@@ -15,20 +15,23 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
 
     @Override
     public int getDrawLimitMoveForwardOverDrawAdjust(final LayoutManager<Cell> layoutManager, final List<Cell> cells, final int size, final Cell cell) {
+        final int startSizePadding = layoutManager.getStartSizePadding();
         final int cellSize = layoutManager.getCellSize(cell);
-        return (size + cellSize) / 2;
+        return startSizePadding + (size + cellSize) / 2;
     }
 
     @Override
     public int getDrawLimitMoveBackwardOverDrawAdjust(LayoutManager<Cell> layoutManager, List<Cell> cells, int size, Cell cell) {
+        final int startSizePadding = layoutManager.getStartSizePadding();
         final int cellSize = layoutManager.getCellSize(cell);
-        return (size - cellSize) / 2;
+        return startSizePadding + (size - cellSize) / 2;
     }
 
     @Override
     public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
+        final int startSizePadding = layoutManager.getStartSizePadding();
         final int currentCellCenter = layoutManager.getCellCenter(cell);
-        final int center = size / 2;
+        final int center = startSizePadding + size / 2;
         final int displacement = center - currentCellCenter;
         return displacement;
     }
@@ -43,8 +46,9 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     public int getSnapToPixelDistance(LayoutManager<Cell> layoutManager, ScrollDirectionManager scrollDirectionManager, int size, View view) {
         final int viewSize = scrollDirectionManager.getViewSize(view);
         final int startPixel = scrollDirectionManager.getViewStart(view);
+        final int startSizePadding = layoutManager.getStartSizePadding();
 
-        return (size - viewSize) / 2 - startPixel;
+        return startSizePadding + (size - viewSize) / 2 - startPixel;
     }
 
     @Override
@@ -58,8 +62,9 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getAbsoluteSnapPosition(final int size, final int cellSize, final Move move) {
-        final int snapPosition = (size - cellSize) / 2;
+    public int getAbsoluteSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final int cellSize, final Move move) {
+        final int startSizePadding = layoutManager.getStartSizePadding();
+        final int snapPosition = startSizePadding + (size - cellSize) / 2;
         return snapPosition;
     }
 }

@@ -154,12 +154,19 @@ public class GridLayoutManager extends LayoutManager<Group> {
         final int widthMeasureSpec = getWidthMeasureSpec();
         if (isVerticalScroll()) {
             final int numberOfViewsPerCell = getNumberOfViewsPerCell();
-            final int cellSpacingPerView = getCellSpacing() / Math.max(0, numberOfViewsPerCell - 1);
+            final int cellSpacingPerView = getCellSpacingPerView(numberOfViewsPerCell);
             final int maxMeasureHeight = View.MeasureSpec.getSize(widthMeasureSpec) / numberOfViewsPerCell - cellSpacingPerView;
             final int measureSpecMode = View.MeasureSpec.getMode(widthMeasureSpec);
             return View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, measureSpecMode);
         }
         return widthMeasureSpec;
+    }
+
+    private int getCellSpacingPerView(final int numberOfViewsPerCell) {
+        if (numberOfViewsPerCell == 1) {
+            return 0;
+        }
+        return getCellSpacing() / (numberOfViewsPerCell - 1);
     }
 
     private int getChildHeightMeasureSpec() {
@@ -168,7 +175,7 @@ public class GridLayoutManager extends LayoutManager<Group> {
             return heightMeasureSpec;
         }
         final int numberOfViewsPerCell = getNumberOfViewsPerCell();
-        final int cellSpacingPerView = getCellSpacing() / Math.max(0, numberOfViewsPerCell - 1);
+        final int cellSpacingPerView = getCellSpacingPerView(numberOfViewsPerCell);
         final int maxMeasureHeight = View.MeasureSpec.getSize(heightMeasureSpec) / numberOfViewsPerCell - cellSpacingPerView;
         final int measureSpecMode = View.MeasureSpec.getMode(heightMeasureSpec);
         return View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, measureSpecMode);

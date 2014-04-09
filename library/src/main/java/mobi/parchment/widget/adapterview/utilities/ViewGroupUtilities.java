@@ -20,4 +20,20 @@ public class ViewGroupUtilities {
         return viewGroupWidthSize;
     }
 
+    public static int getViewGroupMeasuredWidthPadding(final ViewGroup viewGroup){
+        final int viewGroupHeightMeasureSpec = viewGroup.getMeasuredHeight();
+        final int viewGroupHeightSize = View.MeasureSpec.getSize(viewGroupHeightMeasureSpec);
+        final int paddingRight = viewGroup.getPaddingRight();
+        final int paddingLeft = viewGroup.getPaddingLeft();
+        return viewGroupHeightSize - paddingLeft - paddingRight;
+    }
+
+    public static int getViewGroupMeasuredHeightPadding(final ViewGroup viewGroup){
+        final int viewGroupWidthMeasureSpec = viewGroup.getMeasuredWidth();
+        final int viewGroupWidthSize = View.MeasureSpec.getSize(viewGroupWidthMeasureSpec);
+        final int paddingTop = viewGroup.getPaddingTop();
+        final int paddingBottom = viewGroup.getPaddingBottom();
+        return viewGroupWidthSize - paddingBottom - paddingTop;
+    }
+
 }

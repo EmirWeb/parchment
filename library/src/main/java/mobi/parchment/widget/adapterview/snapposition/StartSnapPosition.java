@@ -15,19 +15,22 @@ public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell> {
 
     @Override
     public int getDrawLimitMoveForwardOverDrawAdjust(final LayoutManager<Cell> layoutManager, final List<Cell> cells, final int size, final Cell cell) {
+        final int startSizePadding = layoutManager.getStartSizePadding();
         final int cellSize = layoutManager.getCellSize(cell);
-        return cellSize;
+        return startSizePadding + cellSize;
     }
 
     @Override
     public int getDrawLimitMoveBackwardOverDrawAdjust(LayoutManager<Cell> layoutManager, List<Cell> cells, int size, Cell cell) {
-        return 0;
+        final int startSizePadding = layoutManager.getStartSizePadding();
+        return startSizePadding;
     }
 
     @Override
     public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
+        final int startSizePadding = layoutManager.getStartSizePadding();
         final int currentCellStart = layoutManager.getCellStart(cell);
-        final int displacement = -currentCellStart;
+        final int displacement = startSizePadding - currentCellStart;
         return displacement;
     }
 
@@ -39,9 +42,10 @@ public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell> {
 
     @Override
     public int getSnapToPixelDistance(LayoutManager<Cell> layoutManager, ScrollDirectionManager scrollDirectionManager, int size, View view) {
+        final int startSizePadding = layoutManager.getStartSizePadding();
         final int startPixel = scrollDirectionManager.getViewStart(view);
 
-        return -startPixel;
+        return startSizePadding - startPixel;
     }
 
     @Override
@@ -51,7 +55,8 @@ public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getAbsoluteSnapPosition(final int size,  final int cellSize, final Move move) {
-        return 0;
+    public int getAbsoluteSnapPosition(final LayoutManager<Cell> layoutManager, final int size,  final int cellSize, final Move move) {
+        final int startSizePadding = layoutManager.getStartSizePadding();
+        return startSizePadding;
     }
 }

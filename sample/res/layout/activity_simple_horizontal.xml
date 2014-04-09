@@ -8,7 +8,7 @@
         parchment:orientation="horizontal"
         parchment:snapPosition="onScreen"
         parchment:snapToPosition="true"
-        parchment:gravity="top"
+        android:padding="15dp"
         android:scrollbars="horizontal"
         android:scrollbarAlwaysDrawHorizontalTrack="true"
         android:layout_width="match_parent"

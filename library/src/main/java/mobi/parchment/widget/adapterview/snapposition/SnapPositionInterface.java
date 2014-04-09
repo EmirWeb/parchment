@@ -25,5 +25,5 @@ public interface SnapPositionInterface<Cell> {
 
     public int getRedrawOffset(final ScrollDirectionManager scrollDirectionManager, final View incomingView, final View outgoingView);
 
-    public int getAbsoluteSnapPosition(final int size, final int cellSize, final Move move);
+    public int getAbsoluteSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final int cellSize, final Move move);
 }
