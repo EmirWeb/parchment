@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>mobi.parchment</groupId>
     <artifactId>parchment</artifactId>
-    <version>1.6.3</version>
+    <version>1.6.4</version>
     <packaging>apklib</packaging>
     <name>Parchment</name>
     <description>Android scrolling library</description>

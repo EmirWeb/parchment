@@ -166,6 +166,11 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
      */
     public void layout(final AdapterViewHandler adapterViewHandler, final Animation animation, final boolean changed, final int left, final int top, final int right, final int bottom) {
 
+        if (getFirstAdapterPositionInCell(mStartCellPosition) >= getAdapterCount()){
+            final int lastAdapterPosition = Math.max(getAdapterCount() - 1, 0);
+            mStartCellPosition = getCellPosition(lastAdapterPosition);
+        }
+
         mCenteringOffset = 0;
         if (mAdapterViewManager.getAdapterCount() == 0) return;
 
