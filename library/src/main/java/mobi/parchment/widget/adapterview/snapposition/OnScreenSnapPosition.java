@@ -2,11 +2,11 @@ package mobi.parchment.widget.adapterview.snapposition;
 
 import android.view.View;
 
+import java.util.List;
+
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.Move;
 import mobi.parchment.widget.adapterview.ScrollDirectionManager;
-
-import java.util.List;
 
 /**
  * Created by Emir Hasanbegovic on 2014-03-11.
@@ -52,20 +52,62 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
         return drawLimit;
     }
 
+    private Integer getCellDisplacementFromStartSnapPosition(final LayoutManager<Cell> layoutManager, final Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+        final int startSizePadding = layoutManager.getStartSizePadding();
+        final int currentCellStart = layoutManager.getCellStart(cell);
+        return startSizePadding - currentCellStart;
+    }
+
+    private Integer getCellDisplacementFromEndSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+        final int currentCellEnd = layoutManager.getCellEnd(cell);
+        final int startSizePadding = layoutManager.getStartSizePadding();
+        final int displacement = startSizePadding + size - currentCellEnd;
+        return displacement;
+    }
+
     @Override
-    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition) {
+    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition, Move move) {
         final Integer firstDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, firstPosition);
         final Integer lastDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, lastPosition);
 
         if (firstDisplacement != null && lastDisplacement != null) {
-            if (Math.abs(firstDisplacement) < Math.abs(lastDisplacement)) {
-                return firstDisplacement;
-            } else {
-                return lastDisplacement;
+            if (firstDisplacement >= 0 && lastDisplacement >= 0) { //Both to the left
+                final int cellSizeTotal = layoutManager.getCellSizeTotal();
+                if (cellSizeTotal > size) {
+                    return getCellDisplacementFromEndSnapPosition(layoutManager, size, lastPosition);
+                } else {
+                    return firstDisplacement;
+                }
             }
-        } else if (firstDisplacement != null) {
+
+            if (firstDisplacement > 0 && lastDisplacement < 0) { // Both are off screen
+                return 0;
+            }
+
+            if (firstDisplacement <= 0 && lastDisplacement >= 0) { // Both are fully on screen
+                return 0;
+            }
+
+            if (firstDisplacement <= 0 && lastDisplacement <= 0) { // Both to the right
+                final int cellSizeTotal = layoutManager.getCellSizeTotal();
+                if (cellSizeTotal > size) {
+                    return getCellDisplacementFromStartSnapPosition(layoutManager, firstPosition);
+                } else {
+                    return lastDisplacement;
+                }
+            }
+
+        }
+
+        if (firstDisplacement != null && firstDisplacement < 0) {
             return firstDisplacement;
-        } else if (lastDisplacement != null) {
+        } else if (lastDisplacement != null && lastDisplacement > 0) {
             return lastDisplacement;
         }
 
@@ -123,10 +165,9 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
             case back:
                 return startSizePadding + size - cellSize;
             case forward:
-                return startSizePadding;
             case none:
             default:
-                return startSizePadding + (size - cellSize) / 2;
+                return startSizePadding;
         }
     }
 }

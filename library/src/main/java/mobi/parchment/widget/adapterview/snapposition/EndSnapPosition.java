@@ -2,11 +2,11 @@ package mobi.parchment.widget.adapterview.snapposition;
 
 import android.view.View;
 
+import java.util.List;
+
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.Move;
 import mobi.parchment.widget.adapterview.ScrollDirectionManager;
-
-import java.util.List;
 
 /**
  * Created by Emir Hasanbegovic on 2014-03-11.
@@ -27,7 +27,7 @@ public class EndSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition) {
+    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition, Move move) {
         final Integer lastDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, lastPosition);
 
         if (lastDisplacement != null) {

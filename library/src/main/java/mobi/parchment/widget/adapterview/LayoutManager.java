@@ -22,6 +22,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     private final Map<View, Integer> mPositions = new HashMap<View, Integer>();
 
+    private boolean mIsFirstLayout = true;
     public float mLayoutSize;
     public float mLayoutCellCount;
     private final int MAX = Integer.MAX_VALUE / 2;
@@ -173,10 +174,24 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             mStartCellPosition = getCellPosition(lastAdapterPosition);
         }
 
-        if (mAdapterViewManager.getAdapterCount() == 0) return;
 
         final int size = mScrollDirectionManager.getDrawSize(left, top, right, bottom);
         final int displacement = animation.getDisplacement();
+
+        if (mIsFirstLayout) {
+            final boolean hasViews = getAdapterCount() != 0;
+            if (hasViews) {
+                mIsFirstLayout = false;
+                final Move move = Move.none;
+
+                final Cell cell = getCell(0);
+                final int cellSize = getCellSize(cell);
+                mOffset = mSnapPositionInterface.getAbsoluteSnapPosition(this, size, cellSize, move);
+                for (final View view : getViews(cell)) {
+                    mAdapterViewManager.recycle(view);
+                }
+            }
+        }
 
         final int animationId = animation.getId();
         final boolean continuedAnimation = animationId == mAnimationId;
@@ -261,8 +276,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         final Cell firstPosition = getFirstCell();
         final Cell lastPosition = getLastCell();
 
-        final boolean firstPositionOnScreen = firstPosition == null;
-        final boolean lastPositionOnScreen = lastPosition == null;
+        final boolean firstPositionOnScreen = firstPosition != null;
+        final boolean lastPositionOnScreen = lastPosition != null;
         if (!firstPositionOnScreen && !lastPositionOnScreen) {
             /**
              * Assumption is that if first and last item are not on screen
@@ -274,7 +289,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             return false;
         }
 
-        final int displacement = mSnapPositionInterface.getDisplacementFromSnapPosition(this, size, firstPosition, lastPosition);
+        final int displacement = mSnapPositionInterface.getDisplacementFromSnapPosition(this, size, firstPosition, lastPosition, direction);
         if (displacement == 0) {
             return false;
         }
@@ -282,7 +297,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         mOffset += displacement;
         if (firstPositionOnScreen) {
             mStartCellPosition = 0;
-        } else if (firstPositionOnScreen) {
+        } else if (lastPositionOnScreen) {
             mStartCellPosition = getCellCount() - 1;
         } else {
 
@@ -570,7 +585,6 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             if (isPositionBeingDrawn) break;
 
             final Cell cell = getCell(firstAdapterPosition);
-
             final int cellStart = currentOffset;
             final int cellSize = getCellSize(cell);
             final int cellEnd = cellStart + cellSize;

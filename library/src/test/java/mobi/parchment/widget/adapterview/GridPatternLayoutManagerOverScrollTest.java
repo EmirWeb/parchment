@@ -7,11 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManager;
-import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManagerAttributes;
-import mobi.parchment.widget.adapterview.gridpatternview.GridPatternGroupDefinition;
-import mobi.parchment.widget.adapterview.gridpatternview.GridPatternItemDefinition;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +17,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternGroupDefinition;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternItemDefinition;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManager;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManagerAttributes;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 

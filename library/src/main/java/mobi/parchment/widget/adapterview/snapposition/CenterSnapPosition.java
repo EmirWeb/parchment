@@ -2,11 +2,11 @@ package mobi.parchment.widget.adapterview.snapposition;
 
 import android.view.View;
 
+import java.util.List;
+
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.Move;
 import mobi.parchment.widget.adapterview.ScrollDirectionManager;
-
-import java.util.List;
 
 /**
  * Created by Emir Hasanbegovic on 2014-03-11.
@@ -28,19 +28,13 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition) {
+    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition, Move move) {
         final Integer firstDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, firstPosition);
         final Integer lastDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, lastPosition);
 
-        if (firstDisplacement != null && lastDisplacement != null) {
-            if (Math.abs(firstDisplacement) < Math.abs(lastDisplacement)) {
-                return firstDisplacement;
-            } else {
-                return lastDisplacement;
-            }
-        } else if (firstDisplacement != null) {
+        if (firstDisplacement != null && firstDisplacement > 0) {
             return firstDisplacement;
-        } else if (lastDisplacement != null) {
+        } else if (lastDisplacement != null && lastDisplacement < 0) {
             return lastDisplacement;
         }
 
@@ -60,7 +54,7 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
 
     @Override
     public int getCellDistanceFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell cell) {
-        final int displacement = getDisplacementFromSnapPosition(layoutManager, size, cell, null);
+        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell);
         return Math.abs(displacement);
     }
 

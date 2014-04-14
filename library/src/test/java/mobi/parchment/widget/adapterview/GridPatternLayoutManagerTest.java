@@ -7,11 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManager;
-import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManagerAttributes;
-import mobi.parchment.widget.adapterview.gridpatternview.GridPatternGroupDefinition;
-import mobi.parchment.widget.adapterview.gridpatternview.GridPatternItemDefinition;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +18,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternGroupDefinition;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternItemDefinition;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManager;
+import mobi.parchment.widget.adapterview.gridpatternview.GridPatternLayoutManagerAttributes;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 /**
@@ -32,7 +32,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class GridPatternLayoutManagerTest {
 
     public static final int VIEW_GROUP_SIZE = 300;
-    public static final int VIEW_SIZE = 100;
+    public static final int VIEW_SIZE = 145;
     public static final int CELL_SPACING = 10;
     final MyViewGroup mViewGroup = new MyViewGroup(Robolectric.application);
     final AdapterViewManager adapterViewManager = new AdapterViewManager();
