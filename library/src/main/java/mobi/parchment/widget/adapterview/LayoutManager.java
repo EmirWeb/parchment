@@ -524,8 +524,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     /**
      * When moving left, every time a view is removed, this means that we are removing the leftMost view and therefore have to increment the mOffset by the removed view's width
      */
-    private void layoutCells(final AdapterViewHandler adapterViewHandler, final int size,
-                             final int breadth) {
+    private void layoutCells(final AdapterViewHandler adapterViewHandler, final int size, final int breadth) {
         final int startSizePadding = getStartSizePadding();
         final int endSizePadding = getEndSizePadding();
         mLayoutCellCount = 0;
@@ -575,7 +574,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             }
         }
 
-        while (currentOffset + cellSpacing <= size + startSizePadding) {
+        while (currentOffset <= size + startSizePadding  + endSizePadding) {
             final int firstAdapterPosition = getFirstAdapterPositionInCell(endCellPosition);
             final int adapterCount = mAdapterViewManager.getAdapterCount();
             final boolean aboveCount = firstAdapterPosition >= adapterCount;
@@ -623,7 +622,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         currentOffset = mOffset;
         int cellPosition = decrementCellPosition(mStartCellPosition);
 
-        while (currentOffset > startSizePadding) {
+        while (currentOffset > 0) {
             final int adapterPosition = getFirstAdapterPositionInCell(cellPosition);
             final boolean belowCount = adapterPosition < 0;
             if (belowCount) break;
