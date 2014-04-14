@@ -261,30 +261,34 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         final Cell firstPosition = getFirstCell();
         final Cell lastPosition = getLastCell();
 
-        final boolean firstAndLastNotOnScreen = firstPosition == null && lastPosition == null;
-        if (firstAndLastNotOnScreen) {
+        final boolean firstPositionOnScreen = firstPosition == null;
+        final boolean lastPositionOnScreen = lastPosition == null;
+        if (!firstPositionOnScreen && !lastPositionOnScreen) {
+            /**
+             * Assumption is that if first and last item are not on screen
+             * then the rest of the items have been layout out correctly.
+             * Note that we have already covered the case where there are no views
+             * on screen.
+             */
+
             return false;
         }
 
-        if (firstPosition != null) {
-            final int displacement = mSnapPositionInterface.getCellDisplacementFromSnapPosition(this, size, firstPosition);
-            if (displacement < 0) {
-                mStartCellPosition = 0;
-                mOffset += displacement;
-                return true;
-            }
+        final int displacement = mSnapPositionInterface.getDisplacementFromSnapPosition(this, size, firstPosition, lastPosition);
+        if (displacement == 0) {
+            return false;
         }
 
-        if (lastPosition != null) {
-            final int displacement = mSnapPositionInterface.getCellDisplacementFromSnapPosition(this, size, lastPosition);
-            if (displacement > 0) {
-                mStartCellPosition = getCellCount() - 1;
-                mOffset += displacement;
-                return true;
-            }
+        mOffset += displacement;
+        if (firstPositionOnScreen) {
+            mStartCellPosition = 0;
+        } else if (firstPositionOnScreen) {
+            mStartCellPosition = getCellCount() - 1;
+        } else {
+
         }
 
-        return false;
+        return true;
 
     }
 
@@ -387,7 +391,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         return viewSizeTotal + cellSpacingCount * cellSpacing;
     }
 
-    private int getOverDrawAdjust(final boolean isCircularScroll, final int size, final int displacement) {
+    private int getOverDrawAdjust(final boolean isCircularScroll, final int size,
+                                  final int displacement) {
         final boolean viewsBeingDrawn = !mCells.isEmpty();
         if (!viewsBeingDrawn || isCircularScroll) return 0;
 
@@ -504,7 +509,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     /**
      * When moving left, every time a view is removed, this means that we are removing the leftMost view and therefore have to increment the mOffset by the removed view's width
      */
-    private void layoutCells(final AdapterViewHandler adapterViewHandler, final int size, final int breadth) {
+    private void layoutCells(final AdapterViewHandler adapterViewHandler, final int size,
+                             final int breadth) {
         final int startSizePadding = getStartSizePadding();
         final int endSizePadding = getEndSizePadding();
         mLayoutCellCount = 0;
@@ -820,7 +826,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         return mSelectedPositionManager.setSelectedPosition(position);
     }
 
-    private void jumpToPosition(final AdapterViewHandler adapterViewHandler, final int position) {
+    private void jumpToPosition(final AdapterViewHandler adapterViewHandler,
+                                final int position) {
         final int size = mScrollDirectionManager.getViewGroupSize(mViewGroup);
 
         final View nearestViewToSnapPosition = getNearestViewToSnapPosition(size);
@@ -867,7 +874,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         return Move.none;
     }
 
-    public void setAnimationStoppedListener(final AnimationStoppedListener animationStoppedListener) {
+    public void setAnimationStoppedListener(
+            final AnimationStoppedListener animationStoppedListener) {
         mAnimationStoppedListener = animationStoppedListener;
     }
 

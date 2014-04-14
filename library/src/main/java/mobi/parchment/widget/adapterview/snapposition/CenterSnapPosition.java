@@ -28,7 +28,29 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
+    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition) {
+        final Integer firstDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, firstPosition);
+        final Integer lastDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, lastPosition);
+
+        if (firstDisplacement != null && lastDisplacement != null) {
+            if (Math.abs(firstDisplacement) < Math.abs(lastDisplacement)) {
+                return firstDisplacement;
+            } else {
+                return lastDisplacement;
+            }
+        } else if (firstDisplacement != null) {
+            return firstDisplacement;
+        } else if (lastDisplacement != null) {
+            return lastDisplacement;
+        }
+
+        return 0;
+    }
+
+    private Integer getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
+        if (cell == null) {
+            return null;
+        }
         final int startSizePadding = layoutManager.getStartSizePadding();
         final int currentCellCenter = layoutManager.getCellCenter(cell);
         final int center = startSizePadding + size / 2;
@@ -38,7 +60,7 @@ public class CenterSnapPosition<Cell> implements SnapPositionInterface<Cell> {
 
     @Override
     public int getCellDistanceFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell cell) {
-        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell);
+        final int displacement = getDisplacementFromSnapPosition(layoutManager, size, cell, null);
         return Math.abs(displacement);
     }
 

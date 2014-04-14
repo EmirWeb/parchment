@@ -17,7 +17,7 @@ public interface SnapPositionInterface<Cell> {
 
     public int getDrawLimitMoveBackwardOverDrawAdjust(final LayoutManager<Cell> layoutManager, final List<Cell> cells, final int size, final Cell cell);
 
-    public int getCellDisplacementFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell cell);
+    public int getDisplacementFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell firstPosition, Cell lastPosition);
 
     public int getCellDistanceFromSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final Cell cell);
 

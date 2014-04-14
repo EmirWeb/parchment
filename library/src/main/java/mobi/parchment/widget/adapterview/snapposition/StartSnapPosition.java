@@ -2,11 +2,11 @@ package mobi.parchment.widget.adapterview.snapposition;
 
 import android.view.View;
 
+import java.util.List;
+
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.Move;
 import mobi.parchment.widget.adapterview.ScrollDirectionManager;
-
-import java.util.List;
 
 /**
  * Created by Emir Hasanbegovic on 2014-03-11.
@@ -27,17 +27,29 @@ public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
+    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition) {
+        final Integer firstDisplacement = getCellDisplacementFromSnapPosition(layoutManager, firstPosition);
+
+        if (firstDisplacement != null) {
+            return firstDisplacement;
+        }
+
+        return 0;
+    }
+
+    private Integer getCellDisplacementFromSnapPosition(final LayoutManager<Cell> layoutManager, final Cell cell) {
+        if (cell == null) {
+            return null;
+        }
         final int startSizePadding = layoutManager.getStartSizePadding();
         final int currentCellStart = layoutManager.getCellStart(cell);
-        final int displacement = startSizePadding - currentCellStart;
-        return displacement;
+        return startSizePadding - currentCellStart;
     }
 
     @Override
     public int getCellDistanceFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
-        final int displacement = getCellDisplacementFromSnapPosition(layoutManager, size, cell);
-        return Math.abs(displacement);
+        return Math.abs(getCellDisplacementFromSnapPosition(layoutManager,cell));
+
     }
 
     @Override
@@ -55,7 +67,7 @@ public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getAbsoluteSnapPosition(final LayoutManager<Cell> layoutManager, final int size,  final int cellSize, final Move move) {
+    public int getAbsoluteSnapPosition(final LayoutManager<Cell> layoutManager, final int size, final int cellSize, final Move move) {
         final int startSizePadding = layoutManager.getStartSizePadding();
         return startSizePadding;
     }

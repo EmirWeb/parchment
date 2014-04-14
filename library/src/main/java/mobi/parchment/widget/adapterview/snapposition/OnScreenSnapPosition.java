@@ -53,12 +53,34 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     }
 
     @Override
-    public int getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
+    public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition) {
+        final Integer firstDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, firstPosition);
+        final Integer lastDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, lastPosition);
+
+        if (firstDisplacement != null && lastDisplacement != null) {
+            if (Math.abs(firstDisplacement) < Math.abs(lastDisplacement)) {
+                return firstDisplacement;
+            } else {
+                return lastDisplacement;
+            }
+        } else if (firstDisplacement != null) {
+            return firstDisplacement;
+        } else if (lastDisplacement != null) {
+            return lastDisplacement;
+        }
+
+        return 0;
+    }
+
+    private Integer getCellDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell cell) {
+        if (cell == null) {
+            return null;
+        }
         final int startSizePadding = layoutManager.getStartSizePadding();
         final int currentCellStart = layoutManager.getCellStart(cell);
         final int currentCellEnd = layoutManager.getCellEnd(cell);
         if (currentCellStart < startSizePadding && currentCellEnd < startSizePadding + size) {
-            final int displacement =  - currentCellStart;
+            final int displacement = startSizePadding - currentCellStart;
             return displacement;
         } else if (currentCellEnd > startSizePadding + size && currentCellStart > startSizePadding) {
             final int displacement = startSizePadding + size - currentCellEnd;
