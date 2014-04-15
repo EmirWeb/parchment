@@ -3,14 +3,14 @@ package mobi.parchment.widget.adapterview.listview;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mobi.parchment.widget.adapterview.AdapterViewManager;
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.LayoutManagerAttributes;
 import mobi.parchment.widget.adapterview.OnSelectedListener;
 import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Emir Hasanbegovic on 2014-02-28.
@@ -23,8 +23,9 @@ public class ListLayoutManager extends LayoutManager<View> {
 
     @Override
     public void measure(final View view, final ViewGroup viewGroup ) {
-        final int widthMeasureSpec = getWidthMeasureSpec();
-        final int heightMeasureSpec = getHeightMeasureSpec();
+        final int heightMeasureSpec = getChildHeightMeasureSpec(0);
+        final int widthMeasureSpec = getChildWidthMeasureSpec(0);
+
         mAdapterViewManager.measureView(viewGroup, view, widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -49,6 +50,18 @@ public class ListLayoutManager extends LayoutManager<View> {
     }
 
     @Override
+    protected int getChildWidthMeasureSpecMode() {
+        final int widthMeasureSpec = getWidthMeasureSpec();
+        return View.MeasureSpec.getMode(widthMeasureSpec);
+    }
+
+    @Override
+    protected int getChildHeightMeasureSpecMode() {
+        final int widthMeasureSpec = getWidthMeasureSpec();
+        return View.MeasureSpec.getMode(widthMeasureSpec);
+    }
+
+    @Override
     protected int getLastAdapterPositionInCell(final int cellPosition) {
         return cellPosition;
     }
@@ -61,7 +74,7 @@ public class ListLayoutManager extends LayoutManager<View> {
     }
 
     @Override
-    protected int getMaxMeasureHeight(int position) {
+    protected int getChildHeightMeasureSpecSize(int position) {
         return getMaxMeasureHeight();
     }
 
@@ -73,7 +86,7 @@ public class ListLayoutManager extends LayoutManager<View> {
     }
 
     @Override
-    protected int getMaxMeasureWidth(int position) {
+    protected int getChildWidthMeasureSpecSize(int position) {
         return getMaxMeasureWidth();
     }
 
@@ -130,8 +143,8 @@ public class ListLayoutManager extends LayoutManager<View> {
     @Override
     protected View getCell(int adapterPosition) {
         final AdapterViewManager adapterViewManager = getAdapterViewManager();
-        final int widthMeasureSpec = getWidthMeasureSpec();
-        final int heightMeasureSpec = getHeightMeasureSpec();
+        final int widthMeasureSpec = getChildWidthMeasureSpec(0);
+        final int heightMeasureSpec = getChildHeightMeasureSpec(0);
 
         final View view = adapterViewManager.getView(mViewGroup, adapterPosition, widthMeasureSpec, heightMeasureSpec);
         return view;

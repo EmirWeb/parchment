@@ -229,12 +229,12 @@ public class getCellCisplacementFromSnapPositionTests {
         }
 
         @Override
-        protected int getMaxMeasureHeight(int position) {
+        protected int getChildHeightMeasureSpecSize(int position) {
             return 0;
         }
 
         @Override
-        protected int getMaxMeasureWidth(int position) {
+        protected int getChildWidthMeasureSpecSize(int position) {
             return 0;
         }
 
@@ -250,6 +250,16 @@ public class getCellCisplacementFromSnapPositionTests {
 
         @Override
         protected int getDrawPosition(List<Cell> cells, int drawCellPosition) {
+            return 0;
+        }
+
+        @Override
+        protected int getChildWidthMeasureSpecMode() {
+            return 0;
+        }
+
+        @Override
+        protected int getChildHeightMeasureSpecMode() {
             return 0;
         }
 

@@ -3,13 +3,13 @@ package mobi.parchment.widget.adapterview.gridpatternview;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mobi.parchment.widget.adapterview.AdapterViewManager;
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.LayoutManagerAttributes;
 import mobi.parchment.widget.adapterview.OnSelectedListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Emir Hasanbegovic on 2014-03-03.
@@ -176,7 +176,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
         final int gridPatternItemDefinitionStart = getGridPatternItemDefinitionSizeStart(gridPatternItemDefinition);
         final int cellSpacingCount = gridPatternItemDefinitionStart;
         final int gridItemPixelSize = getGridItemSize(gridPatternGroupDefinition);
-        final int gridItemStartOffset = cellSpacingCount * cellSpacing + gridPatternItemDefinitionStart * gridItemPixelSize;
+        final int gridItemStartOffset = getStartSizePadding() + cellSpacingCount * cellSpacing + gridPatternItemDefinitionStart * gridItemPixelSize;
         return gridItemStartOffset;
     }
 
@@ -184,7 +184,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
         final int gridPatternItemDefinitionStart = getGridPatternItemDefinitionBreadthStart(gridPatternItemDefinition);
         final int cellSpacingCount = gridPatternItemDefinitionStart;
         final int gridItemPixelSize = getGridItemBreadth(gridPatternGroupDefinition);
-        final int gridItemStartOffset = cellSpacingCount * cellSpacing + gridPatternItemDefinitionStart * gridItemPixelSize;
+        final int gridItemStartOffset = getStartBreadthPadding() + cellSpacingCount * cellSpacing + gridPatternItemDefinitionStart * gridItemPixelSize;
         return gridItemStartOffset;
     }
 
@@ -241,7 +241,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
     }
 
     @Override
-    protected int getMaxMeasureHeight(final int adapterPosition) {
+    protected int getChildHeightMeasureSpecSize(final int adapterPosition) {
         final int cellPosition = getCellPosition(adapterPosition);
         final int cellPositionOffset = cellPosition % mGridPatternGroupDefinitions.size();
         final GridPatternGroupDefinition gridPatternGroupDefinition = mGridPatternGroupDefinitions.get(cellPositionOffset);
@@ -253,7 +253,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
     }
 
     @Override
-    protected int getMaxMeasureWidth(final int adapterPosition) {
+    protected int getChildWidthMeasureSpecSize(final int adapterPosition) {
         final int cellPosition = getCellPosition(adapterPosition);
         final int cellPositionOffset = cellPosition % mGridPatternGroupDefinitions.size();
         final GridPatternGroupDefinition gridPatternGroupDefinition = mGridPatternGroupDefinitions.get(cellPositionOffset);
@@ -279,6 +279,16 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
     }
 
     @Override
+    public int getChildWidthMeasureSpecMode(){
+        return View.MeasureSpec.EXACTLY;
+    }
+
+    @Override
+    public int getChildHeightMeasureSpecMode(){
+        return View.MeasureSpec.EXACTLY;
+    }
+
+    @Override
     public void measure(final GridPatternGroup gridPatternGroup, final ViewGroup viewGroup) {
         final GridPatternGroupDefinition gridPatternGroupDefinition = gridPatternGroup.getGridPatternGroupDefinition();
         final List<View> views = gridPatternGroup.getViews();
@@ -290,10 +300,10 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
             final GridPatternItemDefinition gridPatternItemDefinition = gridPatternItemDefinitions.get(index);
             final int maxMeasureWidth = getMaxMeasuredWidth(gridPatternGroupDefinition, gridPatternItemDefinition, cellSpacing);
             final int maxMeasureHeight = getMaxMeasuredHeight(gridPatternGroupDefinition, gridPatternItemDefinition, cellSpacing);
-            final int horizontalMeasureSpec = View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, View.MeasureSpec.EXACTLY);
-            final int verticalMeasureSpec = View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, View.MeasureSpec.EXACTLY);
+            final int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, getChildWidthMeasureSpecMode());
+            final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, getChildHeightMeasureSpecMode());
 
-            adapterViewManager.measureView(viewGroup, view, horizontalMeasureSpec, verticalMeasureSpec);
+            adapterViewManager.measureView(viewGroup, view, widthMeasureSpec, heightMeasureSpec);
         }
     }
 

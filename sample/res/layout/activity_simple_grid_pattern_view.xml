@@ -10,5 +10,10 @@
         android:scrollbarAlwaysDrawHorizontalTrack="true"
         android:background="@drawable/background"
         android:id="@+id/parchment_view"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/activity_sample_parchment_padding_small"
+        android:paddingRight="@dimen/activity_sample_parchment_padding_large"
+        android:paddingTop="@dimen/activity_sample_parchment_padding_medium"
+        android:paddingBottom="@dimen/activity_sample_parchment_padding_medium"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

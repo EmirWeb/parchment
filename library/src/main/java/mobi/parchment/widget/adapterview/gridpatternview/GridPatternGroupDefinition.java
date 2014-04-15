@@ -147,7 +147,7 @@ public class GridPatternGroupDefinition {
             return gridItemHeight * numberOfGridItemsPerColumn + numberOfCellSpacings * cellSpacing;
         }
 
-        final int viewGroupHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(viewGroup);
+        final int viewGroupHeight = ViewGroupUtilities.getViewGroupMeasuredHeightPadding(viewGroup);
         return viewGroupHeight;
     }
 
@@ -181,7 +181,7 @@ public class GridPatternGroupDefinition {
 
     public int getGroupWidth(final ViewGroup viewGroup, final int cellSpacing, final float ratio) {
         if (mIsVerticalScroll) {
-            final int viewGroupWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
+            final int viewGroupWidth = ViewGroupUtilities.getViewGroupMeasuredWidthPadding(viewGroup);
             return viewGroupWidth;
         }
 

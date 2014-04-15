@@ -39,7 +39,7 @@ public class GridPatternGroup {
             return mStartOffset;
         }
 
-        return mCellSpacing;
+        return mViewGroup.getPaddingTop();
     }
 
     public GridPatternGroupDefinition getGridPatternGroupDefinition() {
@@ -55,7 +55,7 @@ public class GridPatternGroup {
         }
 
         final int viewGroupHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(mViewGroup);
-        return viewGroupHeight - mCellSpacing;
+        return viewGroupHeight - mViewGroup.getPaddingBottom();
     }
 
     public int getLeft() {

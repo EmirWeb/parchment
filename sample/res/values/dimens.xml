@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="activity_sample_horizontal_parchment_padding">15dp</dimen>
+    <dimen name="activity_sample_parchment_padding_small">10dp</dimen>
+    <dimen name="activity_sample_parchment_padding_medium">20dp</dimen>
+    <dimen name="activity_sample_parchment_padding_large">30dp</dimen>
 </resources>
