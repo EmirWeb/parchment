@@ -25,6 +25,7 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
     private final ViewGroup mViewGroup;
     private final LayoutManagerBridge mLayoutManagerBridge;
     private final boolean mIsViewPager;
+    private boolean mTouchSlopExceeded = false;
 
     private int mPreviousDisplacement;
     private State mState = State.notMoving;
@@ -43,6 +44,7 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
 
     @Override
     public boolean onDown(MotionEvent motionEvent) {
+        mTouchSlopExceeded = false;
         setState(State.notMoving);
         return false;
     }
@@ -68,20 +70,19 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
 
     @Override
     public boolean onScroll(final MotionEvent e1, final MotionEvent e2, final float distanceX, final float distanceY) {
-        if (mIsVerticalScroll){
-            final float yTouchSlop = getYTouchSlop(e1, e2);
-            if (yTouchSlop < mScaledTouchSlop){
-                return false;
-            }
+        if (mIsVerticalScroll) {
+            updateYTouchSlop(e1, e2);
         } else {
-            final float xTouchSlop = getXTouchSlop(e1, e2);
-            if (xTouchSlop < mScaledTouchSlop){
-                return false;
-            }
+            updateXTouchSlop(e1, e2);
         }
+
+        if (!mTouchSlopExceeded) {
+            return false;
+        }
+
         setState(State.scrolling);
         final int displacement = (int) mLayoutManagerBridge.getScrollDisplacement(distanceX, distanceY);
-        mAnimation.setDisplacement((int) displacement);
+        mAnimation.setDisplacement(displacement);
         mViewGroup.requestLayout();
         return true;
     }
@@ -110,7 +111,10 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
     }
 
     public void onUp() {
-        if (getState() == State.scrolling) setState(State.notMoving);
+        mTouchSlopExceeded = false;
+        if (getState() == State.scrolling) {
+            setState(State.notMoving);
+        }
     }
 
     public State getState() {
@@ -198,5 +202,19 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
             return 0;
         }
         return Math.abs(e1.getY() - e2.getY());
+    }
+
+    private void updateYTouchSlop(final MotionEvent e1, final MotionEvent e2) {
+        if (!mTouchSlopExceeded) {
+            final float eventDifference = getXTouchSlop(e1, e2);
+            mTouchSlopExceeded = eventDifference > mScaledTouchSlop;
+        }
+    }
+
+    private void updateXTouchSlop(final MotionEvent e1, final MotionEvent e2) {
+        if (!mTouchSlopExceeded) {
+            final float eventDifference = getYTouchSlop(e1, e2);
+            mTouchSlopExceeded = eventDifference > mScaledTouchSlop;
+        }
     }
 }
