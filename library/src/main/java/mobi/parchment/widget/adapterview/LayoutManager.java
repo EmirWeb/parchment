@@ -73,9 +73,9 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         switch (snapPosition) {
             case center:
                 return new CenterSnapPosition<Cell>();
-            case floatEnd:
+            case end:
                 return new EndSnapPosition<Cell>();
-            case floatStart:
+            case start:
                 return new StartSnapPosition<Cell>();
             case onScreen:
             default:

@@ -13,8 +13,8 @@
         <attr name="isViewPager" format="boolean"/>
         <attr name="snapPosition" format="enum">
             <enum name="center" value="0"/>
-            <enum name="floatStart" value="1"/>
-            <enum name="floatEnd" value="2"/>
+            <enum name="start" value="1"/>
+            <enum name="end" value="2"/>
             <enum name="onScreen" value="3"/>
         </attr>
         <attr name="selectWhileScrolling" format="boolean"/>

@@ -20,7 +20,7 @@ Include the Parchment library in your pom.xml file as follows:
 <dependency>
     <groupId>mobi.parchment</groupId>
     <artifactId>parchment</artifactId>
-    <version>1.6.4</version>
+    <version>1.6.5</version>
     <type>apklib</type>
 </dependency>
 ```
@@ -29,7 +29,7 @@ or, to your build.gradle as follows:
 
 ```java
 dependencies {
-    compile 'mobi.parchment:parchment:1.6.4@aar'
+    compile 'mobi.parchment:parchment:1.6.5@aar'
 }
 ```
  
@@ -44,11 +44,15 @@ Add one of the AdapterView classes (GridView, ListView, GridPatternView), don't 
     android:id="@+id/horizontal_list_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="< horizontal | vertical >"
+    android:scrollbarAlwaysDrawHorizontalTrack="< true | false >"
+    android:scrollbarAlwaysDrawVerticalTrack="< true | false >"
+    android:clipToPadding="< true | false >"
     parchment:isViewPager="< true | false >"
     parchment:orientation="< horizontal | vertical >"
     parchment:cellSpacing="10dp"
     parchment:isCircularScroll="< true | false >"
-    parchment:snapPosition="< center | floatStart | floatStartWithCellSpacing | floatEnd | floatEndWithCellSpacing | onScreen | onScreenWithCellSpacing>"
+    parchment:snapPosition="< center | start | end | onScreen >"
     parchment:snapToPosition="< true | false >" />
 ```
 
