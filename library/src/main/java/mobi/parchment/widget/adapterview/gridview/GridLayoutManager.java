@@ -3,12 +3,12 @@ package mobi.parchment.widget.adapterview.gridview;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import mobi.parchment.widget.adapterview.AdapterViewManager;
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.OnSelectedListener;
 import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
-
-import java.util.List;
 
 /**
  * Created by Emir Hasanbegovic
@@ -30,50 +30,50 @@ public class GridLayoutManager extends LayoutManager<Group> {
 
     private int getMaxMeasureWidth() {
         final ViewGroup viewGroup = getViewGroup();
-        final int viewGroupWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
+        final int viewGroupWidth = ViewGroupUtilities.getViewGroupMeasuredWidthPadding(viewGroup);
         final int cellSpacing = mGridLayoutManagerAttributes.getCellSpacing();
 
         if (isVerticalScroll()) {
             final int numberOfViewsPerCell = getNumberOfViewsPerCell();
-            final int cellSpacingCount = numberOfViewsPerCell + 1;
+            final int cellSpacingCount = numberOfViewsPerCell - 1;
             final int availableSpace = viewGroupWidth - cellSpacingCount * cellSpacing;
             final int maxWidth = availableSpace / numberOfViewsPerCell;
             return maxWidth;
         }
 
-        return viewGroupWidth - cellSpacing * 2;
+        return viewGroupWidth;
     }
 
     private int getMaxMeasureHeight() {
         final ViewGroup viewGroup = getViewGroup();
-        final int viewGroupHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(viewGroup);
+        final int viewGroupHeight = ViewGroupUtilities.getViewGroupMeasuredHeightPadding(viewGroup);
         final int cellSpacing = mGridLayoutManagerAttributes.getCellSpacing();
 
         if (isVerticalScroll()) {
-            return viewGroupHeight - cellSpacing * 2;
+            return viewGroupHeight;
         }
 
         final int numberOfViewsPerCell = getNumberOfViewsPerCell();
-        final int cellSpacingCount = numberOfViewsPerCell + 1;
+        final int cellSpacingCount = numberOfViewsPerCell - 1;
         final int availableSpace = viewGroupHeight - cellSpacingCount * cellSpacing;
         final int maxHeight = availableSpace / numberOfViewsPerCell;
         return maxHeight;
     }
 
     @Override
-    protected int getMaxMeasureHeight(int position) {
+    protected int getChildHeightMeasureSpecSize(int position) {
         return getMaxMeasureHeight();
     }
 
     @Override
-    protected int getMaxMeasureWidth(int position) {
+    protected int getChildWidthMeasureSpecSize(int position) {
         return getMaxMeasureWidth();
     }
 
     @Override
     public void measure(final Group group, final ViewGroup viewGroup) {
-        final int verticalMeasureSpec = getVerticalMeasureSpec();
-        final int horizontalMeasureSpec = getHorizontalMeasureSpec();
+        final int verticalMeasureSpec = getChildHeightMeasureSpec();
+        final int horizontalMeasureSpec = getChildWidthMeasureSpec();
         final List<View> views = group.getViews();
         for (final View view : views) {
             mAdapterViewManager.measureView(viewGroup, view, horizontalMeasureSpec, verticalMeasureSpec);
@@ -102,6 +102,18 @@ public class GridLayoutManager extends LayoutManager<Group> {
         final int numberOfItemsPerCell = mGridLayoutManagerAttributes.getNumberOfViewsPerCell();
         final int drawPosition = numberOfItemsPerCell * drawCellPosition;
         return drawPosition;
+    }
+
+    @Override
+    protected int getChildWidthMeasureSpecMode() {
+        final int widthMeasureSpec = getWidthMeasureSpec();
+        return View.MeasureSpec.getMode(widthMeasureSpec);
+    }
+
+    @Override
+    protected int getChildHeightMeasureSpecMode() {
+        final int widthMeasureSpec = getWidthMeasureSpec();
+        return View.MeasureSpec.getMode(widthMeasureSpec);
     }
 
     @Override
@@ -150,41 +162,36 @@ public class GridLayoutManager extends LayoutManager<Group> {
         return mGridLayoutManagerAttributes.getNumberOfViewsPerCell();
     }
 
-    private int getHorizontalMeasureSpec(){
-        if (isVerticalScroll()){
-            final int maxMeasureWidth = getMaxMeasureWidth();
-            final int measureSpecMode = getMeasureSpecMode();
+    private int getChildWidthMeasureSpec() {
+        final int widthMeasureSpec = getWidthMeasureSpec();
+        if (isVerticalScroll()) {
+            final int maxMeasureWidth = getMaxMeasureWidth() ;
+            final int measureSpecMode = View.MeasureSpec.getMode(widthMeasureSpec);
             return View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, measureSpecMode);
         }
-        return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        return widthMeasureSpec;
     }
 
-    private int getMeasureSpecMode() {
-        if (mGridLayoutManagerAttributes.isPerfectGrid()){
-            return View.MeasureSpec.EXACTLY;
-        }
-        return View.MeasureSpec.AT_MOST;
-    }
-
-    private int getVerticalMeasureSpec(){
-        if (isVerticalScroll()){
-            return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+    private int getChildHeightMeasureSpec() {
+        final int heightMeasureSpec = getHeightMeasureSpec();
+        if (isVerticalScroll()) {
+            return heightMeasureSpec;
         }
         final int maxMeasureHeight = getMaxMeasureHeight();
-        final int measureSpecMode = getMeasureSpecMode();
+        final int measureSpecMode = View.MeasureSpec.getMode(heightMeasureSpec);
         return View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, measureSpecMode);
     }
 
     @Override
     protected Group getCell(final int adapterPosition) {
-        final int verticalMeasureSpec = getVerticalMeasureSpec();
-        final int horizontalMeasureSpec = getHorizontalMeasureSpec();
+        final int heightMeasureSpec = getChildHeightMeasureSpec();
+        final int widthMeasureSpec = getChildWidthMeasureSpec();
         final int adapterCount = getAdapterCount();
         final int numberOfCells = getNumberOfViewsPerCell();
         final Group group = new Group(isVerticalScroll());
         final int positionLimit = Math.min(adapterPosition + numberOfCells, adapterCount);
         for (int index = adapterPosition; index < positionLimit; index++) {
-            final View view = mAdapterViewManager.getView(mViewGroup, index, horizontalMeasureSpec, verticalMeasureSpec);
+            final View view = mAdapterViewManager.getView(mViewGroup, index, widthMeasureSpec, heightMeasureSpec);
             group.addView(view);
         }
 
@@ -195,9 +202,8 @@ public class GridLayoutManager extends LayoutManager<Group> {
     @Override
     public void layoutCell(final Group group, final int cellStart, final int cellEnd, final int firstAdapterPositionInCell, final int breadth, final int cellSpacing) {
         final List<View> views = group.getViews();
-        final int cellSpacingCount = Math.max(views.size() - 1, 0);
-        final int groupBreadth = group.getBreadth() + cellSpacingCount * cellSpacing;
-        int viewBreadthOffset = getBreadthOffset(breadth, groupBreadth, cellSpacing);
+        final int groupBreadth = group.getBreadth(cellSpacing);
+        int viewBreadthOffset = getBreadthOffset(breadth, groupBreadth);
         int adapterPosition = firstAdapterPositionInCell;
         for (final View view : views) {
 
@@ -244,20 +250,20 @@ public class GridLayoutManager extends LayoutManager<Group> {
         }
     }
 
-    private int getBreadthOffset(final int breadth, final int groupBreadth, final int cellSpacing) {
+    private int getBreadthOffset(final int breadth, final int groupBreadth) {
         if (isVerticalScroll()) {
             if (mGridLayoutManagerAttributes.isRight()) {
-                return breadth - cellSpacing - groupBreadth;
+                return breadth - groupBreadth;
             } else if (mGridLayoutManagerAttributes.isLeft()) {
-                return cellSpacing;
+                return 0;
             } else {
                 return (breadth - groupBreadth) / 2;
             }
         } else {
             if (mGridLayoutManagerAttributes.isBottom()) {
-                return breadth - cellSpacing - groupBreadth;
+                return breadth - groupBreadth;
             } else if (mGridLayoutManagerAttributes.isTop()) {
-                return cellSpacing;
+                return 0;
             } else {
                 return (breadth - groupBreadth) / 2;
             }

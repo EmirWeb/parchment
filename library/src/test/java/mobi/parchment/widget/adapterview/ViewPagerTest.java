@@ -7,9 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import mobi.parchment.widget.adapterview.gridview.GridLayoutManager;
-import mobi.parchment.widget.adapterview.gridview.GridLayoutManagerAttributes;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,58 +18,89 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import mobi.parchment.widget.adapterview.listview.ListLayoutManager;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 /**
- * Created by Emir Hasanbegovic
+ * Created by Emir Hasanbegovic on 2014-04-03.
  */
 @RunWith(RobolectricTestRunner.class)
-public class GridLayoutManagerCircularScrollTest {
+public class ViewPagerTest {
 
-    public static final int VIEW_GROUP_SIZE = 300;
+    public static final int VIEW_GROUP_SIZE = 100;
     public static final int VIEW_SIZE = 100;
     public static final int CELL_SPACING = 10;
-    public static final int NUMBER_OF_COLUMNS = 2;
     final MyViewGroup mViewGroup = new MyViewGroup(Robolectric.application);
     final AdapterViewManager adapterViewManager = new AdapterViewManager();
     TestAdapter mTestAdapter;
-    GridLayoutManagerAttributes attributes;
-    GridLayoutManager listLayoutManager;
+    LayoutManagerAttributes attributes;
+    ListLayoutManager listLayoutManager;
 
     @Before
     public void setup() {
-        attributes = new GridLayoutManagerAttributes(NUMBER_OF_COLUMNS, true, true, false, 0, SnapPosition.onScreen, CELL_SPACING, true, true, true, true, false, false, false);
-        listLayoutManager = new GridLayoutManager(mViewGroup, null, adapterViewManager, attributes);
+        attributes = new LayoutManagerAttributes(true, true, true, 0, SnapPosition.onScreen, CELL_SPACING, true, true, false);
+        listLayoutManager = new ListLayoutManager(mViewGroup, null, adapterViewManager, attributes);
         mTestAdapter = new TestAdapter(VIEW_SIZE);
         adapterViewManager.setAdapter(mTestAdapter);
         doFirstLayout(VIEW_GROUP_SIZE);
     }
 
     @Test
-    public void scrollUpAboveCellSpacing() {
-        mTestAdapter.setAdapterSize(100);
+     public void doesPageCorrectlyDown(){
+        mTestAdapter.setAdapterSize(10);
 
         final Animation animation = new Animation();
         animation.newAnimation();
         doLayout(animation);
 
-        int displacement = -10;
+        final int displacement = -10060;
         animation.newAnimation();
         animation.setDisplacement(displacement);
         doLayout(animation);
 
-        View firstView = mViewGroup.mViews.get(0);
-        View secondView = mViewGroup.mViews.get(1);
-        assertThat(firstView.getLeft()).isEqualTo(45);
-        assertThat(firstView.getRight()).isEqualTo(145);
-        assertThat(firstView.getTop()).isEqualTo(-10);
-        assertThat(firstView.getBottom()).isEqualTo(90);
-        assertThat(secondView.getLeft()).isEqualTo(155);
-        assertThat(secondView.getRight()).isEqualTo(255);
-        assertThat(secondView.getTop()).isEqualTo(-10);
-        assertThat(secondView.getBottom()).isEqualTo(90);
+        final View currentView = mViewGroup.mViews.get(0);
+        assertThat(currentView.getTop()).isEqualTo(0);
+        assertThat(currentView.getTag()).isEqualTo(1);
+        assertThat(currentView.getBottom()).isEqualTo(100);
     }
 
+    @Test
+    public void doesPageCorrectlyUpWithCircularScroll(){
+        mTestAdapter.setAdapterSize(10);
+
+        final Animation animation = new Animation();
+        animation.newAnimation();
+        doLayout(animation);
+
+        final int displacement = 10060;
+        animation.newAnimation();
+        animation.setDisplacement(displacement);
+        doLayout(animation);
+
+        final View currentView = mViewGroup.mViews.get(0);
+//        assertThat(currentView.getTop()).isEqualTo(0);
+//        assertThat(currentView.getBottom()).isEqualTo(100);
+//        assertThat(currentView.getTag()).isEqualTo(9);
+    }
+
+    @Test
+    public void doesPageCorrectlyUp(){
+        mTestAdapter.setAdapterSize(10);
+
+        final Animation animation = new Animation();
+        animation.newAnimation();
+        doLayout(animation);
+
+        final int displacement = -60;
+        animation.newAnimation();
+        animation.setDisplacement(displacement);
+        doLayout(animation);
+
+        final View currentView = mViewGroup.mViews.get(0);
+        assertThat(currentView.getTop()).isEqualTo(0);
+        assertThat(currentView.getBottom()).isEqualTo(100);
+    }
 
     private void doLayout() {
         doLayout(new Animation());
@@ -150,14 +178,13 @@ public class GridLayoutManagerCircularScrollTest {
         public View getView(int position, View convertView, ViewGroup parent) {
             FrameLayout outer = new FrameLayout(Robolectric.application);
             outer.setTag(position);
-            outer.setLayoutParams(new ViewGroup.LayoutParams(mViewSize, mViewSize));
+            outer.setLayoutParams(new android.view.ViewGroup.LayoutParams(mViewSize, mViewSize));
 
             // TODO: necessary to have an outer and an inner?
             final FrameLayout inner = new FrameLayout(Robolectric.application);
-            inner.setLayoutParams(new ViewGroup.LayoutParams(mViewSize, mViewSize));
+            inner.setLayoutParams(new android.view.ViewGroup.LayoutParams(mViewSize, mViewSize));
             outer.addView(inner);
             return outer;
         }
     }
-
 }

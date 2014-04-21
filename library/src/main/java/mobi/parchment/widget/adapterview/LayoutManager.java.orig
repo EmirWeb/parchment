@@ -73,9 +73,9 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         switch (snapPosition) {
             case center:
                 return new CenterSnapPosition<Cell>();
-            case end:
+            case floatEnd:
                 return new EndSnapPosition<Cell>();
-            case start:
+            case floatStart:
                 return new StartSnapPosition<Cell>();
             case onScreen:
             default:
@@ -149,19 +149,15 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     protected abstract int getCellCount();
 
-    protected abstract int getChildHeightMeasureSpecSize(final int position);
+    protected abstract int getMaxMeasureHeight(final int position);
 
-    protected abstract int getChildWidthMeasureSpecSize(final int position);
+    protected abstract int getMaxMeasureWidth(final int position);
 
     protected abstract int getCellPosition(final int adapterPosition);
 
     protected abstract int getFirstAdapterPositionInCell(final int cellPosition);
 
     protected abstract int getDrawPosition(final List<Cell> cells, final int drawCellPosition);
-
-    protected abstract int getChildWidthMeasureSpecMode();
-
-    protected abstract int getChildHeightMeasureSpecMode();
 
     /**
      * @param animation Positive displacement moves the screen to the right and vice versa
@@ -173,11 +169,18 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
      */
     public void layout(final AdapterViewHandler adapterViewHandler, final Animation animation, final boolean changed, final int left, final int top, final int right, final int bottom) {
 
+<<<<<<< HEAD
         if (getFirstAdapterPositionInCell(mStartCellPosition) >= getAdapterCount()){
             final int lastAdapterPosition = Math.max(getAdapterCount() - 1, 0);
             mStartCellPosition = getCellPosition(lastAdapterPosition);
         }
 
+        if (mAdapterViewManager.getAdapterCount() == 0) return;
+=======
+        if (mAdapterViewManager.getAdapterCount() == 0) {
+            return;
+        }
+>>>>>>> @emir-hasanbegovic/@anthony-tarantini [#69447912] finished adding padding support
 
         final int size = mScrollDirectionManager.getDrawSize(left, top, right, bottom);
         final int displacement = animation.getDisplacement();
@@ -246,20 +249,6 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         return mViewGroup.getPaddingRight();
     }
 
-    public int getStartBreadthPadding() {
-        if (isVerticalScroll()) {
-            return mViewGroup.getPaddingLeft();
-        }
-        return mViewGroup.getPaddingTop();
-    }
-
-    public int getEndBreadthPadding() {
-        if (isVerticalScroll()) {
-            return mViewGroup.getPaddingRight();
-        }
-        return mViewGroup.getPaddingBottom();
-    }
-
 
     private boolean needLayout(final int size, final int scrollDisplacement) {
         final int adapterCount = mAdapterViewManager.getAdapterCount();
@@ -326,10 +315,6 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
     private Cell getFirstCell() {
-        if (mCells.isEmpty()){
-            return null;
-        }
-
         if (mStartCellPosition == 0) {
             return mCells.get(0);
         }
@@ -337,10 +322,6 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     }
 
     private Cell getLastCell() {
-        if (mCells.isEmpty()){
-            return null;
-        }
-
         final int size = mCells.size();
         final int cellCount = getCellCount();
         if (cellCount == -1 || mStartCellPosition + size != cellCount) {
@@ -550,7 +531,8 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
     /**
      * When moving left, every time a view is removed, this means that we are removing the leftMost view and therefore have to increment the mOffset by the removed view's width
      */
-    private void layoutCells(final AdapterViewHandler adapterViewHandler, final int size, final int breadth) {
+    private void layoutCells(final AdapterViewHandler adapterViewHandler, final int size,
+                             final int breadth) {
         final int startSizePadding = getStartSizePadding();
         final int endSizePadding = getEndSizePadding();
         mLayoutCellCount = 0;
@@ -600,7 +582,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             }
         }
 
-        while (currentOffset <= size + startSizePadding + endSizePadding) {
+        while (currentOffset + cellSpacing <= size + startSizePadding) {
             final int firstAdapterPosition = getFirstAdapterPositionInCell(endCellPosition);
             final int adapterCount = mAdapterViewManager.getAdapterCount();
             final boolean aboveCount = firstAdapterPosition >= adapterCount;
@@ -648,7 +630,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         currentOffset = mOffset;
         int cellPosition = decrementCellPosition(mStartCellPosition);
 
-        while (currentOffset > 0) {
+        while (currentOffset > startSizePadding) {
             final int adapterPosition = getFirstAdapterPositionInCell(cellPosition);
             final boolean belowCount = adapterPosition < 0;
             if (belowCount) break;
@@ -831,22 +813,10 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         final boolean isPositionBeingDrawn = isPositionBeingDrawn(position);
         if (isPositionBeingDrawn) return getDrawnView(position);
 
-        final int widthMeasureSpec = getChildWidthMeasureSpec(position);
-        final int heightMeasureSpec = getChildHeightMeasureSpec(position);
+        final int maxMeasureWidth = getMaxMeasureWidth(position);
+        final int maxMeasureHeight = getMaxMeasureHeight(position);
 
-        return mAdapterViewManager.getView(mViewGroup, position, widthMeasureSpec, heightMeasureSpec);
-    }
-
-    public int getChildWidthMeasureSpec(final int position) {
-        final int size = getChildWidthMeasureSpecSize(position);
-        final int mode = getChildWidthMeasureSpecMode();
-        return View.MeasureSpec.makeMeasureSpec(size, mode);
-    }
-
-    public int getChildHeightMeasureSpec(final int position) {
-        final int size = getChildHeightMeasureSpecSize(position);
-        final int mode = getChildHeightMeasureSpecMode();
-        return View.MeasureSpec.makeMeasureSpec(size, mode);
+        return mAdapterViewManager.getView(mViewGroup, position, maxMeasureWidth, maxMeasureHeight);
     }
 
     private View getDrawnView(final int position) {

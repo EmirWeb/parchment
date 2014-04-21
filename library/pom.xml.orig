@@ -4,7 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>mobi.parchment</groupId>
     <artifactId>parchment</artifactId>
+<<<<<<< HEAD
+    <version>1.6.4</version>
+=======
     <version>1.6.5</version>
+>>>>>>> @emir-hasanbegovic/@anthony-tarantini [#69447912, #68830256] added padding support and removed cell spacing from the outisde of the scrolling section
     <packaging>apklib</packaging>
     <name>Parchment</name>
     <description>Android scrolling library</description>

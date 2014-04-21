@@ -170,7 +170,7 @@ public class Group {
         mViews.add(view);
     }
 
-    public int getBreadth() {
+    public int getBreadth(final int cellSpacing) {
         int breadth = 0;
 
         for (final View view : mViews) {
@@ -182,8 +182,10 @@ public class Group {
                 breadth += width;
             }
         }
+        final int numberOfCellSpacings = Math.max(0, mViews.size() - 1);
+        final int cellSpacingBreadth = numberOfCellSpacings * cellSpacing;
 
-        return breadth;
+        return breadth + cellSpacingBreadth;
     }
 
     public boolean isEmpty() {

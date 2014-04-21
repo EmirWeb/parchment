@@ -3,14 +3,14 @@ package mobi.parchment.widget.adapterview.listview;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mobi.parchment.widget.adapterview.AdapterViewManager;
 import mobi.parchment.widget.adapterview.LayoutManager;
 import mobi.parchment.widget.adapterview.LayoutManagerAttributes;
 import mobi.parchment.widget.adapterview.OnSelectedListener;
 import mobi.parchment.widget.adapterview.utilities.ViewGroupUtilities;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Emir Hasanbegovic on 2014-02-28.
@@ -23,9 +23,10 @@ public class ListLayoutManager extends LayoutManager<View> {
 
     @Override
     public void measure(final View view, final ViewGroup viewGroup ) {
-        final int horizontalMeasureSpec = getHorizontalMeasureSpec();
-        final int verticalMeasureSpec = getVerticalMeasureSpec();
-        mAdapterViewManager.measureView(viewGroup, view, horizontalMeasureSpec, verticalMeasureSpec);
+        final int heightMeasureSpec = getChildHeightMeasureSpec(0);
+        final int widthMeasureSpec = getChildWidthMeasureSpec(0);
+
+        mAdapterViewManager.measureView(viewGroup, view, widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -49,6 +50,18 @@ public class ListLayoutManager extends LayoutManager<View> {
     }
 
     @Override
+    protected int getChildWidthMeasureSpecMode() {
+        final int widthMeasureSpec = getWidthMeasureSpec();
+        return View.MeasureSpec.getMode(widthMeasureSpec);
+    }
+
+    @Override
+    protected int getChildHeightMeasureSpecMode() {
+        final int widthMeasureSpec = getWidthMeasureSpec();
+        return View.MeasureSpec.getMode(widthMeasureSpec);
+    }
+
+    @Override
     protected int getLastAdapterPositionInCell(final int cellPosition) {
         return cellPosition;
     }
@@ -61,28 +74,26 @@ public class ListLayoutManager extends LayoutManager<View> {
     }
 
     @Override
-    protected int getMaxMeasureHeight(int position) {
+    protected int getChildHeightMeasureSpecSize(int position) {
         return getMaxMeasureHeight();
     }
 
     private int getMaxMeasureHeight() {
-        final int cellSpacing = getCellSpacing();
         final ViewGroup viewGroup = getViewGroup();
-        final int viewGroupMeasuredHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(viewGroup);
-        final int maxHeight = viewGroupMeasuredHeight - cellSpacing * 2;
+        final int viewGroupMeasuredHeight = ViewGroupUtilities.getViewGroupMeasuredHeightPadding(viewGroup);
+        final int maxHeight = viewGroupMeasuredHeight;
         return maxHeight;
     }
 
     @Override
-    protected int getMaxMeasureWidth(int position) {
+    protected int getChildWidthMeasureSpecSize(int position) {
         return getMaxMeasureWidth();
     }
 
     private int getMaxMeasureWidth() {
-        final int cellSpacing = getCellSpacing();
         final ViewGroup viewGroup = getViewGroup();
-        final int viewGroupMeasuredWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(viewGroup);
-        final int maxWidth = viewGroupMeasuredWidth - cellSpacing * 2;
+        final int viewGroupMeasuredWidth = ViewGroupUtilities.getViewGroupMeasuredWidthPadding(viewGroup);
+        final int maxWidth = viewGroupMeasuredWidth;
         return maxWidth;
     }
 
@@ -129,33 +140,13 @@ public class ListLayoutManager extends LayoutManager<View> {
         return views;
     }
 
-    private int getHorizontalMeasureSpec(){
-        final int cellSpacing = getCellSpacing();
-        if (isVerticalScroll()){
-            final int viewGroupMeasuredWidth = ViewGroupUtilities.getViewGroupMeasuredWidth(mViewGroup);
-            final int maxMeasureWidth =  viewGroupMeasuredWidth - cellSpacing * 2;
-            return View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, View.MeasureSpec.AT_MOST);
-        }
-        return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-    }
-
-    private int getVerticalMeasureSpec(){
-        final int cellSpacing = getCellSpacing();
-        if (isVerticalScroll()){
-            return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        }
-        final int viewGroupMeasuredHeight = ViewGroupUtilities.getViewGroupMeasuredHeight(mViewGroup);
-        final int maxMeasureHeight = viewGroupMeasuredHeight - cellSpacing * 2;
-        return View.MeasureSpec.makeMeasureSpec(maxMeasureHeight, View.MeasureSpec.AT_MOST);
-    }
-
-
     @Override
     protected View getCell(int adapterPosition) {
         final AdapterViewManager adapterViewManager = getAdapterViewManager();
-        final int horizontalMeasureSpec = getHorizontalMeasureSpec();
-        final int verticalMeasureSpec = getVerticalMeasureSpec();
-        final View view = adapterViewManager.getView(mViewGroup, adapterPosition, horizontalMeasureSpec, verticalMeasureSpec);
+        final int widthMeasureSpec = getChildWidthMeasureSpec(0);
+        final int heightMeasureSpec = getChildHeightMeasureSpec(0);
+
+        final View view = adapterViewManager.getView(mViewGroup, adapterPosition, widthMeasureSpec, heightMeasureSpec);
         return view;
     }
 

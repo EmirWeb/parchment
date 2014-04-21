@@ -18,7 +18,11 @@ repositories {
 dependencies {
     compile 'com.squareup.picasso:picasso:2.2.0'
     compile 'com.google.code.gson:gson:2.2.4'
+<<<<<<< HEAD
+    compile 'mobi.parchment:parchment:1.6.4@aar'
+=======
     compile 'mobi.parchment:parchment:1.6.5@aar'
+>>>>>>> @emir-hasanbegovic/@anthony-tarantini [#69447912, #68830256] added padding support and removed cell spacing from the outisde of the scrolling section
 }
 
 android {

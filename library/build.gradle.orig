@@ -28,7 +28,11 @@ android {
 
     defaultConfig {
         versionCode 3
+<<<<<<< HEAD
+        versionName "1.6.4"
+=======
         versionName "1.6.5"
+>>>>>>> @emir-hasanbegovic/@anthony-tarantini [#69447912, #68830256] added padding support and removed cell spacing from the outisde of the scrolling section
         minSdkVersion 8
         targetSdkVersion 18
     }

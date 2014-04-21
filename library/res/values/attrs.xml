@@ -13,12 +13,9 @@
         <attr name="isViewPager" format="boolean"/>
         <attr name="snapPosition" format="enum">
             <enum name="center" value="0"/>
-            <enum name="floatStart" value="1"/>
-            <enum name="floatEnd" value="2"/>
-            <enum name="floatStartWithCellSpacing" value="3"/>
-            <enum name="floatEndWithCellSpacing" value="4"/>
-            <enum name="onScreen" value="5"/>
-            <enum name="onScreenWithCellSpacing" value="6"/>
+            <enum name="start" value="1"/>
+            <enum name="end" value="2"/>
+            <enum name="onScreen" value="3"/>
         </attr>
         <attr name="selectWhileScrolling" format="boolean"/>
     </declare-styleable>
@@ -31,7 +28,6 @@
             <flag name="top" value="0x08"/>
             <flag name="bottom" value="0x10"/>
         </attr>
-        <attr name="isPerfectGrid" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="GridPatternView">

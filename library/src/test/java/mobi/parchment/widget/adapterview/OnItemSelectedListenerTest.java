@@ -7,8 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import mobi.parchment.widget.adapterview.listview.ListLayoutManager;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -18,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import mobi.parchment.widget.adapterview.listview.ListLayoutManager;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -47,7 +47,7 @@ public class OnItemSelectedListenerTest {
             public void onSelected(View view) {
                 mWasSelected = true;
                 assertThat(view).isNotNull();
-                assertThat(view.getTag()).isEqualTo(7);
+                assertThat(view.getTag()).isEqualTo(0);
             }
         };
 
