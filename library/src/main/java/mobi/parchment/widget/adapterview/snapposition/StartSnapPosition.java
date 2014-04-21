@@ -30,7 +30,7 @@ public class StartSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     public int getDisplacementFromSnapPosition(LayoutManager<Cell> layoutManager, int size, Cell firstPosition, Cell lastPosition, Move move) {
         final Integer firstDisplacement = getCellDisplacementFromSnapPosition(layoutManager, firstPosition);
 
-        if (firstDisplacement != null) {
+        if (firstDisplacement != null && firstDisplacement < 0) {
             return firstDisplacement;
         }
 

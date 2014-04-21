@@ -35,5 +35,4 @@ public class MenuActivity extends Activity {
         startActivity(SimpleViewPagerActivity.class);
     }
 
-
 }

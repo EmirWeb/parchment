@@ -7,7 +7,7 @@ Parchment
 
 The Parchment library attempts to add the functionality that developers want to their AdapterViews, by providing horizontal and vertical scrolling to all of its AdapterViews. Parchment gives developers more control of layout by choosing from a simple horizontal List View, a GridView that wraps heights or a GridPatternView that lets a user specify the grid pattern.
 
-![alt tag](https://i.imgur.com/MHeZuFg.png)
+![alt tag](https://i.imgur.com/2ArOltz.png)
 
 ## Requires
 Android 2.2 +
@@ -20,7 +20,7 @@ Include the Parchment library in your pom.xml file as follows:
 <dependency>
     <groupId>mobi.parchment</groupId>
     <artifactId>parchment</artifactId>
-    <version>1.6.5</version>
+    <version>1.6.6</version>
     <type>apklib</type>
 </dependency>
 ```
@@ -29,7 +29,7 @@ or, to your build.gradle as follows:
 
 ```java
 dependencies {
-    compile 'mobi.parchment:parchment:1.6.5@aar'
+    compile 'mobi.parchment:parchment:1.6.6@aar'
 }
 ```
  

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/list_item_picture_border" />
+
+        </shape>
+    </item>
+    <item
+        android:bottom="@dimen/list_item_picture_border_size"
+        android:left="@dimen/list_item_picture_border_size"
+        android:right="@dimen/list_item_picture_border_size"
+        android:top="@dimen/list_item_picture_border_size">
+        <shape>
+            <solid android:color="@color/activity_background" />
+
+        </shape>
+    </item>
+</layer-list>

@@ -4,10 +4,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:background="@drawable/background">
+    android:background="@color/activity_background">
 
     <Button
-        style="?android:attr/buttonStyleSmall"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_activity_menu_horizontal_list_view"
@@ -15,7 +15,7 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_activity_menu_wrapping_height_grid_view"
@@ -23,7 +23,7 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_activity_grid_pattern_view"
@@ -31,10 +31,11 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_activity_menu_view_pager"
         android:onClick="onClickViewPager"
         android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="brown_green">#938F5D</color>
-    <color name="green">#384D35</color>
-    <color name="grey">#C8C8C8</color>
+    <color name="activity_background">#efefeb</color>
+    <color name="action_bar_text_color">#4c4c4c</color>
+    <color name="action_bar_background">#f5f5f5</color>
 
-    <color name="list_item_product_background">#2E2E2E</color>
-    <color name="list_item_product_text_view_background">#FFF</color>
-    <color name="list_item_product_text_view_font_color">#000</color>
-
-    <color name="press_state_colour">#CC123456</color>
-    <color name="selected_state_colour">#CC654321</color>
+    <color name="press_state_colour">#6600498b</color>
+    <color name="selected_state_colour">#338b7700</color>
 </resources>

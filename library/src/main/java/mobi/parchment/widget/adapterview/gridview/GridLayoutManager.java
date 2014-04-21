@@ -169,13 +169,13 @@ public class GridLayoutManager extends LayoutManager<Group> {
             final int measureSpecMode = View.MeasureSpec.getMode(widthMeasureSpec);
             return View.MeasureSpec.makeMeasureSpec(maxMeasureWidth, measureSpecMode);
         }
-        return widthMeasureSpec;
+        return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     }
 
     private int getChildHeightMeasureSpec() {
         final int heightMeasureSpec = getHeightMeasureSpec();
         if (isVerticalScroll()) {
-            return heightMeasureSpec;
+            return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         }
         final int maxMeasureHeight = getMaxMeasureHeight();
         final int measureSpecMode = View.MeasureSpec.getMode(heightMeasureSpec);
