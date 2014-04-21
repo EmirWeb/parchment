@@ -18,4 +18,9 @@ public class SimpleListViewActivity extends BaseActivity {
 		horizontalListView.setAdapter(getProductsAdapter());
 	}
 
+    @Override
+    public int getLayoutResourceId() {
+        return R.layout.list_item_horizontal_picture;
+    }
+
 }

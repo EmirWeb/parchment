@@ -6,7 +6,7 @@
         android:id="@+id/parchment_view"
         parchment:cellSpacing="20dp"
         parchment:orientation="horizontal"
-        parchment:snapPosition="onScreen"
+        parchment:snapPosition="start"
         parchment:snapToPosition="true"
         android:clipToPadding="false"
         android:paddingLeft="@dimen/activity_sample_parchment_padding_small"
@@ -14,6 +14,7 @@
         android:paddingTop="@dimen/activity_sample_parchment_padding_medium"
         android:paddingBottom="@dimen/activity_sample_parchment_padding_medium"
         android:scrollbars="horizontal"
+        android:scrollbarStyle="outsideOverlay"
         android:scrollbarAlwaysDrawHorizontalTrack="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

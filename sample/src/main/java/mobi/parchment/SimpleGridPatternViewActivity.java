@@ -1,7 +1,6 @@
 package mobi.parchment;
 
 import android.os.Bundle;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 
 import mobi.parchment.widget.adapterview.gridpatternview.GridPatternView;
@@ -44,4 +43,8 @@ public class SimpleGridPatternViewActivity extends BaseActivity {
         gridPatternView.setAdapter(getProductsAdapter());
     }
 
+    @Override
+    public int getLayoutResourceId() {
+        return R.layout.list_item_gridpatternview_picture;
+    }
 }

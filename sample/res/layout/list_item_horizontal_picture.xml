@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/list_item_picture_border"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/list_item_picture_border"
     android:foreground="@drawable/view_selector"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/list_item_horizontal_height"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/list_item_picture_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:layout_above="@+id/list_item_picture_text_view"/>
+        android:scaleType="centerCrop"/>
 
     <TextView
+        android:layout_gravity="bottom"
         android:id="@+id/list_item_picture_text_view"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/list_item_picture_border_size"
-        android:layout_marginLeft="@dimen/list_item_picture_border_size"
-        android:layout_marginBottom="@dimen/list_item_picture_border_size"
         android:paddingTop="@dimen/list_item_picture_text_view_padding_vertical"
         android:paddingBottom="@dimen/list_item_picture_text_view_padding_vertical"
         android:paddingLeft="@dimen/list_item_picture_text_view_padding_horizontal"
         android:paddingRight="@dimen/list_item_picture_text_view_padding_horizontal"
-        android:background="@color/list_item_product_text_view_background"
+        android:background="@drawable/bordered_background"
         android:textColor="@color/list_item_product_text_view_font_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-</RelativeLayout>
+</FrameLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="list_item_gridview_picture_height">300dp</dimen>
+
+    <dimen name="list_item_gridpatternview_padding_vertical">10dp</dimen>
+</resources>

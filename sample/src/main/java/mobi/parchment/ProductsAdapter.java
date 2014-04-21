@@ -20,8 +20,11 @@ import mobi.parchment.models.Picture;
  */
 public class ProductsAdapter extends BaseAdapter {
 
-    public ProductsAdapter() {
+    private final int mLayoutResourceId;
+
+    public ProductsAdapter(final int layoutResourceId) {
         super();
+        mLayoutResourceId = layoutResourceId;
         mPictures = getPictures();
     }
 
@@ -76,7 +79,7 @@ public class ProductsAdapter extends BaseAdapter {
     private View getView(final Context context, final View convertView, final ViewGroup viewGroup) {
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
-            final View view = layoutInflater.inflate(R.layout.list_item_picture, viewGroup, false);
+            final View view = layoutInflater.inflate(mLayoutResourceId, viewGroup, false);
             return view;
         }
         return convertView;

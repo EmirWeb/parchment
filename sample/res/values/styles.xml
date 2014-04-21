@@ -16,4 +16,12 @@
         <item name="android:titleTextStyle">@style/ActionBar.TitleTextStyle</item>
     </style>
 
+    <style name="ButtonStyle" parent="@android:style/Widget.Button.Small">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:paddingLeft">@dimen/button_padding</item>
+        <item name="android:paddingRight">@dimen/button_padding</item>
+        <item name="android:layout_marginTop">@dimen/button_margin</item>
+        <item name="android:layout_marginBottom">@dimen/button_margin</item>
+    </style>
+
 </resources>

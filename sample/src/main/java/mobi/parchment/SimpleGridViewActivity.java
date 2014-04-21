@@ -19,4 +19,9 @@ public class SimpleGridViewActivity extends BaseActivity {
 		gridView.setAdapter(getProductsAdapter());
 	}
 
+    @Override
+    public int getLayoutResourceId() {
+        return R.layout.list_item_gridview_picture;
+    }
+
 }

@@ -51,12 +51,18 @@ public class ListLayoutManager extends LayoutManager<View> {
 
     @Override
     protected int getChildWidthMeasureSpecMode() {
-        final int widthMeasureSpec = getWidthMeasureSpec();
-        return View.MeasureSpec.getMode(widthMeasureSpec);
+        if (isVerticalScroll()) {
+            final int widthMeasureSpec = getWidthMeasureSpec();
+            return View.MeasureSpec.getMode(widthMeasureSpec);
+        }
+        return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     }
 
     @Override
     protected int getChildHeightMeasureSpecMode() {
+        if (isVerticalScroll()){
+            return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        }
         final int widthMeasureSpec = getWidthMeasureSpec();
         return View.MeasureSpec.getMode(widthMeasureSpec);
     }
