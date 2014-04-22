@@ -11,8 +11,15 @@ build/
 classes/
 libs/
 .idea/
+.settings/
 
 # IDE files
 *.iml
 .gradle/
 local.properties
+.classpath
+.project
+lint.xml
+project.properties
+
+
