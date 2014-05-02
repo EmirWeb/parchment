@@ -204,6 +204,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             mAnimationId = animationId;
             mViewPageDistance = getViewPageDistance(size);
             mAnimationDisplacement = displacement;
+
         } else if (continuedAnimation) {
             mAnimationDisplacement += displacement;
         }
@@ -312,7 +313,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             return false;
         }
 
-        mOffset += displacement;
+//        mOffset += displacement;
         if (firstPositionOnScreen) {
             mStartCellPosition = 0;
         } else if (lastPositionOnScreen) {

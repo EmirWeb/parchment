@@ -23,7 +23,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
  */
 
 @RunWith(RobolectricTestRunner.class)
-public class getCellCisplacementFromSnapPositionTests {
+public class getCellDisplacementFromSnapPositionTests {
     private LayoutManager<Cell> mLayoutManager;
 
     @Before
@@ -86,7 +86,7 @@ public class getCellCisplacementFromSnapPositionTests {
         final StartSnapPosition<Cell> snapPosition = new StartSnapPosition();
         final Cell cell = new Cell(-10, 15);
         final int displacement = snapPosition.getDisplacementFromSnapPosition(mLayoutManager, 100, cell, null, Move.none);
-        assertThat(displacement).isEqualTo(10);
+        assertThat(displacement).isEqualTo(0);
     }
 
     @Test
