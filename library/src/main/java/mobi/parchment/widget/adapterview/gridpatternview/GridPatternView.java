@@ -63,5 +63,15 @@ public class GridPatternView<ADAPTER extends Adapter> extends AbstractAdapterVie
         final GridPatternGroupDefinition gridPatternGroupDefinition = new GridPatternGroupDefinition(mIsVerticalScroll, gridPatternItemDefinitions);
         mGridPatternLayoutManager.addGridPatternGroupDefinition(gridPatternGroupDefinition);
     }
-
+    
+    // ===================
+    // Added By Tom Yu
+    // ===================
+    public void add(final List<GridPatternItemDefinition> gridPatternItemDefinitions) {
+    	addGridPatternGroupDefinition(gridPatternItemDefinitions);
+    }
+    
+    public void clear() {
+    	mGridPatternLayoutManager.clearGridPatternGroupDefinition();
+    }
 }

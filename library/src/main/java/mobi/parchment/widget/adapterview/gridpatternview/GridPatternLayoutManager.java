@@ -416,4 +416,9 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
         final GridPatternGroupDefinition gridPatternGroupDefinition = mGridPatternGroupDefinitions.get(index);
         return gridPatternGroupDefinition;
     }
+    
+    public void clearGridPatternGroupDefinition() {
+    	mGridPatternGroupDefinitions.clear();
+        mNumberOfGridItemsPerRepetition = 0;
+    }
 }
