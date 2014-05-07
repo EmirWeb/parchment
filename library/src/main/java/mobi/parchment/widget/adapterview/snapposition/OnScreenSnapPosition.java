@@ -36,7 +36,8 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
             final int cellSizeTotal = layoutManager.getCellSizeTotal();
             final int sizeTotal = size + startSizePadding + endSizePadding;
             if (cellSizeTotal <= sizeTotal) {
-                return (sizeTotal - cellSizeTotal) / 2;
+                final int firstCellSize = layoutManager.getCellSize(firstCell);
+                return firstCellSize + (sizeTotal - cellSizeTotal) / 2;
             }
         } else if (isLastItemOnScreen) {
             final int cellSizeTotal = layoutManager.getCellSizeTotal();

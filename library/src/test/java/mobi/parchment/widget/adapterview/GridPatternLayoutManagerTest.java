@@ -181,7 +181,7 @@ public class GridPatternLayoutManagerTest {
 
         View firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(78);
+        assertThat(firstView.getTop()).isIn(77, 78);
     }
 
     @Test
@@ -222,7 +222,7 @@ public class GridPatternLayoutManagerTest {
 
         View firstView = mViewGroup.mViews.get(0);
 
-        assertThat(firstView.getTop()).isEqualTo(78);
+        assertThat(firstView.getTop()).isIn(77, 78);
 
 
     }
