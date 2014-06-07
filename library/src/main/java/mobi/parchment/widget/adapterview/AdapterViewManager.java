@@ -22,18 +22,11 @@ import java.util.Queue;
 public class AdapterViewManager {
 
     private final DataSetObserverManager mDataSetObserverManager = new DataSetObserverManager();
-    private final Map<View, Long> mViewIdMap = new HashMap<View, Long>();
     private final Map<View, Integer> mViewTypeMap = new HashMap<View, Integer>();
-    private final Map<Long, View> mIdViewMap = new HashMap<Long, View>();
     private Adapter mAdapter;
     private List<Queue<View>> mViews = new ArrayList<Queue<View>>();
 
     public void recycle(final View removedView) {
-        if (mAdapter.hasStableIds()) {
-            final Long id = mViewIdMap.remove(removedView);
-            mIdViewMap.put(id, removedView);
-        }
-
         final Integer type = mViewTypeMap.remove(removedView);
         final Queue<View> views = mViews.get(type);
         views.add(removedView);
@@ -41,30 +34,14 @@ public class AdapterViewManager {
 
     public View getView(final ViewGroup viewGroup, final int position, final int widthMeasureSpec, final int heightMeasureSpec) {
         final int type = mAdapter.getItemViewType(position);
-        final long id = mAdapter.getItemId(position);
 
-        final View view = getView(viewGroup, position, type, id, widthMeasureSpec, heightMeasureSpec);
-        registerViewIsOnScreen(id, type, view);
+        final View view = getView(viewGroup, position, type, widthMeasureSpec, heightMeasureSpec);
+        mViewTypeMap.put(view, type);
 
         return view;
     }
 
-    private void registerViewIsOnScreen(final long id, final int type, final View view) {
-        if (mAdapter.hasStableIds()) {
-            mViewIdMap.put(view, id);
-        }
-        mViewTypeMap.put(view, type);
-    }
-
-    private View getView(final ViewGroup viewGroup, final int position, final int type, final long id, final int widthMeasureSpec, final int heightMeasureSpec) {
-        if (mAdapter.hasStableIds() && mIdViewMap.containsKey(id)) {
-            final View view = mIdViewMap.remove(id);
-            final Queue<View> views = mViews.get(type);
-            views.remove(view);
-
-            return view;
-        }
-
+    private View getView(final ViewGroup viewGroup, final int position, final int type,  final int widthMeasureSpec, final int heightMeasureSpec) {
         final Queue<View> views = mViews.get(type);
         final View convertView = views.poll();
         final View view = mAdapter.getView(position, convertView, viewGroup);
@@ -73,10 +50,6 @@ public class AdapterViewManager {
             measureView(viewGroup, view, widthMeasureSpec, heightMeasureSpec);
         }
 
-        if (mAdapter.hasStableIds()) {
-            remove(mIdViewMap, convertView);
-            remove(mViewIdMap, id);
-        }
         return view;
     }
 
