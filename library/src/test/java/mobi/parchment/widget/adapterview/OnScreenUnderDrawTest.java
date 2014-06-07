@@ -7,8 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import mobi.parchment.widget.adapterview.listview.ListLayoutManager;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -19,15 +18,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import mobi.parchment.widget.adapterview.listview.ListLayoutManager;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 /**
- * Created by Emir Hasanbegovic
+ * Created by dx168-xl on 2014-04-30.
  */
 @RunWith(RobolectricTestRunner.class)
-public class StableIdsTest {
+public class OnScreenUnderDrawTest {
 
-    public static final int VIEW_GROUP_SIZE = 299;
+    public static final int VIEW_GROUP_SIZE = 100;
     public static final int VIEW_SIZE = 10;
     public static final int CELL_SPACING = 10;
     final MyViewGroup mViewGroup = new MyViewGroup(Robolectric.application);
@@ -36,60 +37,47 @@ public class StableIdsTest {
     LayoutManagerAttributes attributes;
     ListLayoutManager listLayoutManager;
 
-    @Test
-     public void canRecycleView(){
-        attributes = new LayoutManagerAttributes(false, true, false, 0, SnapPosition.center, CELL_SPACING, true, true, false);
-
+    @Before
+    public void setup() {
+        attributes = new LayoutManagerAttributes(false, true, false, 0, SnapPosition.onScreen, CELL_SPACING, true, true, true);
         listLayoutManager = new ListLayoutManager(mViewGroup, null, adapterViewManager, attributes);
         mTestAdapter = new TestAdapter(VIEW_SIZE);
-        mTestAdapter.setAdapterSize(10);
         adapterViewManager.setAdapter(mTestAdapter);
         doFirstLayout(VIEW_GROUP_SIZE);
-        doLayout();
-        assertThat(mViewGroup.mViews.get(0).getTag()).isEqualTo(0);
-        mViewGroup.mViews.get(0).setTag(1);
-        mTestAdapter.notifyDataSetChanged();
-        doLayout();
-        assertThat(mViewGroup.mViews.get(0).getTag()).isEqualTo(1);
     }
 
     @Test
-    public void notGettingViewMoreThanOneInstanceOfViewOnScreen(){
-
-        attributes = new LayoutManagerAttributes(false, true, false, 0, SnapPosition.center, CELL_SPACING, true, true, false);
-
-        listLayoutManager = new ListLayoutManager(mViewGroup, null, adapterViewManager, attributes);
-        mTestAdapter = new TestAdapter(VIEW_SIZE);
-        mTestAdapter.setAdapterSize(1);
-        adapterViewManager.setAdapter(mTestAdapter);
-        doFirstLayout(VIEW_GROUP_SIZE);
-        doLayout();
-        mTestAdapter.notifyDataSetChanged();
-        doLayout();
+    public void centerWhenNotFillingScreen() {
         mTestAdapter.setAdapterSize(2);
-        doLayout();
-        assertThat(mViewGroup.mViews.get(0)).isNotEqualTo(mViewGroup.mViews.get(1));
+
+        final Animation animation = new Animation();
+        animation.newAnimation();
+        doLayout(animation);
+
+        View firstView = mViewGroup.mViews.get(0);
+        View secondView = mViewGroup.mViews.get(1);
+        assertThat(firstView.getTop()).isEqualTo(35);
+        assertThat(secondView.getTop()).isEqualTo(55);
     }
 
     @Test
-    public void canRecycleViewsTwice(){
-        attributes = new LayoutManagerAttributes(false, true, false, 0, SnapPosition.center, CELL_SPACING, true, true, false);
+    public void centerWhenNotFillingScreenAfterScroll() {
+        mTestAdapter.setAdapterSize(2);
 
-        listLayoutManager = new ListLayoutManager(mViewGroup, null, adapterViewManager, attributes);
-        mTestAdapter = new TestAdapter(VIEW_SIZE);
-        mTestAdapter.setAdapterSize(10);
-        adapterViewManager.setAdapter(mTestAdapter);
-        doFirstLayout(VIEW_GROUP_SIZE);
-        doLayout();
-        assertThat(mViewGroup.mViews.get(0).getTag()).isEqualTo(0);
-        mViewGroup.mViews.get(0).setTag(1);
-        mTestAdapter.notifyDataSetChanged();
-        doLayout();
-        assertThat(mViewGroup.mViews.get(0).getTag()).isEqualTo(1);
-        mTestAdapter.notifyDataSetChanged();
-        doLayout();
-        assertThat(mViewGroup.mViews.get(0).getTag()).isEqualTo(1);
+        final Animation animation = new Animation();
+        animation.newAnimation();
+        doLayout(animation);
+
+        animation.newAnimation();
+        animation.setDisplacement(-10);
+        doLayout(animation);
+
+        View firstView = mViewGroup.mViews.get(0);
+        View secondView = mViewGroup.mViews.get(1);
+        assertThat(firstView.getTop()).isEqualTo(35);
+        assertThat(secondView.getTop()).isEqualTo(55);
     }
+
 
     private void doLayout() {
         doLayout(new Animation());
@@ -139,11 +127,6 @@ public class StableIdsTest {
         private int mAdapterSize;
         private int mViewSize;
 
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
         public TestAdapter(int viewSize) {
             mViewSize = viewSize;
         }
@@ -170,11 +153,7 @@ public class StableIdsTest {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null){
-                convertView = new FrameLayout(Robolectric.application);
-            }
-
-            final FrameLayout outer = (FrameLayout) convertView;
+            FrameLayout outer = new FrameLayout(Robolectric.application);
             outer.setTag(position);
             outer.setLayoutParams(new ViewGroup.LayoutParams(mViewSize, mViewSize));
 

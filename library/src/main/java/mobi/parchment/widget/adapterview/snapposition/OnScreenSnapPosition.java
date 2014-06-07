@@ -16,6 +16,7 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     @Override
     public int getDrawLimitMoveForwardOverDrawAdjust(final LayoutManager<Cell> layoutManager, final List<Cell> cells, final int size, final Cell cell) {
         final int startSizePadding = layoutManager.getStartSizePadding();
+        final int endSizePadding = layoutManager.getEndSizePadding();
         final int cellSize = layoutManager.getCellSize(cell);
 
         final int drawLimit = startSizePadding + cellSize;
@@ -23,10 +24,22 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
         final int lastCellIndex = cells.size() - 1;
         final Cell lastCell = cells.get(lastCellIndex);
         final View lastView = layoutManager.getLastAdapterPositionView(lastCell);
-
         final int lastViewPosition = layoutManager.getPosition(lastView);
         final boolean isLastItemOnScreen = lastViewPosition == layoutManager.getAdapterCount() - 1;
-        if (isLastItemOnScreen) {
+
+        final Cell firstCell = cells.get(0);
+        final View firstView = layoutManager.getFirstAdapterPositionView(firstCell);
+        final int firstViewPosition = layoutManager.getPosition(firstView);
+        final boolean isFirstItemOnScreen = firstViewPosition == 0;
+
+        if (isFirstItemOnScreen && isLastItemOnScreen) {
+            final int cellSizeTotal = layoutManager.getCellSizeTotal();
+            final int sizeTotal = size + startSizePadding + endSizePadding;
+            if (cellSizeTotal <= sizeTotal) {
+                final int firstCellSize = layoutManager.getCellSize(firstCell);
+                return firstCellSize + (sizeTotal - cellSizeTotal) / 2;
+            }
+        } else if (isLastItemOnScreen) {
             final int cellSizeTotal = layoutManager.getCellSizeTotal();
             return Math.max(drawLimit, startSizePadding + size - (cellSizeTotal - cellSize));
         }
@@ -37,14 +50,30 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
     @Override
     public int getDrawLimitMoveBackwardOverDrawAdjust(LayoutManager<Cell> layoutManager, List<Cell> cells, int size, Cell cell) {
         final int startSizePadding = layoutManager.getStartSizePadding();
+        final int endSizePadding = layoutManager.getEndSizePadding();
         final int cellSize = layoutManager.getCellSize(cell);
         final int drawLimit = startSizePadding + size - cellSize;
 
         final Cell firstCell = cells.get(0);
         final View firstView = layoutManager.getFirstAdapterPositionView(firstCell);
-
         final int firstViewPosition = layoutManager.getPosition(firstView);
         final boolean isFirstItemOnScreen = firstViewPosition == 0;
+
+        final int lastCellIndex = cells.size() - 1;
+        final Cell lastCell = cells.get(lastCellIndex);
+        final View lastView = layoutManager.getLastAdapterPositionView(lastCell);
+        final int lastViewPosition = layoutManager.getPosition(lastView);
+        final boolean isLastItemOnScreen = lastViewPosition == layoutManager.getAdapterCount() - 1;
+
+        if (isFirstItemOnScreen && isLastItemOnScreen) {
+            final int cellSizeTotal = layoutManager.getCellSizeTotal();
+            final int sizeTotal = size + startSizePadding + endSizePadding;
+            if (cellSizeTotal <= sizeTotal) {
+                final int x = (sizeTotal - cellSizeTotal) / 2 ;
+                return sizeTotal - x - cellSize;
+            }
+        }
+
         if (isFirstItemOnScreen) {
             return Math.min(drawLimit, startSizePadding + layoutManager.getCellSizeTotal() - cellSize);
         }
@@ -77,7 +106,7 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
         final Integer lastDisplacement = getCellDisplacementFromSnapPosition(layoutManager, size, lastPosition);
 
         if (firstDisplacement != null && lastDisplacement != null) {
-            if (firstDisplacement >= 0 && lastDisplacement >= 0) { //Both to the left
+            if (firstDisplacement > 0 && lastDisplacement > 0) { //Both to the left
                 final int cellSizeTotal = layoutManager.getCellSizeTotal();
                 if (cellSizeTotal > size) {
                     return getCellDisplacementFromEndSnapPosition(layoutManager, size, lastPosition);
@@ -91,7 +120,13 @@ public class OnScreenSnapPosition<Cell> implements SnapPositionInterface<Cell> {
             }
 
             if (firstDisplacement <= 0 && lastDisplacement >= 0) { // Both are fully on screen
-                return 0;
+                final int cellSizeTotal = layoutManager.getCellSizeTotal();
+                final int startSizePadding = layoutManager.getStartSizePadding();
+                final int endSizePadding = layoutManager.getEndSizePadding();
+                final int sizeTotal = size + startSizePadding + endSizePadding;
+                final int sizeStartPosition = (sizeTotal - cellSizeTotal) / 2;
+                final int firstSizeStartPosition = layoutManager.getCellStart(firstPosition);
+                return sizeStartPosition - firstSizeStartPosition;
             }
 
             if (firstDisplacement <= 0 && lastDisplacement <= 0) { // Both to the right

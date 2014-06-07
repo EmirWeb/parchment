@@ -204,6 +204,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             mAnimationId = animationId;
             mViewPageDistance = getViewPageDistance(size);
             mAnimationDisplacement = displacement;
+
         } else if (continuedAnimation) {
             mAnimationDisplacement += displacement;
         }
@@ -312,7 +313,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             return false;
         }
 
-        mOffset += displacement;
+//        mOffset += displacement;
         if (firstPositionOnScreen) {
             mStartCellPosition = 0;
         } else if (lastPositionOnScreen) {
@@ -490,10 +491,10 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
 
     private int getMoveForwardOverDrawAdjust(final int size, final int displacement) {
 
-        final int index = 0;
-        final Cell cell = mCells.get(index);
+        final int firstIndex = 0;
+        final Cell firstCell = mCells.get(firstIndex);
 
-        final View firstViewInCell = getFirstAdapterPositionView(cell);
+        final View firstViewInCell = getFirstAdapterPositionView(firstCell);
 
         final int position = mPositions.get(firstViewInCell);
         final boolean isFirstPosition = position == 0;
@@ -501,9 +502,9 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
             return 0;
         }
 
-        final int drawLimit = mSnapPositionInterface.getDrawLimitMoveForwardOverDrawAdjust(this, mCells, size, cell);
+        final int drawLimit = mSnapPositionInterface.getDrawLimitMoveForwardOverDrawAdjust(this, mCells, size, firstCell);
 
-        final int endMostPixel = getCellEnd(cell) + displacement;
+        final int endMostPixel = getCellEnd(firstCell) + displacement;
         final boolean isOverDrawn = endMostPixel > drawLimit;
         if (!isOverDrawn) {
             return 0;
@@ -514,7 +515,7 @@ public abstract class LayoutManager<Cell> extends AdapterViewDataSetObserver {
         if (isOverDrawn) {
             onAnimationStopped();
             if (selectOnSnap && snapToPosition) {
-                final View selectedView = getView(cell);
+                final View selectedView = getView(firstCell);
                 setSelected(selectedView);
             }
         }
