@@ -19,6 +19,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
     private List<GridPatternGroupDefinition> mGridPatternGroupDefinitions = new ArrayList<GridPatternGroupDefinition>();
     private int mNumberOfGridItemsPerRepetition;
     private GridPatternLayoutManagerAttributes mGridPatternLayoutManagerAttributes;
+    private boolean mGridPatternsSet = false;
 
     public GridPatternLayoutManager(final ViewGroup viewGroup, final OnSelectedListener onSelectedListener, final AdapterViewManager adapterViewManager, final LayoutManagerAttributes layoutManagerAttributes) {
         super(viewGroup, onSelectedListener, adapterViewManager, layoutManagerAttributes);
@@ -31,6 +32,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
         }
         mGridPatternGroupDefinitions.add(gridPatternGroupDefinition);
         mNumberOfGridItemsPerRepetition += gridPatternGroupDefinition.getNumberOfItems();
+        mGridPatternsSet = true;
     }
 
     public void setGridPatternGroupDefinitions(final List<GridPatternGroupDefinition> gridPatternGroupDefinitions) {
@@ -47,6 +49,7 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
             numberOfGridItemsPerRepetition += gridPatternGroupDefinition.getNumberOfItems();
         }
         mNumberOfGridItemsPerRepetition = numberOfGridItemsPerRepetition;
+        mGridPatternsSet = true;
     }
 
     @Override
@@ -322,6 +325,9 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
 
     @Override
     protected int getFirstAdapterPositionInCell(final int cellPosition) {
+        if (!mGridPatternsSet) {
+            return cellPosition;
+        }
         final int gridPatternGroupDefinitionSize = mGridPatternGroupDefinitions.size();
         final int gridPatternGroupDefinitionsRepeated = cellPosition / gridPatternGroupDefinitionSize;
         final int gridPatternGroupDefinitionPosition = cellPosition % gridPatternGroupDefinitionSize;
@@ -354,6 +360,9 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
 
     @Override
     protected int getLastAdapterPositionInCell(final int cellPosition) {
+        if (!mGridPatternsSet) {
+            return cellPosition;
+        }
         final int gridPatternGroupDefinitionSize = mGridPatternGroupDefinitions.size();
         final int gridPatternGroupDefinitionsRepeated = cellPosition / gridPatternGroupDefinitionSize;
         final int gridPatternGroupDefinitionPosition = cellPosition % gridPatternGroupDefinitionSize;
@@ -384,6 +393,9 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
 
     @Override
     public int getCellPosition(final int adapterPosition) {
+        if (!mGridPatternsSet) {
+            return adapterPosition;
+        }
         final int adapterPositionOffset = adapterPosition % mNumberOfGridItemsPerRepetition;
         final int numberOfRepetitions = adapterPosition / mNumberOfGridItemsPerRepetition;
 
@@ -404,6 +416,11 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
     }
 
     private GridPatternGroupDefinition getGridPatternGroupDefinition(final int adapterPosition) {
+        if (!mGridPatternsSet) {
+            final List<GridPatternItemDefinition> gridPatternItemDefinitions = new ArrayList<GridPatternItemDefinition>();
+            gridPatternItemDefinitions.add(new GridPatternItemDefinition(0,0,1,1));
+            return new GridPatternGroupDefinition(isVerticalScroll(), gridPatternItemDefinitions);
+        }
         int views = 0;
 
         int index = 0;
@@ -416,9 +433,10 @@ public class GridPatternLayoutManager extends LayoutManager<GridPatternGroup> {
         final GridPatternGroupDefinition gridPatternGroupDefinition = mGridPatternGroupDefinitions.get(index);
         return gridPatternGroupDefinition;
     }
-    
+
     public void clearGridPatternGroupDefinition() {
-    	mGridPatternGroupDefinitions.clear();
+        mGridPatternGroupDefinitions.clear();
         mNumberOfGridItemsPerRepetition = 0;
+        mGridPatternsSet = false;
     }
 }
