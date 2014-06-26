@@ -15,7 +15,7 @@ Android 2.2 +
 # Getting Started
 
 ## Step 1: Set up
-Include the Parchment library in your pom.xml file as follows:
+### pom.xml
 ```xml
 <dependency>
     <groupId>mobi.parchment</groupId>
@@ -25,13 +25,16 @@ Include the Parchment library in your pom.xml file as follows:
 </dependency>
 ```
 
-or, to your build.gradle as follows:
-
+### build.gradle
 ```java
 dependencies {
     compile 'mobi.parchment:parchment:1.6.7@aar'
 }
 ```
+
+### eclipse
+
+[Adding parchment as an Android library in Eclipse] (https://github.com/EmirWeb/parchment/wiki/Eclipse-Tutorial)
  
 
 ## Step 2: XML
