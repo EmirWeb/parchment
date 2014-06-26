@@ -42,7 +42,7 @@ public class GridPatternView<ADAPTER extends Adapter> extends AbstractAdapterVie
 
         final boolean isViewPager = gridPatternAttributes.isViewPager();
         final int cellSpacing = (int) gridPatternAttributes.getCellSpacing();
-        final boolean isCircularScroll = gridPatternAttributes.isIsCircularScroll();
+        final boolean isCircularScroll = gridPatternAttributes.isCircularScroll();
         final boolean snapToPosition = gridPatternAttributes.isSnapToPosition();
         final int viewPagerInterval = gridPatternAttributes.getViewPagerInterval();
         final SnapPosition snapPosition = gridPatternAttributes.getSnapPosition();

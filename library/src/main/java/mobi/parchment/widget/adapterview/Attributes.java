@@ -86,7 +86,7 @@ public class Attributes {
         mIsVertical = isVertical;
     }
 
-    public boolean isIsCircularScroll() {
+    public boolean isCircularScroll() {
         return mIsCircularScroll;
     }
 
