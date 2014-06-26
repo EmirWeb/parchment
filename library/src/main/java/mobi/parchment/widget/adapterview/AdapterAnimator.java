@@ -206,14 +206,14 @@ public class AdapterAnimator implements OnGestureListener, AnimationStoppedListe
 
     private void updateYTouchSlop(final MotionEvent e1, final MotionEvent e2) {
         if (!mTouchSlopExceeded) {
-            final float eventDifference = getXTouchSlop(e1, e2);
+            final float eventDifference = getYTouchSlop(e1, e2);
             mTouchSlopExceeded = eventDifference > mScaledTouchSlop;
         }
     }
 
     private void updateXTouchSlop(final MotionEvent e1, final MotionEvent e2) {
         if (!mTouchSlopExceeded) {
-            final float eventDifference = getYTouchSlop(e1, e2);
+            final float eventDifference = getXTouchSlop(e1, e2);
             mTouchSlopExceeded = eventDifference > mScaledTouchSlop;
         }
     }
