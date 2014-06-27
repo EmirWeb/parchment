@@ -23,6 +23,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
  * Created by emir on 22/03/14.
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(manifest = "/AndroidManifest.xml")
 public class AbstractAdapterViewManagerTest {
 
     private AdapterViewManager mAdapterViewManager;

@@ -5,7 +5,7 @@ android:
     - android-18
 
 before_install:
-    - scripts/install-support-jar.sh
+    - (cd scripts && ./install-support-jar.sh)
 install:
-    - library/mvn clean install
+    - (cd library && mvn clean install)
 
