@@ -1,12 +1,8 @@
-
-language: android
-
-android:
-  components:
-    - android-18
-
+language: java
+jdk: oraclejdk7
 before_install:
-    - (cd library && cd scripts && ./install-support-jar.sh)
-install:
-    - (cd library && mvn clean install)
+    - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
+    - ( cd maven-android-sdk-deployer ; mvn install -P 4.3 )
 
+script: 
+    - (cd library && mvn clean install)
