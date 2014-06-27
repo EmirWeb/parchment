@@ -4,6 +4,8 @@ android:
   components:
     - android-18
 
+before
+    - scripts/install-support-jar.sh
 install:
-    - (cd library && mvn clean install)
+    - library/mvn clean install
 
