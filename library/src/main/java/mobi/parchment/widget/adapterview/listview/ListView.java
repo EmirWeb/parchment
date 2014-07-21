@@ -40,7 +40,7 @@ public class ListView<ADAPTER extends Adapter> extends AbstractAdapterView<ADAPT
         final boolean isViewPager = attributes.isViewPager();
         final boolean isVerticalScroll = attributes.isVertical();
         final int cellSpacing = (int) attributes.getCellSpacing();
-        final boolean isCircularScroll = attributes.isIsCircularScroll();
+        final boolean isCircularScroll = attributes.isCircularScroll();
         final boolean snapToPosition = attributes.isSnapToPosition();
         final int viewPagerInterval = attributes.getViewPagerInterval();
         final SnapPosition snapPosition = attributes.getSnapPosition();
