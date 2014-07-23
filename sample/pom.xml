@@ -24,7 +24,7 @@
         <dependency>
             <groupId>mobi.parchment</groupId>
             <artifactId>parchment</artifactId>
-            <version>1.6.7</version>
+            <version>1.6.8</version>
             <optional>true</optional>
             <type>apklib</type>
         </dependency>
@@ -49,7 +49,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <sdk>
-                        <platform>18</platform>
+                        <platform>19</platform>
                     </sdk>
                 </configuration>
             </plugin>

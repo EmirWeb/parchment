@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Parchment Sample Application</string>
+    <string name="app_name">Parchment</string>
     <string name="button_activity_menu_horizontal_list_view">Horizontal ListView</string>
     <string name="button_activity_menu_wrapping_height_grid_view">Wrapping Height GridView</string>
     <string name="button_activity_grid_pattern_view">GridPatternView</string>
