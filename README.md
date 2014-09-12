@@ -20,7 +20,7 @@ Android 2.2 +
 <dependency>
     <groupId>mobi.parchment</groupId>
     <artifactId>parchment</artifactId>
-    <version>1.6.7</version>
+    <version>1.6.9</version>
     <type>apklib</type>
 </dependency>
 ```
@@ -28,7 +28,7 @@ Android 2.2 +
 ### build.gradle
 ```java
 dependencies {
-    compile 'mobi.parchment:parchment:1.6.7@aar'
+    compile 'mobi.parchment:parchment:1.6.9@aar'
 }
 ```
 

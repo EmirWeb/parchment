@@ -28,6 +28,9 @@ public class AdapterViewManager {
 
     public void recycle(final View removedView) {
         final Integer type = mViewTypeMap.remove(removedView);
+        if (type == null) {
+            return;
+        }
         final Queue<View> views = mViews.get(type);
         views.add(removedView);
     }
