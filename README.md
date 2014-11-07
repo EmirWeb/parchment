@@ -67,12 +67,6 @@ Set Adapters and go:
 ```
 
 
-
-## Story Tracking Tool:
-
-[PivotalTracker][1]
-
-
 ### License:
 
 Copyright 2014 Emir Hasanbegovic
