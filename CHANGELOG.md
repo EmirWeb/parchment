@@ -28,6 +28,14 @@ All notable changes to Parchment, newest first. The format follows
 
 ### Fixed
 
+- `GridPatternGroupDefinition`'s public constructor builds its group from a
+  snapshot of the list, so the group holds the items the list held at the
+  start whatever an item's getter does to the list meanwhile (#94). A getter
+  that resized the list could make the build throw
+  `ConcurrentModificationException`, from an item before the last on API 35
+  and 36 and from any item on the JVM, where a removal could instead drop a
+  later item; one that replaced a later item had its replacement built in.
+
 - A `GridPatternGroupDefinition` built for one orientation and given to a
   `GridPatternLayoutManager` of the other was laid out in a mix of the two
   (#93). The definition's own orientation set its grid unit, the spacing
