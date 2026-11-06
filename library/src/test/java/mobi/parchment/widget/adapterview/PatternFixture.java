@@ -268,6 +268,15 @@ public final class PatternFixture {
         return items;
     }
 
+    public static GridPatternItemDefinition itemAfterTheTwoItems(final boolean isVertical) {
+        if (isVertical) {
+            return new GridPatternItemDefinition(
+                    SECOND_ROW, FIRST_COLUMN, ONE_GRID_UNIT, TWO_GRID_UNITS);
+        }
+        return new GridPatternItemDefinition(
+                FIRST_ROW, SECOND_COLUMN, TWO_GRID_UNITS, ONE_GRID_UNIT);
+    }
+
     private static GridPatternItemDefinition secondOneByOneAcrossTheBreadth(
             final boolean isVertical) {
         if (isVertical) {
@@ -813,6 +822,32 @@ public final class PatternFixture {
             final boolean hasChanged = mHasChanged.get();
             if (hasChanged) return mChanged.getWidth();
             return super.getWidth();
+        }
+    }
+
+    public static final class GrowingItemDefinition<ELEMENT> extends GridPatternItemDefinition {
+        private final List<ELEMENT> mListToGrow;
+        private final ELEMENT mGrowth;
+        private final AtomicBoolean mGrowsOnItsNextRead = new AtomicBoolean();
+
+        public GrowingItemDefinition(
+                final GridPatternItemDefinition asMade,
+                final List<ELEMENT> listToGrow,
+                final ELEMENT growth) {
+            super(asMade.getTop(), asMade.getLeft(), asMade.getHeight(), asMade.getWidth());
+            mListToGrow = listToGrow;
+            mGrowth = growth;
+        }
+
+        public void growOnItsNextRead() {
+            mGrowsOnItsNextRead.set(true);
+        }
+
+        @Override
+        public int getTop() {
+            final boolean growsNow = mGrowsOnItsNextRead.getAndSet(false);
+            if (growsNow) mListToGrow.add(mGrowth);
+            return super.getTop();
         }
     }
 

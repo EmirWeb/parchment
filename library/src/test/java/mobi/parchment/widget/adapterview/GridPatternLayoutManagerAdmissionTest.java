@@ -16,6 +16,7 @@ import static mobi.parchment.widget.adapterview.PatternFixture.ITEM_WITH_NO_HEIG
 import static mobi.parchment.widget.adapterview.PatternFixture.ITEM_WITH_NO_WIDTH;
 import static mobi.parchment.widget.adapterview.PatternFixture.VERTICAL_CIRCULAR_WITHOUT_SPACING;
 import static mobi.parchment.widget.adapterview.PatternFixture.VERTICAL_START_SNAP;
+import static mobi.parchment.widget.adapterview.PatternFixture.itemAfterTheTwoItems;
 import static mobi.parchment.widget.adapterview.PatternFixture.noItems;
 import static mobi.parchment.widget.adapterview.PatternFixture.oneWideItem;
 import static mobi.parchment.widget.adapterview.PatternFixture.twoOneByOnes;
@@ -25,9 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import mobi.parchment.widget.adapterview.PatternFixture.ChangingItemDefinition;
 import mobi.parchment.widget.adapterview.PatternFixture.Definitions;
+import mobi.parchment.widget.adapterview.PatternFixture.GrowingItemDefinition;
 import mobi.parchment.widget.adapterview.PatternFixture.NoGroup;
 import mobi.parchment.widget.adapterview.gridpatternview.GridPatternGroupDefinition;
 import mobi.parchment.widget.adapterview.gridpatternview.GridPatternItemDefinition;
@@ -46,12 +47,6 @@ public final class GridPatternLayoutManagerAdmissionTest {
     private static final int AFTER_THE_FIRST_ITEM = 1;
     private static final int AFTER_THE_FIRST_GROUP = 1;
     private static final int NO_ITEMS = 0;
-    private static final int FIRST_ROW = 0;
-    private static final int SECOND_ROW = 1;
-    private static final int FIRST_COLUMN = 0;
-    private static final int SECOND_COLUMN = 1;
-    private static final int ONE_GRID_UNIT = 1;
-    private static final int TWO_GRID_UNITS = 2;
     private static final boolean VERTICAL = true;
     private static final boolean HORIZONTAL = false;
 
@@ -646,15 +641,6 @@ public final class GridPatternLayoutManagerAdmissionTest {
         assertThat(items).isEmpty();
     }
 
-    private static GridPatternItemDefinition itemAfterTheTwoItems(final boolean isVertical) {
-        if (isVertical) {
-            return new GridPatternItemDefinition(
-                    SECOND_ROW, FIRST_COLUMN, ONE_GRID_UNIT, TWO_GRID_UNITS);
-        }
-        return new GridPatternItemDefinition(
-                FIRST_ROW, SECOND_COLUMN, TWO_GRID_UNITS, ONE_GRID_UNIT);
-    }
-
     private static List<GridPatternGroupDefinition> listOf(final GridPatternGroupDefinition group) {
         final List<GridPatternGroupDefinition> groups = new ArrayList<GridPatternGroupDefinition>();
         groups.add(group);
@@ -1158,32 +1144,6 @@ public final class GridPatternLayoutManagerAdmissionTest {
             final GridPatternGroupDefinition group = pattern.group(twoOneByOnes);
             group.addGridPatternItemDefinition(NULL_ITEM);
             pattern.addGroup(group);
-        }
-    }
-
-    private static final class GrowingItemDefinition<ELEMENT> extends GridPatternItemDefinition {
-        private final List<ELEMENT> mListToGrow;
-        private final ELEMENT mGrowth;
-        private final AtomicBoolean mGrowsOnItsNextRead = new AtomicBoolean();
-
-        private GrowingItemDefinition(
-                final GridPatternItemDefinition asMade,
-                final List<ELEMENT> listToGrow,
-                final ELEMENT growth) {
-            super(asMade.getTop(), asMade.getLeft(), asMade.getHeight(), asMade.getWidth());
-            mListToGrow = listToGrow;
-            mGrowth = growth;
-        }
-
-        private void growOnItsNextRead() {
-            mGrowsOnItsNextRead.set(true);
-        }
-
-        @Override
-        public int getTop() {
-            final boolean growsNow = mGrowsOnItsNextRead.getAndSet(false);
-            if (growsNow) mListToGrow.add(mGrowth);
-            return super.getTop();
         }
     }
 }
