@@ -75,7 +75,7 @@ public final class PatternItems {
         return items;
     }
 
-    private static GridPatternItemDefinition secondOneByOneAcrossTheBreadth(
+    public static GridPatternItemDefinition secondOneByOneAcrossTheBreadth(
             final boolean isVertical) {
         if (isVertical) {
             return new GridPatternItemDefinition(

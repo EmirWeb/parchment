@@ -19,6 +19,9 @@ import static mobi.parchment.widget.adapterview.PatternFixture.VERTICAL_START_SN
 import static mobi.parchment.widget.adapterview.PatternFixture.itemAfterTheTwoItems;
 import static mobi.parchment.widget.adapterview.PatternFixture.noItems;
 import static mobi.parchment.widget.adapterview.PatternFixture.oneWideItem;
+import static mobi.parchment.widget.adapterview.PatternFixture.secondOneByOneAcrossTheBreadth;
+import static mobi.parchment.widget.adapterview.PatternFixture.twoItemsTheFirstOfWhichGrowsTheirList;
+import static mobi.parchment.widget.adapterview.PatternFixture.twoItemsTheFirstOfWhichReplacesTheSecond;
 import static mobi.parchment.widget.adapterview.PatternFixture.twoOneByOnes;
 import static mobi.parchment.widget.adapterview.PatternJourney.assertDragsForwardInTimeLikeTheOracle;
 import static mobi.parchment.widget.adapterview.PatternJourney.assertRunsLikeTheOracle;
@@ -26,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import mobi.parchment.widget.adapterview.PatternFixture.ChangingItemDefinition;
 import mobi.parchment.widget.adapterview.PatternFixture.Definitions;
 import mobi.parchment.widget.adapterview.PatternFixture.GrowingItemDefinition;
@@ -598,6 +602,150 @@ public final class GridPatternLayoutManagerAdmissionTest {
     }
 
     @Test
+    public void aGroupDefinitionBuiltFromAPlainList_vertical_holdsExactlyItsItems() {
+        final List<GridPatternItemDefinition> items = twoOneByOnes(VERTICAL);
+
+        final GridPatternGroupDefinition group = new GridPatternGroupDefinition(VERTICAL, items);
+
+        assertHoldsExactly(group, items);
+    }
+
+    @Test
+    public void aGroupDefinitionBuiltFromAPlainList_horizontal_holdsExactlyItsItems() {
+        final List<GridPatternItemDefinition> items = twoOneByOnes(HORIZONTAL);
+
+        final GridPatternGroupDefinition group = new GridPatternGroupDefinition(HORIZONTAL, items);
+
+        assertHoldsExactly(group, items);
+    }
+
+    @Test
+    public void
+            anItemGrowingItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheFirstOfWhichGrowsTheirList(VERTICAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(VERTICAL, items);
+    }
+
+    @Test
+    public void
+            anItemGrowingItsListWhileItsGroupIsBuilt_horizontal_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheFirstOfWhichGrowsTheirList(HORIZONTAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(HORIZONTAL, items);
+    }
+
+    @Test
+    public void
+            anItemClearingItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheFirstOfWhichClearsTheirList(VERTICAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(VERTICAL, items);
+    }
+
+    @Test
+    public void
+            anItemClearingItsListWhileItsGroupIsBuilt_horizontal_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheFirstOfWhichClearsTheirList(HORIZONTAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(HORIZONTAL, items);
+    }
+
+    @Test
+    public void
+            anItemShrinkingItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                threeItemsTheSecondOfWhichRemovesTheThird(VERTICAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(VERTICAL, items);
+    }
+
+    @Test
+    public void
+            anItemShrinkingItsListWhileItsGroupIsBuilt_horizontal_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                threeItemsTheSecondOfWhichRemovesTheThird(HORIZONTAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(HORIZONTAL, items);
+    }
+
+    @Test
+    public void
+            anItemRemovingAnEarlierItemFromItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                threeItemsTheSecondOfWhichRemovesTheFirst(VERTICAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(VERTICAL, items);
+    }
+
+    @Test
+    public void
+            anItemRemovingAnEarlierItemFromItsListWhileItsGroupIsBuilt_horizontal_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                threeItemsTheSecondOfWhichRemovesTheFirst(HORIZONTAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(HORIZONTAL, items);
+    }
+
+    @Test
+    public void
+            anItemReplacingALaterItemInItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheFirstOfWhichReplacesTheSecond(VERTICAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(VERTICAL, items);
+    }
+
+    @Test
+    public void
+            anItemReplacingALaterItemInItsListWhileItsGroupIsBuilt_horizontal_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheFirstOfWhichReplacesTheSecond(HORIZONTAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(HORIZONTAL, items);
+    }
+
+    @Test
+    public void
+            theLastItemGrowingItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheLastOfWhichGrowsTheirList(VERTICAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(VERTICAL, items);
+    }
+
+    @Test
+    public void
+            theLastItemGrowingItsListWhileItsGroupIsBuilt_horizontal_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheLastOfWhichGrowsTheirList(HORIZONTAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(HORIZONTAL, items);
+    }
+
+    @Test
+    public void
+            theLastItemClearingItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheLastOfWhichClearsTheirList(VERTICAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(VERTICAL, items);
+    }
+
+    @Test
+    public void
+            theLastItemClearingItsListWhileItsGroupIsBuilt_horizontal_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart() {
+        final List<GridPatternItemDefinition> items =
+                twoItemsTheLastOfWhichClearsTheirList(HORIZONTAL);
+
+        assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(HORIZONTAL, items);
+    }
+
+    @Test
     public void aNullItemBetweenTwoItems_verticalStartSnap_runsLikeTheTwoItems() {
         assertRunsLikeTheOracle(
                 VERTICAL_START_SNAP, new ANullItemBetweenTwoItemsAdded(), new TwoItemsAdded());
@@ -639,6 +787,92 @@ public final class GridPatternLayoutManagerAdmissionTest {
 
         assertThat(numberOfItems).isEqualTo(NO_ITEMS);
         assertThat(items).isEmpty();
+    }
+
+    private static void assertBuildsAGroupOfTheItemsTheListHeldAtTheStart(
+            final boolean isVertical, final List<GridPatternItemDefinition> items) {
+        final List<GridPatternItemDefinition> itemsAtTheStart =
+                new ArrayList<GridPatternItemDefinition>(items);
+
+        final GridPatternGroupDefinition group = new GridPatternGroupDefinition(isVertical, items);
+
+        assertThat(items).isNotEqualTo(itemsAtTheStart);
+        assertHoldsExactly(group, itemsAtTheStart);
+    }
+
+    private static void assertHoldsExactly(
+            final GridPatternGroupDefinition group,
+            final List<GridPatternItemDefinition> expectedItems) {
+        final int numberOfItems = group.getNumberOfItems();
+        final int expectedItemCount = expectedItems.size();
+        final List<GridPatternItemDefinition> heldItems = group.getGridPatternItemDefinitions();
+
+        assertThat(numberOfItems).isEqualTo(expectedItemCount);
+        assertThat(heldItems).containsExactlyElementsOf(expectedItems);
+    }
+
+    private static List<GridPatternItemDefinition> twoItemsTheFirstOfWhichClearsTheirList(
+            final boolean isVertical) {
+        final GridPatternItemDefinition secondItem = secondOneByOneAcrossTheBreadth(isVertical);
+        final List<GridPatternItemDefinition> items = noItems();
+        final ClearingItemDefinition clearingItem =
+                new ClearingItemDefinition(ITEM_AT_THE_ORIGIN, items);
+        items.add(clearingItem);
+        items.add(secondItem);
+        clearingItem.clearOnItsNextRead();
+        return items;
+    }
+
+    private static List<GridPatternItemDefinition> threeItemsTheSecondOfWhichRemovesTheThird(
+            final boolean isVertical) {
+        final GridPatternItemDefinition secondItem = secondOneByOneAcrossTheBreadth(isVertical);
+        final GridPatternItemDefinition thirdItem = itemAfterTheTwoItems(isVertical);
+        final List<GridPatternItemDefinition> items = noItems();
+        final ShrinkingItemDefinition shrinkingItem =
+                new ShrinkingItemDefinition(secondItem, items, thirdItem);
+        items.add(ITEM_AT_THE_ORIGIN);
+        items.add(shrinkingItem);
+        items.add(thirdItem);
+        shrinkingItem.shrinkOnItsNextRead();
+        return items;
+    }
+
+    private static List<GridPatternItemDefinition> threeItemsTheSecondOfWhichRemovesTheFirst(
+            final boolean isVertical) {
+        final GridPatternItemDefinition secondItem = secondOneByOneAcrossTheBreadth(isVertical);
+        final GridPatternItemDefinition thirdItem = itemAfterTheTwoItems(isVertical);
+        final List<GridPatternItemDefinition> items = noItems();
+        final ShrinkingItemDefinition shrinkingItem =
+                new ShrinkingItemDefinition(secondItem, items, ITEM_AT_THE_ORIGIN);
+        items.add(ITEM_AT_THE_ORIGIN);
+        items.add(shrinkingItem);
+        items.add(thirdItem);
+        shrinkingItem.shrinkOnItsNextRead();
+        return items;
+    }
+
+    private static List<GridPatternItemDefinition> twoItemsTheLastOfWhichGrowsTheirList(
+            final boolean isVertical) {
+        final GridPatternItemDefinition secondItem = secondOneByOneAcrossTheBreadth(isVertical);
+        final GridPatternItemDefinition thirdItem = itemAfterTheTwoItems(isVertical);
+        final List<GridPatternItemDefinition> items = noItems();
+        final GrowingItemDefinition<GridPatternItemDefinition> growingItem =
+                new GrowingItemDefinition<GridPatternItemDefinition>(secondItem, items, thirdItem);
+        items.add(ITEM_AT_THE_ORIGIN);
+        items.add(growingItem);
+        growingItem.growOnItsNextRead();
+        return items;
+    }
+
+    private static List<GridPatternItemDefinition> twoItemsTheLastOfWhichClearsTheirList(
+            final boolean isVertical) {
+        final GridPatternItemDefinition secondItem = secondOneByOneAcrossTheBreadth(isVertical);
+        final List<GridPatternItemDefinition> items = noItems();
+        final ClearingItemDefinition clearingItem = new ClearingItemDefinition(secondItem, items);
+        items.add(ITEM_AT_THE_ORIGIN);
+        items.add(clearingItem);
+        clearingItem.clearOnItsNextRead();
+        return items;
     }
 
     private static List<GridPatternGroupDefinition> listOf(final GridPatternGroupDefinition group) {
@@ -1144,6 +1378,55 @@ public final class GridPatternLayoutManagerAdmissionTest {
             final GridPatternGroupDefinition group = pattern.group(twoOneByOnes);
             group.addGridPatternItemDefinition(NULL_ITEM);
             pattern.addGroup(group);
+        }
+    }
+
+    private static final class ClearingItemDefinition extends GridPatternItemDefinition {
+        private final List<GridPatternItemDefinition> mListToClear;
+        private final AtomicBoolean mClearsOnItsNextRead = new AtomicBoolean();
+
+        private ClearingItemDefinition(
+                final GridPatternItemDefinition asMade,
+                final List<GridPatternItemDefinition> listToClear) {
+            super(asMade.getTop(), asMade.getLeft(), asMade.getHeight(), asMade.getWidth());
+            mListToClear = listToClear;
+        }
+
+        private void clearOnItsNextRead() {
+            mClearsOnItsNextRead.set(true);
+        }
+
+        @Override
+        public int getTop() {
+            final boolean clearsNow = mClearsOnItsNextRead.getAndSet(false);
+            if (clearsNow) mListToClear.clear();
+            return super.getTop();
+        }
+    }
+
+    private static final class ShrinkingItemDefinition extends GridPatternItemDefinition {
+        private final List<GridPatternItemDefinition> mListToShrink;
+        private final GridPatternItemDefinition mItemToRemove;
+        private final AtomicBoolean mShrinksOnItsNextRead = new AtomicBoolean();
+
+        private ShrinkingItemDefinition(
+                final GridPatternItemDefinition asMade,
+                final List<GridPatternItemDefinition> listToShrink,
+                final GridPatternItemDefinition itemToRemove) {
+            super(asMade.getTop(), asMade.getLeft(), asMade.getHeight(), asMade.getWidth());
+            mListToShrink = listToShrink;
+            mItemToRemove = itemToRemove;
+        }
+
+        private void shrinkOnItsNextRead() {
+            mShrinksOnItsNextRead.set(true);
+        }
+
+        @Override
+        public int getTop() {
+            final boolean shrinksNow = mShrinksOnItsNextRead.getAndSet(false);
+            if (shrinksNow) mListToShrink.remove(mItemToRemove);
+            return super.getTop();
         }
     }
 }

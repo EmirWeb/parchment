@@ -56,6 +56,7 @@ public final class PatternFixture {
     private static final int COLUMN_LEFT_OF_THE_GROUP = -1;
     private static final int SECOND_ROW_ABOVE_THE_GROUP = -2;
     private static final int SECOND_COLUMN_LEFT_OF_THE_GROUP = -2;
+    private static final int THE_SECOND_ITEM = 1;
     private static final String THE_PATTERNS_FIRST_LAYOUT = "the pattern's first layout";
     private static final String THE_ORACLES_FIRST_LAYOUT = "the oracle's first layout";
     private static final String THE_PATTERNS_DRAG = "the pattern's drag";
@@ -277,7 +278,35 @@ public final class PatternFixture {
                 FIRST_ROW, SECOND_COLUMN, TWO_GRID_UNITS, ONE_GRID_UNIT);
     }
 
-    private static GridPatternItemDefinition secondOneByOneAcrossTheBreadth(
+    public static List<GridPatternItemDefinition> twoItemsTheFirstOfWhichGrowsTheirList(
+            final boolean isVertical) {
+        final GridPatternItemDefinition secondItem = secondOneByOneAcrossTheBreadth(isVertical);
+        final GridPatternItemDefinition thirdItem = itemAfterTheTwoItems(isVertical);
+        final List<GridPatternItemDefinition> items = new ArrayList<GridPatternItemDefinition>();
+        final GrowingItemDefinition<GridPatternItemDefinition> growingItem =
+                new GrowingItemDefinition<GridPatternItemDefinition>(
+                        ITEM_AT_THE_ORIGIN, items, thirdItem);
+        items.add(growingItem);
+        items.add(secondItem);
+        growingItem.growOnItsNextRead();
+        return items;
+    }
+
+    public static List<GridPatternItemDefinition> twoItemsTheFirstOfWhichReplacesTheSecond(
+            final boolean isVertical) {
+        final GridPatternItemDefinition secondItem = secondOneByOneAcrossTheBreadth(isVertical);
+        final GridPatternItemDefinition replacement = itemAfterTheTwoItems(isVertical);
+        final List<GridPatternItemDefinition> items = new ArrayList<GridPatternItemDefinition>();
+        final ReplacingItemDefinition replacingItem =
+                new ReplacingItemDefinition(
+                        ITEM_AT_THE_ORIGIN, items, THE_SECOND_ITEM, replacement);
+        items.add(replacingItem);
+        items.add(secondItem);
+        replacingItem.replaceOnItsNextRead();
+        return items;
+    }
+
+    public static GridPatternItemDefinition secondOneByOneAcrossTheBreadth(
             final boolean isVertical) {
         if (isVertical) {
             return new GridPatternItemDefinition(
@@ -847,6 +876,35 @@ public final class PatternFixture {
         public int getTop() {
             final boolean growsNow = mGrowsOnItsNextRead.getAndSet(false);
             if (growsNow) mListToGrow.add(mGrowth);
+            return super.getTop();
+        }
+    }
+
+    private static final class ReplacingItemDefinition extends GridPatternItemDefinition {
+        private final List<GridPatternItemDefinition> mListToChange;
+        private final int mPositionToReplace;
+        private final GridPatternItemDefinition mReplacement;
+        private final AtomicBoolean mReplacesOnItsNextRead = new AtomicBoolean();
+
+        private ReplacingItemDefinition(
+                final GridPatternItemDefinition asMade,
+                final List<GridPatternItemDefinition> listToChange,
+                final int positionToReplace,
+                final GridPatternItemDefinition replacement) {
+            super(asMade.getTop(), asMade.getLeft(), asMade.getHeight(), asMade.getWidth());
+            mListToChange = listToChange;
+            mPositionToReplace = positionToReplace;
+            mReplacement = replacement;
+        }
+
+        private void replaceOnItsNextRead() {
+            mReplacesOnItsNextRead.set(true);
+        }
+
+        @Override
+        public int getTop() {
+            final boolean replacesNow = mReplacesOnItsNextRead.getAndSet(false);
+            if (replacesNow) mListToChange.set(mPositionToReplace, mReplacement);
             return super.getTop();
         }
     }
