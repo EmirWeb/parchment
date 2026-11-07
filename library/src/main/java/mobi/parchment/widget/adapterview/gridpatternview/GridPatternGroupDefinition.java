@@ -27,8 +27,10 @@ public class GridPatternGroupDefinition {
         if (hasNoItemList) {
             return;
         }
+        final List<GridPatternItemDefinition> gridPatternItemDefinitionsToAdd =
+                new ArrayList<GridPatternItemDefinition>(gridPatternItemDefinitions);
         for (final GridPatternItemDefinition gridPatternItemDefinition :
-                gridPatternItemDefinitions) {
+                gridPatternItemDefinitionsToAdd) {
             addGridPatternItemDefinition(gridPatternItemDefinition);
         }
     }

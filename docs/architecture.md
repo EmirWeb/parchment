@@ -542,6 +542,28 @@ drawn on the cells it names as before
 `anItemInTheFirstColumnBesideAnItemAtTheOrigin_horizontalStartSnap_isDrawnOnTheGridCellsItNames`).
 A group whose items are all skipped has none, and is ignored like any group
 with none (`aGroupOfAnItemWithNoHeightAddedToTheView_horizontalStartSnap_runsLikeNoDefinition`).
+The public constructor walks a snapshot of the list it is given, taken after
+its `null` check, because `addGridPatternItemDefinition`'s check runs the
+items' getters. Walking the caller's list itself, it threw
+`ConcurrentModificationException`, from `GridPatternView`'s
+`addGridPatternGroupDefinition` and `add` too, when an item's getter added to
+the list or cleared it: from an item before the last on API 35 and 36, and
+from any item on the JVM. A removal threw on API 35 and 36 too unless the last
+item made it; on the JVM, one made by the second-to-last item ended the walk
+early instead, and the group lacked the list's last item: the one removed, or,
+when the item removed itself or an earlier one, one still in the list. A
+getter that replaced a later item threw nowhere, and the walk built the
+replacement into the group. Whatever a getter does to the list now, the group
+holds exactly the items the list held at the start, each checked as any item
+is, as it already did on API 35 and 36 when the last item made the change
+(`anItemGrowingItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart`,
+`anItemShrinkingItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart`,
+`anItemRemovingAnEarlierItemFromItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart`,
+`anItemReplacingALaterItemInItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart`,
+`theLastItemClearingItsListWhileItsGroupIsBuilt_vertical_leavesTheGroupHoldingTheItemsTheListHeldAtTheStart`,
+`anItemReplacingALaterItemInItsListWhileTheViewTakesIt_verticalStartSnap_runsLikeTheListAsAdded`),
+and a plain list is held exactly as given
+(`aGroupDefinitionBuiltFromAPlainList_vertical_holdsExactlyItsItems`).
 
 A group definition with no items is never admitted. The layout manager's
 `addGridPatternGroupDefinition` and `setGridPatternGroupDefinitions` skip it,

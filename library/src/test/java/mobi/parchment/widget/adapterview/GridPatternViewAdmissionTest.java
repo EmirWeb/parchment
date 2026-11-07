@@ -10,6 +10,8 @@ import static mobi.parchment.widget.adapterview.PatternFixture.ITEM_WITH_A_NEGAT
 import static mobi.parchment.widget.adapterview.PatternFixture.ITEM_WITH_A_NEGATIVE_TOP;
 import static mobi.parchment.widget.adapterview.PatternFixture.noItems;
 import static mobi.parchment.widget.adapterview.PatternFixture.oneWideItem;
+import static mobi.parchment.widget.adapterview.PatternFixture.twoItemsTheFirstOfWhichGrowsTheirList;
+import static mobi.parchment.widget.adapterview.PatternFixture.twoItemsTheFirstOfWhichReplacesTheSecond;
 import static mobi.parchment.widget.adapterview.PatternFixture.twoOneByOnes;
 import static mobi.parchment.widget.adapterview.PatternViewJourney.HORIZONTAL_PATTERN;
 import static mobi.parchment.widget.adapterview.PatternViewJourney.VERTICAL_PATTERN;
@@ -100,6 +102,48 @@ public final class GridPatternViewAdmissionTest {
     public void aListClearedAfterItIsAddedToTheView_horizontalStartSnap_runsLikeTheListAsAdded() {
         assertRunsLikeTheOracle(
                 HORIZONTAL_PATTERN, new AddAListAndThenClearIt(), new AddTwoItems());
+    }
+
+    @Test
+    public void anItemGrowingItsListWhileTheViewTakesIt_verticalStartSnap_runsLikeTheListAsAdded() {
+        assertRunsLikeTheOracle(VERTICAL_PATTERN, new AddAListThatAnItemGrows(), new AddTwoItems());
+    }
+
+    @Test
+    public void
+            anItemGrowingItsListWhileTheViewTakesIt_horizontalStartSnap_runsLikeTheListAsAdded() {
+        assertRunsLikeTheOracle(
+                HORIZONTAL_PATTERN, new AddAListThatAnItemGrows(), new AddTwoItems());
+    }
+
+    @Test
+    public void
+            anItemGrowingItsListWhileTheViewTakesItWithAdd_verticalStartSnap_runsLikeTheListAsAdded() {
+        assertRunsLikeTheOracle(
+                VERTICAL_PATTERN, new AddAListThatAnItemGrowsWithAdd(), new AddTwoItems());
+    }
+
+    @Test
+    public void
+            anItemGrowingItsListWhileTheViewTakesItWithAdd_horizontalStartSnap_runsLikeTheListAsAdded() {
+        assertRunsLikeTheOracle(
+                HORIZONTAL_PATTERN, new AddAListThatAnItemGrowsWithAdd(), new AddTwoItems());
+    }
+
+    @Test
+    public void
+            anItemReplacingALaterItemInItsListWhileTheViewTakesIt_verticalStartSnap_runsLikeTheListAsAdded() {
+        assertRunsLikeTheOracle(
+                VERTICAL_PATTERN, new AddAListWhoseFirstItemReplacesItsSecond(), new AddTwoItems());
+    }
+
+    @Test
+    public void
+            anItemReplacingALaterItemInItsListWhileTheViewTakesIt_horizontalStartSnap_runsLikeTheListAsAdded() {
+        assertRunsLikeTheOracle(
+                HORIZONTAL_PATTERN,
+                new AddAListWhoseFirstItemReplacesItsSecond(),
+                new AddTwoItems());
     }
 
     @Test
@@ -218,6 +262,33 @@ public final class GridPatternViewAdmissionTest {
             final List<GridPatternItemDefinition> items = twoOneByOnes(isVertical);
             view.addGridPatternGroupDefinition(items);
             items.clear();
+        }
+    }
+
+    private static final class AddAListThatAnItemGrows implements ViewDefinitions {
+        @Override
+        public void defineOn(final InflatedGridPatternView view, final boolean isVertical) {
+            final List<GridPatternItemDefinition> items =
+                    twoItemsTheFirstOfWhichGrowsTheirList(isVertical);
+            view.addGridPatternGroupDefinition(items);
+        }
+    }
+
+    private static final class AddAListThatAnItemGrowsWithAdd implements ViewDefinitions {
+        @Override
+        public void defineOn(final InflatedGridPatternView view, final boolean isVertical) {
+            final List<GridPatternItemDefinition> items =
+                    twoItemsTheFirstOfWhichGrowsTheirList(isVertical);
+            view.add(items);
+        }
+    }
+
+    private static final class AddAListWhoseFirstItemReplacesItsSecond implements ViewDefinitions {
+        @Override
+        public void defineOn(final InflatedGridPatternView view, final boolean isVertical) {
+            final List<GridPatternItemDefinition> items =
+                    twoItemsTheFirstOfWhichReplacesTheSecond(isVertical);
+            view.addGridPatternGroupDefinition(items);
         }
     }
 
